@@ -42,7 +42,8 @@ stages:
         REACT_APP_BACKEND_IDENTIFIER: ${{ parameters.BACKEND_IDENTIFIER }}
         REACT_APP_TENANT_ID: ${{ parameters.TENANT_ID }}
         REACT_APP_CLIENT_ID: ${{ parameters.CLIENT_ID }}
-      displayName: 'Prepare binaries'            
+      displayName: 'Prepare binaries'
+      workingDirectory: 's'      
      
       
     - task: ArchiveFiles@2

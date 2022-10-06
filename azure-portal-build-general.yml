@@ -43,7 +43,7 @@ stages:
         REACT_APP_TENANT_ID: ${{ parameters.TENANT_ID }}
         REACT_APP_CLIENT_ID: ${{ parameters.CLIENT_ID }}
       displayName: 'Prepare binaries'            
-      workingDirectory: 'portal'
+     
       
     - task: ArchiveFiles@2
       displayName: 'Archive files'

@@ -1,0 +1,60 @@
+parameters:
+- name: environmentName
+  displayName: The environment name to use in DevOps for the deployment
+  type: string
+  default: 'portal'
+- name: STORAGE_KEY
+  displayName: The key of the storage account where portal is deployed
+  type: string
+  default: 'FooBar'
+- name: STORAGE_ACCOUNT
+  displayName: Name of the storage account where portal is deployed
+  type: string
+  default: 'FooBar'
+- name: azureSubscription
+  displayName: Azure Service Connection name
+  type: string
+  default: 'DevOps Foundation test (CSP)'
+- name: vmImageName
+  displayName: VM name
+  type: string
+  default: 'windows-latest'
+
+stages:
+- stage: Deployportal
+  displayName: Deploy portal stage
+  
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy    
+    environment: ${{ parameters.environmentName }}
+    pool: 
+      vmImage: ${{ parameters.vmImageName }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - task: ExtractFiles@1
+            inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop-portal/$(Build.BuildId)-portal.zip'
+              destinationFolder: '$(Pipeline.Workspace)/drop-portal/portalextracted'
+              cleanDestinationFolder: true
+              overwriteExistingFiles: false
+
+          - task: AzureFileCopy@3
+            inputs:
+              SourcePath: '$(Pipeline.Workspace)/drop-portal/portalextracted/'
+              azureSubscription: ${{ parameters.azureSubscription }}
+              Destination: 'AzureBlob'
+              storage: ${{ parameters.STORAGE_ACCOUNT }}
+              ContainerName: '$web'
+        
+          - task: AzurePowerShell@5
+            env:
+              STORAGE_KEY: ${{ parameters.STORAGE_KEY }}
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscription }}
+              ScriptType: 'FilePath'
+              ScriptPath: '$(Pipeline.Workspace)/drop-portal-ps/contentTypes.ps1'                            
+              azurePowerShellVersion: 'LatestVersion'

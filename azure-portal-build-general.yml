@@ -1,0 +1,61 @@
+parameters:
+- name: API_URL
+  displayName: API Url
+  type: string
+  default: 'FooBar'
+- name: BACKEND_IDENTIFIER
+  displayName: API name
+  type: string
+  default: 'FooBar'
+- name: TENANT_ID
+  displayName: Tenant Id
+  type: string
+  default: 'FooBar'
+- name: CLIENT_ID
+  displayName: Client ID for auth
+  type: string
+  default: 'FooBar'
+- name: vmImageName
+  displayName: VM name
+  type: string
+  default: 'windows-latest'
+
+stages:
+- stage: BuildPortal
+  displayName: Build portal stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ${{ parameters.vmImageName }}
+      
+    steps:
+    - task: NodeTool@0  
+      inputs:
+        versionSpec: '10.x'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install && npm run build      
+      env:
+        REACT_APP_API_URL: ${{ parameters.API_URL }}
+        REACT_APP_BACKEND_IDENTIFIER: ${{ parameters.BACKEND_IDENTIFIER }}
+        REACT_APP_TENANT_ID: ${{ parameters.TENANT_ID }}
+        REACT_APP_CLIENT_ID: ${{ parameters.CLIENT_ID }}
+      displayName: 'Prepare binaries'            
+      workingDirectory: 'frontend'
+      
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/portal/build'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-portal.zip
+        replaceExistingArchive: true
+
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-portal.zip
+      artifact: drop-portal
+    
+    - upload: $(System.DefaultWorkingDirectory)/portal/contentTypes.ps1
+      artifact: drop-portal-ps

@@ -1,0 +1,19 @@
+trigger: none
+
+variables:
+- group: 'TestCustomerdof-FrontendVariables'
+
+stages:
+- template: ..\azure-portal-build-general.yml
+  parameters: 
+    API_URL: $(API_URL)
+    BACKEND_IDENTIFIER: $(BACKEND_IDENTIFIER)
+    TENANT_ID: $(TENANT_ID)
+    CLIENT_ID: $(CLIENT_ID)
+
+- template: ..\azure-portal-release-general.yml
+  parameters: 
+    STORAGE_KEY: $(STORAGE_KEY)
+    STORAGE_ACCOUNT: $(STORAGE_ACCOUNT)
+    environmentName: 'TestCustomerdof-portal'
+    azureSubscription: 'spn-devops-dof-development'

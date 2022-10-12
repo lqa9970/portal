@@ -28,4 +28,4 @@ stages:
     STORAGE_KEY: $(STORAGE_KEY)
     storageAccount: 'uincdofdevweu1'
     environment: 'nc-dof-portal-$(environment)'
-    azureSubscription: 'spn-devops-$(env)-development'
+    azureSubscription: 'spn-devops-dof-$(environment)'

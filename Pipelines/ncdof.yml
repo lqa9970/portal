@@ -15,5 +15,5 @@ stages:
   parameters: 
     STORAGE_KEY: $(STORAGE_KEY)
     STORAGE_ACCOUNT: $(STORAGE_ACCOUNT)
-    environmentName: 'ncdof-portal'
-    azureSubscription: 'nordcloud-devops-automation'
+    environmentName: 'nc-dof-portal-<environment>'
+    azureSubscription: 'spn-devops-dof-development'

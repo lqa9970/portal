@@ -15,5 +15,5 @@ stages:
   parameters: 
     STORAGE_KEY: $(STORAGE_KEY)
     STORAGE_ACCOUNT: $(STORAGE_ACCOUNT)
-    environmentName: 'nc-dof-portal-<environment>'
+    environmentName: 'nc-dof-portal-development'
     azureSubscription: 'spn-devops-dof-development'

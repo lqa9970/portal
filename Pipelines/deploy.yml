@@ -1,24 +1,12 @@
 parameters:
-- name: environmentName
-  displayName: The environment name to use in DevOps for the deployment
+- name: environment
   type: string
-  default: 'portal'
 - name: STORAGE_KEY
-  displayName: The key of the storage account where portal is deployed
   type: string
-  default: 'FooBar'
-- name: STORAGE_ACCOUNT
-  displayName: Name of the storage account where portal is deployed
+- name: storageAccount
   type: string
-  default: 'FooBar'
 - name: azureSubscription
-  displayName: Azure Service Connection name
   type: string
-  default: 'DevOps Foundation test (CSP)'
-- name: vmImageName
-  displayName: VM name
-  type: string
-  default: 'windows-latest'
 
 stages:
 - stage: Deployportal
@@ -27,9 +15,9 @@ stages:
   jobs:
   - deployment: Deploy
     displayName: Deploy    
-    environment: ${{ parameters.environmentName }}
+    environment: ${{ parameters.environment }}
     pool: 
-      vmImage: ${{ parameters.vmImageName }}
+      vmImage: 'windows-latest'
     strategy:
       runOnce:
         deploy:
@@ -47,7 +35,7 @@ stages:
               SourcePath: '$(Pipeline.Workspace)/drop-portal/portalextracted/'
               azureSubscription: ${{ parameters.azureSubscription }}
               Destination: 'AzureBlob'
-              storage: ${{ parameters.STORAGE_ACCOUNT }}
+              storage: ${{ parameters.storageAccount }}
               ContainerName: '$web'
         
           - task: AzurePowerShell@5

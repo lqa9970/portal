@@ -1,24 +1,12 @@
 parameters:
-- name: API_URL
-  displayName: API Url
+- name: apiUrl
   type: string
-  default: 'FooBar'
-- name: BACKEND_IDENTIFIER
-  displayName: API name
+- name: backendIdentifier
   type: string
-  default: 'FooBar'
-- name: TENANT_ID
-  displayName: Tenant Id
+- name: tenantId
   type: string
-  default: 'FooBar'
-- name: CLIENT_ID
-  displayName: Client ID for auth
+- name: clientId
   type: string
-  default: 'FooBar'
-- name: vmImageName
-  displayName: VM name
-  type: string
-  default: 'windows-latest'
 
 stages:
 - stage: BuildPortal
@@ -27,7 +15,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: ${{ parameters.vmImageName }}
+      vmImage: windows-latest
       
     steps:
     - task: NodeTool@0  
@@ -38,10 +26,10 @@ stages:
     - script: |
         npm install && npm run build      
       env:
-        REACT_APP_API_URL: ${{ parameters.API_URL }}
-        REACT_APP_BACKEND_IDENTIFIER: ${{ parameters.BACKEND_IDENTIFIER }}
-        REACT_APP_TENANT_ID: ${{ parameters.TENANT_ID }}
-        REACT_APP_CLIENT_ID: ${{ parameters.CLIENT_ID }}
+        REACT_APP_API_URL: ${{ parameters.apiUrl }}
+        REACT_APP_BACKEND_IDENTIFIER: ${{ parameters.backendIdentifier }}
+        REACT_APP_TENANT_ID: ${{ parameters.tenantId }}
+        REACT_APP_CLIENT_ID: ${{ parameters.clientId }}
       displayName: 'Prepare binaries'            
      
       

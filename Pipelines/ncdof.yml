@@ -1,19 +1,31 @@
-trigger: none
+trigger:
+- main
+- production
 
 variables:
 - group: 'ncdof-PortalVariables'
+- name: environment
+  ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
+    value: production
+  ${{ else }}:
+    value: development
+- name: env
+  ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
+    value: prod
+  ${{ else }}:
+    value: dev
 
 stages:
-- template: ..\azure-portal-build-general.yml
+- template: build.yml
   parameters: 
-    API_URL: $(API_URL)
-    BACKEND_IDENTIFIER: $(BACKEND_IDENTIFIER)
-    TENANT_ID: $(TENANT_ID)
-    CLIENT_ID: $(CLIENT_ID)
+    apiUrl: 'https://func-ncdof-backend-$(env)-weu.azurewebsites.net'
+    backendIdentifier: 'api://3b65e541-04a8-4457-b27a-479cbb86e44b'
+    tenantId: '647b4812-c4fd-4afe-864b-a854de083eeb'
+    clientId: '3b65e541-04a8-4457-b27a-479cbb86e44b'
 
-- template: ..\azure-portal-release-general.yml
+- template: deploy.yml
   parameters: 
     STORAGE_KEY: $(STORAGE_KEY)
-    STORAGE_ACCOUNT: $(STORAGE_ACCOUNT)
-    environmentName: 'nc-dof-portal-development'
-    azureSubscription: 'spn-devops-dof-development'
+    storageAccount: 'uincdofdevweu1'
+    environment: 'nc-dof-portal-$(environment)'
+    azureSubscription: 'spn-devops-$(env)-development'

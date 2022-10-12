@@ -18,7 +18,10 @@ const getTerminology = (val: string | boolean | undefined) => {
     case 'qa':
       return 'QA'
     default:
-      return capitalize(val)
+      if (typeof val === 'string') {
+        return capitalize(val)
+      }
+      return ''
   }
 }
 export default getTerminology

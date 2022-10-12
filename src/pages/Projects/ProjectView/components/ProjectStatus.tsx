@@ -14,18 +14,18 @@ import {
 } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import { ProjectItemStatus } from '@utils/types'
-import getProjectStatus from '@api/projects/getProjectStatus'
+import { ProjectStatus as ProjectStatusType } from '@utils/types'
+import { getProjectStatus } from '@api'
 
-function getHelperTextFromState(status: ProjectItemStatus) {
+function getHelperTextFromState(status: ProjectStatusType) {
   switch (status) {
-    case 'success':
+    case 'Completed':
       return 'Finished successfully'
-    case 'pending':
+    case 'In Progress':
       return 'In progress'
-    case 'queued':
+    case 'In Queue':
       return 'Not started'
-    case 'failure':
+    case 'Error':
       return ''
   }
 }
@@ -35,13 +35,18 @@ type Props = {
   open: boolean
 }
 type Params = {
-  projectId: string
+  rowKey: string
 }
 
 const ProjectStatus = ({ handleClose, open }: Props) => {
-  const { projectId } = useParams() as Params
-  const { data, status } = useQuery(['getProjectStatus', projectId], () =>
-    getProjectStatus(projectId)
+  const { rowKey } = useParams() as Params
+  const { data, isLoading, isRefetching, isSuccess, refetch } = useQuery(
+    ['getProjectStatus', rowKey],
+    () => getProjectStatus(rowKey),
+    {
+      select: (data) =>
+        data.sort((a, b) => parseInt(a.orderId) - parseInt(b.orderId)),
+    }
   )
   return (
     <Dialog
@@ -51,16 +56,20 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
       aria-labelledby="project-status-title"
       aria-describedby="project-status-description"
     >
-      <DialogTitle id="project-status-title">{'Project status'}</DialogTitle>
+      <DialogTitle id="project-status-title">
+        <Box display="flex" gap={1} alignItems="center">
+          Project status {(isLoading || isRefetching) && <Cached />}
+        </Box>
+      </DialogTitle>
       <DialogContent>
-        {status === 'success' && (
+        {isSuccess && (
           <List>
-            {data.map(({ label, status }, index) => (
-              <ListItem key={label}>
+            {data.map(({ rowKey, subItem, status }, index) => (
+              <ListItem key={rowKey}>
                 <ListItemAvatar>
                   <Avatar
                     sx={{
-                      bgcolor: status === 'queued' ? null : 'primary.main',
+                      bgcolor: status === 'In Queue' ? null : 'primary.main',
                     }}
                   >
                     {index + 1}
@@ -69,9 +78,9 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
                 <ListItemText
                   primary={
                     <Box alignItems="center" gap={4} display="flex">
-                      {label}
-                      {status === 'success' && <Check color="success" />}
-                      {status === 'pending' && <Cached />}
+                      {subItem}
+                      {status === 'Completed' && <Check color="success" />}
+                      {status === 'In Progress' && <Cached />}
                     </Box>
                   }
                   secondary={getHelperTextFromState(status)}
@@ -81,7 +90,10 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
           </List>
         )}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ pb: 4 }}>
+        <Button variant="contained" color="primary" onClick={() => refetch()}>
+          Retry
+        </Button>
         <Button onClick={handleClose}>Close</Button>
       </DialogActions>
     </Dialog>

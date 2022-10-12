@@ -5,31 +5,33 @@ import { Link as RouterLink, useParams } from 'react-router-dom'
 
 import { useQuery } from '@tanstack/react-query'
 import { getProject } from '@api'
-import AddEnvironmentForm from './AddEnvironmentForm'
+import AddEnvironmentForm from './components/AddEnvironmentForm'
 import Loading from '@components/Loading'
 
 type Params = {
-  projectId: string
+  rowKey: string
 }
 
 const ProjectAddEnvironment = () => {
-  const { projectId } = useParams() as Params
-  const { data: project, status } = useQuery(['getProject', projectId], () =>
-    getProject(projectId)
-  )
+  const { rowKey } = useParams() as Params
+  const {
+    data: project,
+    isLoading,
+    isSuccess,
+  } = useQuery(['getProject', rowKey], () => getProject(rowKey))
 
   return (
     <Container sx={{ mt: '1.4rem' }}>
       <Button
         component={RouterLink}
-        to={`/projects/${projectId}`}
+        to={`/projects/${rowKey}`}
         sx={{ ml: -2, mb: 2.5 }}
       >
         <ArrowBackIosNew sx={{ mr: 2 }} />
         Application details
       </Button>
-      {status === 'loading' && <Loading />}
-      {status === 'success' && <AddEnvironmentForm project={project} />}
+      {isLoading && <Loading />}
+      {isSuccess && <AddEnvironmentForm project={project} />}
     </Container>
   )
 }

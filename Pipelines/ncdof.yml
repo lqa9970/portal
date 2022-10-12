@@ -1,7 +1,7 @@
 trigger: none
 
 variables:
-- group: 'TestCustomerdof-PortalVariables'
+- group: 'ncdof-PortalVariables'
 
 stages:
 - template: ..\azure-portal-build-general.yml
@@ -15,5 +15,5 @@ stages:
   parameters: 
     STORAGE_KEY: $(STORAGE_KEY)
     STORAGE_ACCOUNT: $(STORAGE_ACCOUNT)
-    environmentName: 'TestCustomerdof-portal'
-    azureSubscription: 'spn-devops-dof-development'
+    environmentName: 'ncdof-portal'
+    azureSubscription: 'nordcloud-devops-automation'

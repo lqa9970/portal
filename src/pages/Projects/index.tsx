@@ -25,9 +25,10 @@ import {
   ArrowForwardIos,
   ErrorOutline,
   Cached,
+  PendingActions,
 } from '@mui/icons-material'
 
-import __mockProjectTemplates__ from './__mockProjectTemplates__.json'
+import projectTemplates from './projectTemplates.json'
 
 import { useState } from 'react'
 import { ProjectStatus } from '@utils/types'
@@ -36,26 +37,34 @@ import { useAccount } from '@azure/msal-react'
 import { useQuery } from '@tanstack/react-query'
 import { getProjects } from '@api'
 import Loading from '@components/Loading'
+import { format } from 'date-fns'
 
-function getDateStringFromStatus(status: ProjectStatus, at?: string) {
+function getDateStringFromStatus(status: ProjectStatus, timestamp: string) {
+  const date = new Date(timestamp)
+  const dateString = format(date, 'MM/dd/yyyy')
+
   switch (status) {
-    case 'failure':
-      return `Failed at ${at}`
-    case 'pending':
+    case 'In Queue':
+      return 'In Queue'
+    case 'Error':
+      return `Failed at ${dateString}`
+    case 'In Progress':
       return 'In progress'
-    case 'success':
-      return `Successfully created at ${at}`
+    case 'Completed':
+      return `Successfully created at ${dateString}`
   }
 }
 
 function getIconFromStatus(status: ProjectStatus) {
   switch (status) {
-    case 'failure':
-      return <ErrorOutline color="error" sx={{ ml: 4 }} />
-    case 'pending':
-      return <Cached sx={{ ml: 4 }} />
-    case 'success':
-      return <Check color="success" sx={{ ml: 4 }} />
+    case 'In Queue':
+      return <PendingActions />
+    case 'Error':
+      return <ErrorOutline color="error" />
+    case 'In Progress':
+      return <Cached />
+    case 'Completed':
+      return <Check color="success" />
   }
 }
 
@@ -68,13 +77,13 @@ const Projects = () => {
     true
   )
 
-  const { data, status } = useQuery(['getProjects'], getProjects)
+  const { data, isLoading, isSuccess } = useQuery(
+    ['getProjects', isViewingOwnProject],
+    () => getProjects({ isViewingOwnProject })
+  )
 
-  const filterProjects = data?.filter(
-    ({ applicationShortName, environmentType }) =>
-      `${applicationShortName}-${environmentType}`
-        .toLowerCase()
-        .includes(filterText.toLowerCase())
+  const filterProjects = data?.filter(({ applicationName }) =>
+    applicationName.toLowerCase().includes(filterText.toLowerCase())
   )
 
   return (
@@ -83,7 +92,7 @@ const Projects = () => {
         Welcome, {account?.name}
       </Typography>
       <Grid sx={{ mb: 8 }} container spacing={4}>
-        {__mockProjectTemplates__.map(
+        {projectTemplates.map(
           ({ name, helperText, description, ctaString, type }) => (
             <Grid key={name} xs={12} sm={6}>
               <Card>
@@ -120,10 +129,10 @@ const Projects = () => {
       </Grid>
 
       <Grid sx={{ mb: 5 }} container spacing={4}>
-        <Grid sx={{ my: 'auto' }} xs={12} sm={8}>
+        <Grid sx={{ my: 'auto' }} xs={12} sm={6}>
           <Typography variant="h6">Existing projects</Typography>
         </Grid>
-        <Grid xs={12} sm={4}>
+        <Grid xs={12} sm={6}>
           <FormGroup>
             <FormControlLabel
               control={
@@ -159,48 +168,51 @@ const Projects = () => {
         </Grid>
       </Grid>
       <Box width="100%">
-        {status === 'loading' && <Loading />}
-        <List>
-          {filterProjects?.map(
-            ({ applicationShortName, environmentType, id, at, status }) => (
-              <div key={id}>
-                <ListItem
-                  divider
-                  secondaryAction={
-                    <IconButton
+        {isLoading && <Loading />}
+        {isSuccess && (
+          <List>
+            {filterProjects?.map(
+              ({ applicationName, rowKey, timestamp, status }) => (
+                <div key={rowKey}>
+                  <ListItem
+                    divider
+                    secondaryAction={
+                      <IconButton
+                        component={RouterLink}
+                        to={rowKey}
+                        edge="end"
+                        aria-label="cta"
+                      >
+                        <ArrowForwardIos />
+                      </IconButton>
+                    }
+                    disablePadding
+                  >
+                    <ListItemButton
+                      // sx={{ gap: 4 }}
                       component={RouterLink}
-                      to={id}
-                      edge="end"
-                      aria-label="cta"
+                      to={rowKey}
                     >
-                      <ArrowForwardIos />
-                    </IconButton>
-                  }
-                  disablePadding
-                >
-                  <ListItemButton component={RouterLink} to={id}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="space-around"
-                      width="100%"
-                      maxWidth={300}
-                    >
-                      <ListItemText
-                        primary={`${applicationShortName}-${environmentType}`}
-                        secondary={getDateStringFromStatus(
-                          status as ProjectStatus,
-                          at
-                        )}
-                      />
-                    </Box>
-                    {getIconFromStatus(status as ProjectStatus)}
-                  </ListItemButton>
-                </ListItem>
-              </div>
-            )
-          )}
-        </List>
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-around"
+                        width="100%"
+                        maxWidth={300}
+                      >
+                        <ListItemText
+                          primary={applicationName}
+                          secondary={getDateStringFromStatus(status, timestamp)}
+                        />
+                      </Box>
+                      {getIconFromStatus(status)}
+                    </ListItemButton>
+                  </ListItem>
+                </div>
+              )
+            )}
+          </List>
+        )}
       </Box>
     </Container>
   )

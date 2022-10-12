@@ -1,5 +1,5 @@
 // @ts-nocheck`
-import { Info, Search } from '@mui/icons-material'
+import { Cached, Info } from '@mui/icons-material'
 import {
   Autocomplete,
   Box,
@@ -15,10 +15,9 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useMsal } from '@azure/msal-react'
 import CustomRadioInput from '@components/form-components/CustomRadioInput'
 import CustomTextField from '@components/form-components/CustomTextField'
-import { getProjects, getUsers } from '@api'
+import { checkApplicationShortNameValid, getProjects, getUsers } from '@api'
 import {
   environmentTypeOptions,
   operatingSystemOptions,
@@ -30,22 +29,29 @@ import {
   sandboxDefaultValues,
   yesNoOptions,
 } from './options'
-import { ProjectFormData } from '@utils/types'
+import { EnvironmentType, ProjectFormData } from '@utils/types'
 import { useEffect, useState } from 'react'
-import createProject from '@api/projects/createProject'
+import { createProject } from '@api'
+import useDebounce from '@utils/useDebounce'
 
 const CreateForm = () => {
-  const { instance } = useMsal()
   const navigate = useNavigate()
   const { type } = useParams()
   const isSandbox = type === 'sandbox'
+  const [userSearchTerm, setUserSearchTerm] = useState('')
+  const userSearchTermDebounce = useDebounce(userSearchTerm, 400)
   const defaultValues = isSandbox ? sandboxDefaultValues : projectDefaultValues
   const { watch, control, handleSubmit, setValue } = useForm<ProjectFormData>({
     defaultValues,
   })
   const watchIsNewProjectNeeded = watch('isNewProjectNeeded')
   const watchExistingProject = watch('existingProject')
-  const [userSearchTerm, setUserSearchTerm] = useState('')
+  const watchEnvironmentType = watch('environmentType') as EnvironmentType
+  const watchApplicationShortName = watch('applicationShortName')
+  const applicationShortNameDebounce = useDebounce(
+    watchApplicationShortName,
+    400
+  )
 
   useEffect(() => {
     if (watchIsNewProjectNeeded) {
@@ -53,32 +59,49 @@ const CreateForm = () => {
     }
   }, [watchIsNewProjectNeeded])
 
-  const { data: userData = [] } = useQuery(['getUsers', userSearchTerm], () =>
-    getUsers({ instance, data: userSearchTerm })
+  const { data: userData = [], isLoading: isLoadingUsers } = useQuery(
+    ['getUsers', userSearchTermDebounce],
+    () => getUsers({ data: userSearchTermDebounce })
   )
   const { data: projectData = [] } = useQuery(['getProjects'], () =>
     getProjects()
   )
+  const {
+    data: isApplicationShortNameValid,
+    isLoading: checkingApplicationShortName,
+  } = useQuery(
+    [
+      'checkApplicationShortNameValid',
+      applicationShortNameDebounce,
+      watchEnvironmentType,
+    ],
+    () => {
+      if (!applicationShortNameDebounce || !watchEnvironmentType) return true
+      return checkApplicationShortNameValid({
+        applicationShortName: applicationShortNameDebounce,
+        environmentType: watchEnvironmentType,
+      })
+    }
+  )
 
-  const { mutate } = useMutation(createProject, {
+  const { mutate, isLoading: isCreatingProject } = useMutation(createProject, {
     onSuccess(data) {
-      console.log(data)
       localStorage.setItem('projectStatusModalOpen', 'true')
-      // mock sandbox and project
-      if (isSandbox) {
-        navigate('/projects/1')
-      } else {
-        navigate('/projects/3')
-      }
+      navigate(`/projects/${data.rowKey}`)
     },
   })
 
   return (
     <form
       style={{ display: 'flex', justifyContent: 'center' }}
-      onSubmit={handleSubmit((data) => mutate(data))}
+      onSubmit={handleSubmit((data) =>
+        mutate({
+          ...data,
+          actionType: isSandbox ? 'create-sandbox' : 'create-project',
+        })
+      )}
     >
-      <Box mb={16}>
+      <Box mb={16} overflow="hidden">
         <Grid container rowSpacing={2} columnSpacing={12}>
           <Grid xs={12}>
             <Controller
@@ -145,12 +168,10 @@ const CreateForm = () => {
                           }}
                           fullWidth
                           getOptionLabel={(option) =>
-                            option
-                              ? `${option.applicationShortName}-${option.environmentType}`
-                              : ''
+                            option ? option.applicationName : ''
                           }
                           isOptionEqualToValue={(option, value) =>
-                            option.id === value.id
+                            option.rowKey === value.rowKey
                           }
                           options={projectData.filter(
                             (project) => project.environmentType === 'sandbox'
@@ -228,15 +249,22 @@ const CreateForm = () => {
               control={control}
               name="applicationShortName"
               disabled={!!watchExistingProject}
+              error={
+                !checkingApplicationShortName && !isApplicationShortNameValid
+              }
               label="Application short name"
-              helperText="No blanks, only letters. Max 4 characters"
+              helperText={
+                !checkingApplicationShortName && !isApplicationShortNameValid
+                  ? 'Please use another short name'
+                  : 'No blanks, only letters. Max 4 characters'
+              }
               description="Short name for the application system this project is to deploy. Most important data entry on the form with the most impact. This is used in the naming convention creating resources. You can use the name that is/ will be used when referring to the project in spoken language. Preferably one word written in English alphabets, without spacing or special characters."
               InputProps={{
-                endAdornment: (
+                endAdornment: checkingApplicationShortName ? (
                   <InputAdornment position="end">
-                    <Search />
+                    <Cached />
                   </InputAdornment>
-                ),
+                ) : null,
               }}
             />
           </Grid>
@@ -278,6 +306,7 @@ const CreateForm = () => {
                   onInputChange={(_, v) => {
                     setUserSearchTerm(v)
                   }}
+                  loading={isLoadingUsers}
                   disabled={!!watchExistingProject}
                   options={userData}
                   // use filterOptions to facilitate server side options
@@ -377,7 +406,11 @@ const CreateForm = () => {
 
           <Grid xs={12}>
             <Box mt={4}>
-              <Button variant="contained" type="submit">
+              <Button
+                variant="contained"
+                type="submit"
+                endIcon={isCreatingProject ? <Cached /> : null}
+              >
                 Create project
               </Button>
               <Button component={RouterLink} to="/" sx={{ ml: 4 }}>

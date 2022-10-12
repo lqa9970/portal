@@ -7,24 +7,25 @@ import { Link as RouterLink, useParams } from 'react-router-dom'
 import ProjectDetail from './components/ProjectDetail'
 
 type Params = {
-  projectId: string
+  rowKey: string
 }
 
 const ProjectView = () => {
-  const { projectId } = useParams() as Params
-  const { data, status } = useQuery(['getProject', projectId], () =>
-    getProject(projectId)
+  const { rowKey } = useParams() as Params
+  const { data, isLoading, isSuccess, isError } = useQuery(
+    ['getProject', rowKey],
+    () => getProject(rowKey)
   )
 
   return (
-    <Container sx={{ mt: '1.4rem' }}>
+    <Container sx={{ mt: '1.4rem', overflow: 'hidden' }}>
       <Button component={RouterLink} to="/" sx={{ ml: -2, mb: 2.5 }}>
         <ArrowBackIosNew sx={{ mr: 2 }} />
         Home
       </Button>
-      {status === 'loading' && <Loading />}
-      {status === 'error' && <div>something went wrong!</div>}
-      {status === 'success' && <ProjectDetail project={data} />}
+      {isLoading && <Loading />}
+      {isError && <div>something went wrong!</div>}
+      {isSuccess && <ProjectDetail project={data} />}
     </Container>
   )
 }

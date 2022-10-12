@@ -1,11 +1,17 @@
-import delay from '@utils/delay'
+import api from '@api/baseApi'
+import getToken from '@api/getToken'
+import { tokenRequest } from '@msal/authConfig'
+import generateAuthHeaders from '@utils/generateHeader'
 import { ProjectFormData } from '@utils/types'
-// import __mockProjects__ from './__mockProjects__.json'
-
-// const projects: Project[] = __mockProjects__ as Project[]
 
 const createProject = async (project: ProjectFormData) => {
-  await delay(800)
-  return project
+  const token = await getToken(tokenRequest)
+  const headers = generateAuthHeaders(token)
+
+  const { data } = await api.post<string>('projects/save', project, {
+    headers,
+  })
+  await api.post('projects', project, { headers })
+  return { rowKey: data }
 }
 export default createProject

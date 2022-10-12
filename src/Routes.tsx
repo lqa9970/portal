@@ -13,9 +13,9 @@ const Router = () => {
           <Route index element={<Navigate to="/projects" replace={true} />} />
           <Route path="projects">
             <Route path="create/:type" element={<ProjectCreate />} />
-            <Route path=":projectId" element={<ProjectView />} />
+            <Route path=":rowKey" element={<ProjectView />} />
             <Route
-              path=":projectId/add-environment"
+              path=":rowKey/add-environment"
               element={<ProjectAddEnvironment />}
             />
             <Route index element={<Projects />} />

@@ -22,6 +22,7 @@ const components: Components = {
         fontSize: '0.8rem',
         // TODO use dynamic theme color here
         '&.Mui-focused': { color: 'hsl(189,40.7%,52.4%)' },
+        '&.Mui-error': { color: '#f44336 !important' },
       }),
     },
   },

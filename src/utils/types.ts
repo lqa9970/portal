@@ -36,6 +36,7 @@ export type CustomRadioInputProps<T extends FieldValues> =
 
 export type ProjectFormData = {
   applicationType: ApplicationType | string
+  actionType: string
   isNewProjectNeeded?: boolean | string
   existingProject?: Project | null | undefined
   operatingSystem: OperatingSystem | string
@@ -53,31 +54,41 @@ export type ProjectFormData = {
   supportPartner?: string
 }
 
-export type ProjectItemStatus = 'queued' | 'pending' | 'success' | 'failure'
-export type ProjectStatus = 'pending' | 'success' | 'failure'
+export type ProjectStatus = 'In Progress' | 'Completed' | 'Error' | 'In Queue'
 
 // response type
 type ApplicationType = 'public' | 'private'
 type OperatingSystem = 'windows' | 'ubuntu'
-type EnvironmentType = 'sandbox' | 'dev' | 'test' | 'qa' | 'prod'
+export type EnvironmentType = 'sandbox' | 'dev' | 'test' | 'qa' | 'prod'
 type DataClassification = 'public' | 'internal' | 'confidential' | 'secret'
 
 export type Project = {
-  id: string
-  applicationType?: ApplicationType
+  rowKey: string
+  applicationType: ApplicationType
   status: ProjectStatus
   operatingSystem: OperatingSystem
   environmentType: EnvironmentType
+  applicationName: string
   applicationShortName: string
-  isSubscription?: boolean
+  shouldCreateSubscription?: boolean
   applicationDetail: string
   organizationUnit: string
   projectAdministrator: string
   costCenter: string
+  cmdbApplicationName?: string
+  cmdbApplicationId?: string
   isPrivacyData: boolean
   dataClassification: DataClassification
-  cmdbApplicationName?: string
-  cmdbApplicationId?: number
   supportPartner?: string
-  at?: string
+  timestamp: string
+}
+
+export type ProjectItemStatusResponse = {
+  orderId: string
+  rowKey: string
+  status: ProjectStatus
+  statusLine: string
+  subItem: string
+  subItemStatus: ProjectStatus
+  timestamp: string
 }

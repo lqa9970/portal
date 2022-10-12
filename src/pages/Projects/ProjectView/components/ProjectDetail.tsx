@@ -1,10 +1,16 @@
-import { Cached, Check } from '@mui/icons-material'
+import {
+  Cached,
+  Check,
+  ErrorOutline,
+  PendingActions,
+} from '@mui/icons-material'
 import { Box, Button, Typography, Unstable_Grid2 as Grid } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import getTerminology from '@utils/getTerminology'
 import { Project } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import ProjectStatus from './ProjectStatus'
+import { addDays, differenceInDays } from 'date-fns'
 
 type Props = {
   project: Project
@@ -21,12 +27,15 @@ const ProjectDetail = ({ project }: Props) => {
       <Grid container rowSpacing={6} columnSpacing={12}>
         <Grid xs={12} sm={6}>
           <Box minHeight={70}>
-            <Typography variant="h5">
-              {project.applicationShortName}-{project.environmentType}
-            </Typography>
+            <Typography variant="h5">{project.applicationName}</Typography>
             <Typography color="text.secondary" variant="subtitle2">
               {getTerminology(project.environmentType)}
-              {isSandbox && '. 30 days left.'}
+              {isSandbox &&
+                project.status === 'Completed' &&
+                `. ${differenceInDays(
+                  addDays(new Date(project.timestamp), 30),
+                  new Date()
+                )} days left.`}
             </Typography>
           </Box>
         </Grid>
@@ -34,9 +43,12 @@ const ProjectDetail = ({ project }: Props) => {
           <Button
             onClick={() => setProjectStatusModalOpen(true)}
             variant="contained"
+            sx={{ gap: 2 }}
           >
-            {project.status === 'pending' && <Cached sx={{ mr: 2 }} />}
-            {project.status === 'success' && <Check sx={{ mr: 2 }} />}
+            {project.status === 'In Queue' && <PendingActions />}
+            {project.status === 'In Progress' && <Cached />}
+            {project.status === 'Completed' && <Check />}
+            {project.status === 'Error' && <ErrorOutline color="error" />}
             Check Status
           </Button>
         </Grid>
@@ -74,7 +86,7 @@ const ProjectDetail = ({ project }: Props) => {
                 Subscription
               </Typography>
               <Typography variant="body1">
-                {getTerminology(project.isSubscription)}
+                {getTerminology(project.shouldCreateSubscription)}
               </Typography>
             </Grid>
           </>
@@ -105,7 +117,7 @@ const ProjectDetail = ({ project }: Props) => {
           <Typography gutterBottom variant="h6">
             Project administrator
           </Typography>
-          <Typography variant="body1">
+          <Typography sx={{ wordBreak: 'break-word' }} variant="body1">
             {project.projectAdministrator}
           </Typography>
         </Grid>
@@ -168,7 +180,7 @@ const ProjectDetail = ({ project }: Props) => {
           {!isSandbox && (
             <Button
               component={RouterLink}
-              to={`/projects/${project.id}/add-environment`}
+              to={`/projects/${project.rowKey}/add-environment`}
               variant="contained"
               color="primary"
               sx={{ mr: 4, mt: 2 }}

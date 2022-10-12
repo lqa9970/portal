@@ -2,19 +2,16 @@ import api from '@api/baseApi'
 import getToken from '@api/getToken'
 import { tokenRequest } from '@msal/authConfig'
 import generateAuthHeaders from '@utils/generateHeader'
-import { ProjectItemStatusResponse } from '@utils/types'
+import { EnvironmentType } from '@utils/types'
 
-const getProjectStatus = async (rowKey: string) => {
+export default async function listAvailableEnvironments(rowKey: string) {
   const token = await getToken(tokenRequest)
   const headers = generateAuthHeaders(token)
-
-  const { data } = await api.get<ProjectItemStatusResponse[]>(
-    `/projects/${rowKey}/status`,
+  const { data } = await api.get<EnvironmentType[]>(
+    `/projects/${rowKey}/listAvailableEnvironments`,
     {
       headers,
     }
   )
   return data
 }
-
-export default getProjectStatus

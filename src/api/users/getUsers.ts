@@ -1,29 +1,19 @@
-import {
-  InteractionRequiredAuthError,
-  IPublicClientApplication,
-} from '@azure/msal-browser'
+import { getToken } from '@api'
 import { tokenRequest } from '@msal/authConfig'
+import generateAuthHeaders from '@utils/generateHeader'
 import api from '../baseApi'
 
-const getUsers = async ({
-  instance,
-  data = '',
-}: {
-  instance: IPublicClientApplication
-  data?: string
-}) => {
-  try {
-    const token = await instance.acquireTokenSilent(tokenRequest)
-    const res = await api.get(`/users?search=${data}`, {
-      headers: { Authorization: `Bearer ${token.accessToken}` },
-    })
-    return res.data
-  } catch (error) {
-    if (error instanceof InteractionRequiredAuthError) {
-      await instance.acquireTokenRedirect(tokenRequest)
+const getUsers = async ({ data = '' }: { data?: string }) => {
+  const token = await getToken(tokenRequest)
+  const headers = generateAuthHeaders(token)
+
+  const { data: responseData } = await api.get<string[]>(
+    `/users?search=${data}`,
+    {
+      headers,
     }
-    throw error
-  }
+  )
+  return responseData
 }
 
 export default getUsers

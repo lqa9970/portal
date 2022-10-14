@@ -16,7 +16,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { loginRequest } from './msal/authConfig'
 import Routes from './Routes'
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 24 * 1000 * 60 * 60, // 1 day
+      staleTime: 5 * 1000 * 60, // 5 mins
+    },
+  },
+})
 
 function App() {
   // The useMsalAuthentication hook will initiate a login if a user is not already signed in, otherwise it will attempt to acquire a token.

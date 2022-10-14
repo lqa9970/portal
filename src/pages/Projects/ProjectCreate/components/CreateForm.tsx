@@ -36,6 +36,7 @@ import { EnvironmentType, ProjectFormData } from '@utils/types'
 import { useEffect, useState } from 'react'
 import { createProject } from '@api'
 import useDebounce from '@utils/useDebounce'
+import { queryClient } from '@App'
 
 const CreateForm = () => {
   const navigate = useNavigate()
@@ -92,6 +93,7 @@ const CreateForm = () => {
 
   const { mutate, isLoading: isCreatingProject } = useMutation(createProject, {
     onSuccess(data) {
+      queryClient.invalidateQueries(['getProjects'])
       localStorage.setItem('projectStatusModalOpen', 'true')
       navigate(`/projects/${data.rowKey}`)
     },

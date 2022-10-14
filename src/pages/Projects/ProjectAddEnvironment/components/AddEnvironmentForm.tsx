@@ -9,6 +9,7 @@ import listAvailableEnvironments from '@api/projects/listAvailableEnvironments'
 import getTerminology from '@utils/getTerminology'
 import { createProject } from '@api'
 import { Cached } from '@mui/icons-material'
+import { queryClient } from '@App'
 
 type Props = {
   project: Project
@@ -33,6 +34,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
 
   const { mutate, isLoading: isCreatingProject } = useMutation(createProject, {
     onSuccess(data) {
+      queryClient.invalidateQueries(['getProjects'])
       localStorage.setItem('projectStatusModalOpen', 'true')
       navigate(`/projects/${data.rowKey}`)
     },

@@ -1,4 +1,3 @@
-// @ts-nocheck`
 import { Cached, Info } from '@mui/icons-material'
 import {
   Autocomplete,
@@ -17,7 +16,11 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import CustomRadioInput from '@components/form-components/CustomRadioInput'
 import CustomTextField from '@components/form-components/CustomTextField'
-import { checkApplicationShortNameValid, getProjects, getUsers } from '@api'
+import {
+  checkApplicationShortNameValid,
+  // getProjects,
+  getUsers,
+} from '@api'
 import {
   environmentTypeOptions,
   operatingSystemOptions,
@@ -61,11 +64,14 @@ const CreateForm = () => {
 
   const { data: userData = [], isLoading: isLoadingUsers } = useQuery(
     ['getUsers', userSearchTermDebounce],
-    () => getUsers({ data: userSearchTermDebounce })
+    () => {
+      if (!userSearchTermDebounce) return []
+      return getUsers({ data: userSearchTermDebounce })
+    }
   )
-  const { data: projectData = [] } = useQuery(['getProjects'], () =>
-    getProjects()
-  )
+  // const { data: projectData = [] } = useQuery(['getProjects'], () =>
+  //   getProjects()
+  // )
   const {
     data: isApplicationShortNameValid,
     isLoading: checkingApplicationShortName,
@@ -124,7 +130,7 @@ const CreateForm = () => {
             />
           </Grid>
 
-          {isSandbox && (
+          {/* {isSandbox && (
             <>
               <Grid xs={12}>
                 <CustomRadioInput
@@ -203,7 +209,7 @@ const CreateForm = () => {
                 </>
               )}
             </>
-          )}
+          )} */}
 
           {!isSandbox && (
             <>

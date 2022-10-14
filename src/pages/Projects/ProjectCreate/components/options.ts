@@ -2,7 +2,7 @@ import { RadioOption, SelectOption } from '@utils/types'
 
 export const sandboxDefaultValues = {
   applicationType: 'public',
-  isNewProjectNeeded: '',
+  isNewProjectNeeded: true,
   existingProject: null,
   environmentType: 'sandbox',
   applicationShortName: '',

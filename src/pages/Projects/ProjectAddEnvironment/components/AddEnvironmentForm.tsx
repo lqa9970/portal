@@ -78,6 +78,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
           <Button
             variant="contained"
             sx={{ mr: 4 }}
+            type="submit"
             endIcon={isCreatingProject ? <Cached /> : null}
           >
             Create environment

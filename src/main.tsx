@@ -16,6 +16,7 @@ import { MsalProvider } from '@azure/msal-react'
 
 export const msalInstance = new PublicClientApplication(msalConfig)
 // Account selection logic is app dependent. Adjust as needed for different use cases.
+// function getAllAccounts will attemp to get all accounts from cache
 const accounts = msalInstance.getAllAccounts()
 if (accounts.length > 0) {
   msalInstance.setActiveAccount(accounts[0])

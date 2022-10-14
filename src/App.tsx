@@ -9,7 +9,7 @@ import {
   InteractionRequiredAuthError,
   InteractionType,
 } from '@azure/msal-browser'
-import { useMsalAuthentication } from '@azure/msal-react'
+import { useMsal, useMsalAuthentication } from '@azure/msal-react'
 import theme from './theme'
 import { useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -24,12 +24,23 @@ function App() {
     InteractionType.Silent,
     loginRequest
   )
+  const { instance } = useMsal()
+  const activeAccount = instance.getActiveAccount()
 
   useEffect(() => {
     if (error instanceof InteractionRequiredAuthError) {
       login(InteractionType.Redirect, loginRequest)
     }
   }, [error])
+
+  useEffect(() => {
+    if (result && instance && !activeAccount) {
+      const accounts = instance.getAllAccounts()
+      if (accounts.length > 0) {
+        instance.setActiveAccount(accounts[0])
+      }
+    }
+  }, [result, instance])
 
   if (!result) {
     return null

@@ -1,4 +1,4 @@
-import { Cached, Check } from '@mui/icons-material'
+import { Cached, Check, ErrorOutline } from '@mui/icons-material'
 import {
   Avatar,
   Box,
@@ -11,13 +11,14 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { ProjectStatus as ProjectStatusType } from '@utils/types'
 import { getProjectStatus } from '@api'
 
-function getHelperTextFromState(status: ProjectStatusType) {
+function getHelperTextFromStatus(status: ProjectStatusType) {
   switch (status) {
     case 'Completed':
       return 'Finished successfully'
@@ -26,7 +27,18 @@ function getHelperTextFromState(status: ProjectStatusType) {
     case 'In Queue':
       return 'Not started'
     case 'Error':
-      return ''
+      return 'Failed to run this process'
+  }
+}
+
+function getIconFromStatus(status: ProjectStatusType) {
+  switch (status) {
+    case 'Error':
+      return <ErrorOutline color="error" />
+    case 'In Progress':
+      return <Cached />
+    case 'Completed':
+      return <Check color="success" />
   }
 }
 
@@ -62,14 +74,15 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
         </Box>
       </DialogTitle>
       <DialogContent>
-        {isSuccess && (
+        {isSuccess && data.length > 0 && (
           <List>
-            {data.map(({ rowKey, subItem, status }, index) => (
+            {data.map(({ rowKey, subItem, subItemStatus }, index) => (
               <ListItem key={rowKey}>
                 <ListItemAvatar>
                   <Avatar
                     sx={{
-                      bgcolor: status === 'In Queue' ? null : 'primary.main',
+                      bgcolor:
+                        subItemStatus === 'In Queue' ? null : 'primary.main',
                     }}
                   >
                     {index + 1}
@@ -79,15 +92,19 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
                   primary={
                     <Box alignItems="center" gap={4} display="flex">
                       {subItem}
-                      {status === 'Completed' && <Check color="success" />}
-                      {status === 'In Progress' && <Cached />}
+                      {getIconFromStatus(subItemStatus)}
                     </Box>
                   }
-                  secondary={getHelperTextFromState(status)}
+                  secondary={getHelperTextFromStatus(subItemStatus)}
                 />
               </ListItem>
             ))}
           </List>
+        )}
+        {isSuccess && data.length === 0 && (
+          <Typography>
+            Process not yet started, try again in few minutes
+          </Typography>
         )}
       </DialogContent>
       <DialogActions sx={{ pb: 4 }}>

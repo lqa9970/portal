@@ -1,9 +1,13 @@
-import ProjectAddEnvironment from '@pages/Projects/ProjectAddEnvironment'
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
-import Layout from './layout/Layout'
-import Projects from './pages/Projects'
-import ProjectCreate from './pages/Projects/ProjectCreate'
-import ProjectView from './pages/Projects/ProjectView'
+import loadable from '@loadable/component'
+
+const Layout = loadable(() => import('./layout/Layout'))
+const Projects = loadable(() => import('./pages/Projects'))
+const ProjectCreate = loadable(() => import('./pages/Projects/ProjectCreate'))
+const ProjectView = loadable(() => import('./pages/Projects/ProjectView'))
+const ProjectAddEnvironment = loadable(
+  () => import('./pages/Projects/ProjectAddEnvironment')
+)
 
 const Router = () => {
   return (

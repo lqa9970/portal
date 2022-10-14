@@ -1,9 +1,4 @@
-import {
-  Cached,
-  Check,
-  ErrorOutline,
-  PendingActions,
-} from '@mui/icons-material'
+import {} from '@mui/icons-material'
 import { Box, Button, Typography, Unstable_Grid2 as Grid } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import getTerminology from '@utils/getTerminology'
@@ -23,7 +18,7 @@ const ProjectDetail = ({ project }: Props) => {
     false
   )
   return (
-    <>
+    <Box mb={16} overflow="hidden">
       <Grid container rowSpacing={6} columnSpacing={12}>
         <Grid xs={12} sm={6}>
           <Box minHeight={70}>
@@ -45,10 +40,6 @@ const ProjectDetail = ({ project }: Props) => {
             variant="contained"
             sx={{ gap: 2 }}
           >
-            {project.status === 'In Queue' && <PendingActions />}
-            {project.status === 'In Progress' && <Cached />}
-            {project.status === 'Completed' && <Check />}
-            {project.status === 'Error' && <ErrorOutline color="error" />}
             Check Status
           </Button>
         </Grid>
@@ -194,7 +185,7 @@ const ProjectDetail = ({ project }: Props) => {
         open={projectStatusModalOpen}
         handleClose={() => setProjectStatusModalOpen(false)}
       />
-    </>
+    </Box>
   )
 }
 

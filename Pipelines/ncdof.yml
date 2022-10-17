@@ -18,14 +18,14 @@ variables:
 stages:
 - template: build.yml
   parameters: 
-    apiUrl: 'https://func-ncdof-backend-$(env)-weu.azurewebsites.net'
-    backendIdentifier: 'api://3b65e541-04a8-4457-b27a-479cbb86e44b'
-    tenantId: '647b4812-c4fd-4afe-864b-a854de083eeb'
-    clientId: '3b65e541-04a8-4457-b27a-479cbb86e44b'
+    apiUrl: $(PORTAL_BACKEND_API_URL)
+    backendIdentifier: $(PORTAL_BACKEND_IDENTIFIER)
+    tenantId: $(PORTAL_TENANT_ID)
+    clientId: $(PORTAL_BACKEND_CLIENT_ID)
 
 - template: deploy.yml
   parameters: 
-    STORAGE_KEY: $(STORAGE_KEY)
-    storageAccount: 'uincdofdevweu1'
+    STORAGE_KEY: $(PORTAL_STORAGE_KEY)
+    storageAccount: $(PORTAL_STORAGE_ACCOUNT)
     environment: 'nc-dof-portal-$(environment)'
     azureSubscription: 'spn-devops-dof-$(environment)'

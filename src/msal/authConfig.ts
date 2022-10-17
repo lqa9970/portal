@@ -9,9 +9,9 @@ import {
 // Config object to be passed to Msal on creation
 export const msalConfig: Configuration = {
   auth: {
-    clientId: import.meta.env.VITE_CLIENT_ID as string,
+    clientId: import.meta.env.PORTAL_BACKEND_CLIENT_ID,
     authority: `https://login.microsoftonline.com/${
-      import.meta.env.VITE_TENANT_ID
+      import.meta.env.PORTAL_TENANT_ID
     }`,
     redirectUri: '/',
     postLogoutRedirectUri: '/',
@@ -24,5 +24,5 @@ export const loginRequest: RedirectRequest = {
 }
 
 export const tokenRequest: SilentRequest = {
-  scopes: [`${import.meta.env.VITE_BACKEND_IDENTIFIER}/user_impersonation`],
+  scopes: [`${import.meta.env.PORTAL_BACKEND_IDENTIFIER}/user_impersonation`],
 }

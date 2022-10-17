@@ -1,7 +1,7 @@
 import handleApiError from '@utils/handleApiError'
 import axios from 'axios'
 
-const baseURL = `${import.meta.env.VITE_API_URL}/api`
+const baseURL = `${import.meta.env.PORTAL_BACKEND_API_URL}/api`
 
 const api = axios.create({
   baseURL,

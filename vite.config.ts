@@ -17,4 +17,5 @@ export default defineConfig({
     gzipPlugin(),
     visualizer({ filename: 'dist/stats.html' }),
   ],
+  envPrefix: 'PORTAL_',
 })

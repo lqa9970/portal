@@ -1,5 +1,6 @@
 import { FormControlProps, TextFieldProps } from '@mui/material'
 import { ControllerProps, FieldValues } from 'react-hook-form'
+import { z } from 'zod'
 
 // attempt fix type error when using custom field component
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -34,6 +35,27 @@ export type CustomRadioInputProps<T extends FieldValues> =
     options: RadioOption[]
   }
 
+export const ProjectSchema = z.object({
+  rowKey: z.string(),
+  applicationType: z.string(), // note this enum
+  status: z.string(), // note this enum
+  operatingSystem: z.string().nullable(), // note this enum
+  environmentType: z.string(), // note this enum
+  applicationName: z.string(),
+  applicationShortName: z.string(),
+  shouldCreateSubscription: z.boolean(),
+  applicationDetail: z.string(),
+  organizationUnit: z.string(),
+  projectAdministrator: z.string(),
+  costCenter: z.string(),
+  cmdbApplicationName: z.string().nullable(),
+  cmdbApplicationId: z.string().nullable(),
+  isPrivacyData: z.boolean(),
+  dataClassification: z.string(), // note this enum
+  supportPartner: z.string().nullable(),
+  timestamp: z.string(),
+})
+
 export type ProjectFormData = {
   applicationType: ApplicationType | string
   actionType: string
@@ -62,26 +84,7 @@ type OperatingSystem = 'windows' | 'ubuntu'
 export type EnvironmentType = 'sandbox' | 'dev' | 'test' | 'qa' | 'prod'
 type DataClassification = 'public' | 'internal' | 'confidential' | 'secret'
 
-export type Project = {
-  rowKey: string
-  applicationType: ApplicationType
-  status: ProjectStatus
-  operatingSystem: OperatingSystem
-  environmentType: EnvironmentType
-  applicationName: string
-  applicationShortName: string
-  shouldCreateSubscription?: boolean
-  applicationDetail: string
-  organizationUnit: string
-  projectAdministrator: string
-  costCenter: string
-  cmdbApplicationName?: string
-  cmdbApplicationId?: string
-  isPrivacyData: boolean
-  dataClassification: DataClassification
-  supportPartner?: string
-  timestamp: string
-}
+export type Project = z.infer<typeof ProjectSchema>
 
 export type ProjectItemStatusResponse = {
   subItemOrderNumber: string

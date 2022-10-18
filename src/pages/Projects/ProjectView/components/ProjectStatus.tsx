@@ -57,7 +57,10 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
     () => getProjectStatus(rowKey),
     {
       select: (data) =>
-        data.sort((a, b) => parseInt(a.orderId) - parseInt(b.orderId)),
+        data.sort(
+          (a, b) =>
+            parseInt(a.subItemOrderNumber) - parseInt(b.subItemOrderNumber)
+        ),
     }
   )
   return (

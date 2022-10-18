@@ -84,7 +84,7 @@ export type Project = {
 }
 
 export type ProjectItemStatusResponse = {
-  orderId: string
+  subItemOrderNumber: string
   rowKey: string
   status: ProjectStatus
   statusLine: string

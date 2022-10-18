@@ -11,7 +11,7 @@ export const sandboxDefaultValues: CreateFormData = {
   organizationUnit: '',
   projectAdministrator: '',
   costCenter: '',
-  isPrivacyData: null,
+  isPrivacyData: '',
   dataClassification: 'public',
 }
 export const projectDefaultValues: CreateFormData = {
@@ -27,7 +27,7 @@ export const projectDefaultValues: CreateFormData = {
   costCenter: '',
   cmdbApplicationName: '',
   cmdbApplicationId: '',
-  isPrivacyData: null,
+  isPrivacyData: '',
   dataClassification: '',
   supportPartner: '',
 }

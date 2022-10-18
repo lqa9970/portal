@@ -1,6 +1,7 @@
 import {
   FormControl,
   FormControlLabel,
+  FormHelperText,
   IconButton,
   Radio,
   RadioGroup,
@@ -25,7 +26,7 @@ const CustomRadioInput = <T extends FieldValues>({
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
           <>
             <Typography variant="body1">
               {label}
@@ -64,6 +65,11 @@ const CustomRadioInput = <T extends FieldValues>({
                 />
               ))}
             </RadioGroup>
+            {error && (
+              <FormHelperText error={Boolean(error)}>
+                {error.message}
+              </FormHelperText>
+            )}
           </>
         )}
       />

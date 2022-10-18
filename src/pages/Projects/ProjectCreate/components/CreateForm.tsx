@@ -12,6 +12,8 @@ import {
 } from '@mui/material'
 
 import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import CustomRadioInput from '@components/form-components/CustomRadioInput'
@@ -32,7 +34,11 @@ import {
   sandboxDefaultValues,
   yesNoOptions,
 } from './options'
-import { CreateFormData, EnvironmentType } from '@utils/types'
+import {
+  CreateFormData,
+  CreateFormDataSchema,
+  EnvironmentType,
+} from '@utils/types'
 import { useEffect, useState } from 'react'
 import { createProject } from '@api'
 import useDebounce from '@utils/useDebounce'
@@ -45,9 +51,17 @@ const CreateForm = () => {
   const [userSearchTerm, setUserSearchTerm] = useState('')
   const userSearchTermDebounce = useDebounce(userSearchTerm, 400)
   const defaultValues = isSandbox ? sandboxDefaultValues : projectDefaultValues
-  const { watch, control, handleSubmit, setValue } = useForm<CreateFormData>({
+  const {
+    watch,
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<CreateFormData>({
     defaultValues,
+    resolver: zodResolver(CreateFormDataSchema),
   })
+  console.log('errors', errors)
   const watchIsNewProjectNeeded = watch('isNewProjectNeeded')
   const watchExistingProject = watch('existingProject')
   const watchEnvironmentType = watch('environmentType') as EnvironmentType
@@ -332,6 +346,12 @@ const CreateForm = () => {
                         <TextField
                           margin="dense"
                           sx={{ mb: '1rem' }}
+                          error={Boolean(errors.projectAdministrator)}
+                          helperText={
+                            errors.projectAdministrator
+                              ? errors.projectAdministrator?.message
+                              : ''
+                          }
                           {...params}
                         />
                       </>

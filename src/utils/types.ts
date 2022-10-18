@@ -74,42 +74,46 @@ export const ProjectItemStatusScehma = z.object({
 })
 
 const CreateSandboxFormDataSchema = z.object({
-  applicationType: z.string(), // note this enum
-  isNewProjectNeeded: z.boolean().optional(),
+  applicationType: z.string().min(1, 'Required'),
+  isNewProjectNeeded: z.boolean().optional().nullable(),
   existingProject: ProjectSchema.optional().nullable(),
-  environmentType: z.string(), // note this enum
+  environmentType: z.string().min(1, 'Required'),
   applicationShortName: z
     .string()
-    .regex(/[a-zA-Z]/gi, 'Only letters')
-    .max(4, 'Max 4 characters'),
-  applicationDetail: z.string(),
-  organizationUnit: z.string(),
-  projectAdministrator: z.string(),
-  costCenter: z.string().regex(/^\d+$/, 'number'),
-  isPrivacyData: z.boolean().nullable(),
-  dataClassification: z.string(), // note this enum
+    .min(1, 'Required')
+    .max(4, 'Max 4 characters')
+    .regex(/^[A-Z]+$/i, 'Only letters'),
+  applicationDetail: z.string().min(1, 'Required'),
+  organizationUnit: z.string().min(1, 'Required'),
+  projectAdministrator: z.string().min(1, 'Required'),
+  costCenter: z.string().min(1, 'Required').regex(/^\d+$/, 'number'),
+  isPrivacyData: z.boolean().or(z.string().min(1, 'Required')),
+  dataClassification: z.string().min(1, 'Required'),
 })
 const CreateProjectFormDataSchema = z.object({
-  applicationType: z.string(), // note this enum
-  operatingSystem: z.string(), // note this enum
-  // note this enum
+  applicationType: z.string().min(1, 'Required'),
+  operatingSystem: z.string().min(1, 'Required'),
   shouldCreateSubscription: z.boolean(),
-  environmentType: z.string(), // note this enum
+  environmentType: z.string().min(1, 'Required'),
   applicationShortName: z
     .string()
-    .regex(/[a-zA-Z]/gi, 'Only letters')
-    .max(4, 'Max 4 characters'),
-  applicationDetail: z.string(),
-  organizationUnit: z.string(),
-  projectAdministrator: z.string(),
-  costCenter: z.string().regex(/^\d+$/, 'Numbers only'),
-  cmdbApplicationName: z.string(),
-  cmdbApplicationId: z.string().regex(/^\d+$/, 'Numbers only'),
-  isPrivacyData: z.boolean().nullable(),
-  dataClassification: z.string(), // note this enum
-  supportPartner: z.string(),
+    .min(1, 'Required')
+    .max(4, 'Max 4 characters')
+    .regex(/^[A-Z]+$/i, 'Only letters'),
+  applicationDetail: z.string().min(1, 'Required'),
+  organizationUnit: z.string().min(1, 'Required'),
+  projectAdministrator: z.string().min(1, 'Required'),
+  costCenter: z.string().min(1, 'Required').regex(/^\d+$/, 'Numbers only'),
+  cmdbApplicationName: z.string().min(1, 'Required'),
+  cmdbApplicationId: z
+    .string()
+    .min(1, 'Required')
+    .regex(/^\d+$/, 'Numbers only'),
+  isPrivacyData: z.boolean().or(z.string().min(1, 'Required')),
+  dataClassification: z.string().min(1, 'Required'),
+  supportPartner: z.string().min(1, 'Required'),
 })
-const CreateFormDataSchema = z.discriminatedUnion('actionType', [
+export const CreateFormDataSchema = z.discriminatedUnion('actionType', [
   CreateSandboxFormDataSchema.extend({
     actionType: z.literal('create-sandbox'),
   }),

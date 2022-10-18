@@ -2,9 +2,9 @@ import api from '@api/baseApi'
 import getToken from '@api/getToken'
 import { tokenRequest } from '@msal/authConfig'
 import generateAuthHeaders from '@utils/generateHeader'
-import { ProjectFormData } from '@utils/types'
+import { CreateFormData } from '@utils/types'
 
-const createProject = async (project: ProjectFormData) => {
+const createProject = async (project: CreateFormData) => {
   const token = await getToken(tokenRequest)
   const headers = generateAuthHeaders(token)
 

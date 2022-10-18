@@ -44,10 +44,21 @@ const AddEnvironmentForm = ({ project }: Props) => {
     <form
       onSubmit={handleSubmit((data) =>
         mutate({
-          ...project,
-          ...data,
-          applicationType: project.applicationType,
           actionType: 'add-env',
+          applicationType: project.applicationType,
+          operatingSystem: project.operatingSystem as string,
+          environmentType: data.environmentType,
+          shouldCreateSubscription: project.shouldCreateSubscription,
+          applicationShortName: project.applicationShortName,
+          applicationDetail: project.applicationDetail,
+          organizationUnit: project.organizationUnit,
+          projectAdministrator: project.projectAdministrator,
+          costCenter: data.costCenter,
+          cmdbApplicationName: project.cmdbApplicationName as string,
+          cmdbApplicationId: project.cmdbApplicationId as string,
+          isPrivacyData: project.isPrivacyData,
+          dataClassification: project.dataClassification,
+          supportPartner: project.supportPartner as string,
         })
       )}
     >

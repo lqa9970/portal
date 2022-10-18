@@ -3,7 +3,6 @@ import { ControllerProps, FieldValues } from 'react-hook-form'
 import { z } from 'zod'
 
 // attempt fix type error when using custom field component
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ControllerWithoutRender<T extends FieldValues> = Omit<
   ControllerProps<T>,
   'render'
@@ -35,12 +34,20 @@ export type CustomRadioInputProps<T extends FieldValues> =
     options: RadioOption[]
   }
 
+const ProjectStatusEnum = z.enum([
+  'In Progress',
+  'Completed',
+  'Error',
+  'In Queue',
+])
+const EnvironmentTypeEnum = z.enum(['sandbox', 'dev', 'test', 'qa', 'prod'])
+
 export const ProjectSchema = z.object({
   rowKey: z.string(),
-  applicationType: z.string(), // note this enum
-  status: z.string(), // note this enum
-  operatingSystem: z.string().nullable(), // note this enum
-  environmentType: z.string(), // note this enum
+  applicationType: z.enum(['public', 'private']),
+  status: ProjectStatusEnum,
+  operatingSystem: z.enum(['windows', 'ubuntu']).nullable(),
+  environmentType: z.enum(['sandbox', 'dev', 'test', 'qa', 'prod']),
   applicationName: z.string(),
   applicationShortName: z.string(),
   shouldCreateSubscription: z.boolean(),
@@ -51,47 +58,73 @@ export const ProjectSchema = z.object({
   cmdbApplicationName: z.string().nullable(),
   cmdbApplicationId: z.string().nullable(),
   isPrivacyData: z.boolean(),
-  dataClassification: z.string(), // note this enum
+  dataClassification: z.enum(['public', 'internal', 'confidential', 'secret']),
   supportPartner: z.string().nullable(),
   timestamp: z.string(),
 })
 
-export type ProjectFormData = {
-  applicationType: ApplicationType | string
-  actionType: string
-  isNewProjectNeeded?: boolean | string
-  existingProject?: Project | null | undefined
-  operatingSystem: OperatingSystem | string
-  environmentType: EnvironmentType | string
-  shouldCreateSubscription?: boolean | string
-  applicationShortName: string
-  applicationDetail: string
-  organizationUnit: string
-  projectAdministrator: string
-  costCenter: string
-  cmdbApplicationName?: string
-  cmdbApplicationId?: string
-  isPrivacyData: boolean | string
-  dataClassification: DataClassification | string
-  supportPartner?: string
-}
+export const ProjectItemStatusScehma = z.object({
+  subItemOrderNumber: z.string(),
+  rowKey: z.string(),
+  status: ProjectStatusEnum,
+  statusLine: z.string(),
+  subItem: z.string(),
+  subItemStatus: ProjectStatusEnum,
+  timestamp: z.string(),
+})
 
-export type ProjectStatus = 'In Progress' | 'Completed' | 'Error' | 'In Queue'
+const CreateSandboxFormDataSchema = z.object({
+  applicationType: z.string(), // note this enum
+  isNewProjectNeeded: z.boolean().optional(),
+  existingProject: ProjectSchema.optional().nullable(),
+  environmentType: z.string(), // note this enum
+  applicationShortName: z
+    .string()
+    .regex(/[a-zA-Z]/gi, 'Only letters')
+    .max(4, 'Max 4 characters'),
+  applicationDetail: z.string(),
+  organizationUnit: z.string(),
+  projectAdministrator: z.string(),
+  costCenter: z.string().regex(/^\d+$/, 'number'),
+  isPrivacyData: z.boolean().nullable(),
+  dataClassification: z.string(), // note this enum
+})
+const CreateProjectFormDataSchema = z.object({
+  applicationType: z.string(), // note this enum
+  operatingSystem: z.string(), // note this enum
+  // note this enum
+  shouldCreateSubscription: z.boolean(),
+  environmentType: z.string(), // note this enum
+  applicationShortName: z
+    .string()
+    .regex(/[a-zA-Z]/gi, 'Only letters')
+    .max(4, 'Max 4 characters'),
+  applicationDetail: z.string(),
+  organizationUnit: z.string(),
+  projectAdministrator: z.string(),
+  costCenter: z.string().regex(/^\d+$/, 'Numbers only'),
+  cmdbApplicationName: z.string(),
+  cmdbApplicationId: z.string().regex(/^\d+$/, 'Numbers only'),
+  isPrivacyData: z.boolean().nullable(),
+  dataClassification: z.string(), // note this enum
+  supportPartner: z.string(),
+})
+const CreateFormDataSchema = z.discriminatedUnion('actionType', [
+  CreateSandboxFormDataSchema.extend({
+    actionType: z.literal('create-sandbox'),
+  }),
+  CreateProjectFormDataSchema.extend({
+    actionType: z.literal('create-project'),
+  }),
+  CreateProjectFormDataSchema.extend({
+    actionType: z.literal('add-env'),
+  }),
+])
+
+export type CreateFormData = z.infer<typeof CreateFormDataSchema>
+export type ProjectStatus = z.infer<typeof ProjectStatusEnum>
+export type EnvironmentType = z.infer<typeof EnvironmentTypeEnum>
 
 // response type
-type ApplicationType = 'public' | 'private'
-type OperatingSystem = 'windows' | 'ubuntu'
-export type EnvironmentType = 'sandbox' | 'dev' | 'test' | 'qa' | 'prod'
-type DataClassification = 'public' | 'internal' | 'confidential' | 'secret'
-
 export type Project = z.infer<typeof ProjectSchema>
-
-export type ProjectItemStatusResponse = {
-  subItemOrderNumber: string
-  rowKey: string
-  status: ProjectStatus
-  statusLine: string
-  subItem: string
-  subItemStatus: ProjectStatus
-  timestamp: string
-}
+export type ProjectItemStatus = z.infer<typeof ProjectItemStatusScehma>

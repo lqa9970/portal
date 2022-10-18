@@ -32,7 +32,7 @@ import {
   sandboxDefaultValues,
   yesNoOptions,
 } from './options'
-import { EnvironmentType, ProjectFormData } from '@utils/types'
+import { CreateFormData, EnvironmentType } from '@utils/types'
 import { useEffect, useState } from 'react'
 import { createProject } from '@api'
 import useDebounce from '@utils/useDebounce'
@@ -45,7 +45,7 @@ const CreateForm = () => {
   const [userSearchTerm, setUserSearchTerm] = useState('')
   const userSearchTermDebounce = useDebounce(userSearchTerm, 400)
   const defaultValues = isSandbox ? sandboxDefaultValues : projectDefaultValues
-  const { watch, control, handleSubmit, setValue } = useForm<ProjectFormData>({
+  const { watch, control, handleSubmit, setValue } = useForm<CreateFormData>({
     defaultValues,
   })
   const watchIsNewProjectNeeded = watch('isNewProjectNeeded')
@@ -105,7 +105,6 @@ const CreateForm = () => {
       onSubmit={handleSubmit((data) =>
         mutate({
           ...data,
-          actionType: isSandbox ? 'create-sandbox' : 'create-project',
         })
       )}
     >

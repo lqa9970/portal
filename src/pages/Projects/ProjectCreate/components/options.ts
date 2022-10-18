@@ -1,6 +1,7 @@
-import { RadioOption, SelectOption } from '@utils/types'
+import { CreateFormData, RadioOption, SelectOption } from '@utils/types'
 
-export const sandboxDefaultValues = {
+export const sandboxDefaultValues: CreateFormData = {
+  actionType: 'create-sandbox',
   applicationType: 'public',
   isNewProjectNeeded: true,
   existingProject: null,
@@ -10,10 +11,11 @@ export const sandboxDefaultValues = {
   organizationUnit: '',
   projectAdministrator: '',
   costCenter: '',
-  isPrivacyData: '',
+  isPrivacyData: null,
   dataClassification: 'public',
 }
-export const projectDefaultValues = {
+export const projectDefaultValues: CreateFormData = {
+  actionType: 'create-project',
   applicationType: '',
   operatingSystem: '',
   environmentType: 'dev',
@@ -25,7 +27,7 @@ export const projectDefaultValues = {
   costCenter: '',
   cmdbApplicationName: '',
   cmdbApplicationId: '',
-  isPrivacyData: '',
+  isPrivacyData: null,
   dataClassification: '',
   supportPartner: '',
 }

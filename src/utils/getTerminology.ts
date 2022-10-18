@@ -3,9 +3,11 @@ function capitalize(str: string) {
   return `${str.charAt(0).toUpperCase()}${lower.slice(1)}`
 }
 
-const getTerminology = (val: string | boolean | undefined) => {
+const getTerminology = (val: string | boolean | undefined | null) => {
   switch (val) {
     case undefined:
+      return ''
+    case null:
       return ''
     case true:
       return 'Yes'

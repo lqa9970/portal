@@ -61,7 +61,7 @@ const CreateForm = () => {
     defaultValues,
     resolver: zodResolver(CreateFormDataSchema),
   })
-  console.log('errors', errors)
+
   const watchIsNewProjectNeeded = watch('isNewProjectNeeded')
   const watchExistingProject = watch('existingProject')
   const watchEnvironmentType = watch('environmentType') as EnvironmentType

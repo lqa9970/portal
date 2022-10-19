@@ -12,7 +12,7 @@ import { AccountCircle } from '@mui/icons-material'
 import { useAccount, useMsal } from '@azure/msal-react'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import getApplicationConfiguration from '@api/applicationConfiguration'
+import getApplicationConfiguration from '@api/getApplicationConfiguration'
 
 export default function NCAppBar() {
   const { instance } = useMsal()

@@ -5,4 +5,5 @@ export { default as checkApplicationShortNameValid } from './projects/checkAppli
 export { default as createProject } from './projects/createProject'
 export { default as getProjectStatus } from './projects/getProjectStatus'
 export { default as getToken } from './getToken'
-export { default as getApplicationConfiguration } from './applicationConfiguration'
+export { default as getApplicationConfiguration } from './getApplicationConfiguration'
+export { default as listAvailableEnvironments } from './projects/listAvailableEnvironments'

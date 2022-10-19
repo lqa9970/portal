@@ -32,9 +32,8 @@ export default function NCAppBar() {
     instance.logoutRedirect()
   }
 
-  const { data } = useQuery(
-    ['getApplicationConfiguration'],
-    getApplicationConfiguration
+  const { data } = useQuery(['getApplicationConfiguration'], () =>
+    getApplicationConfiguration(import.meta.env.PORTAL_CUSTOMER_NAME)
   )
 
   return (

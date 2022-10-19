@@ -43,6 +43,8 @@
   "application.short.name": "Application short name",
   "application.short.name.description": "Short name for the application system this project is to deploy. Most important data entry on the form with the most impact. This is used in the naming convention creating resources. You can use the name that is/ will be used when referring to the project in spoken language. Preferably one word written in English alphabets, without spacing or special characters.",
   "application.short.name.helper": "No blanks, only letters. Max 4 characters",
+  "application.short.name.max.character": "Max 4 characters",
+  "application.short.name.only.letter": "Only letters",
   "short.name.not.available": "Short name is not available. Please use another short name",
   "application.detail": "Application detail",
   "application.detail.description": "Short description for the application. For small applications it may be the same as ApplicationName.",
@@ -84,5 +86,6 @@
   "confidential": "Confidential",
   "secret": "Secret",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "'required": "Required"
 }

@@ -1,6 +1,19 @@
 import { FormControlProps, TextFieldProps } from '@mui/material'
 import { ControllerProps, FieldValues } from 'react-hook-form'
 import { z } from 'zod'
+import i18n from './locales/i18n'
+
+// i18n text
+const { t } = i18n
+const requiredText = t('required') as string
+const applicationShortNameMaxChar = t(
+  'application.short.name.max.character'
+) as string
+const applicationShortNameOnlyLetter = t(
+  'application.short.name.only.letter'
+) as string
+const costCenterHelper = t('cost.center.helper') as string
+const cmdbApplicationIdHelper = t('cmdb.application.id.helper') as string
 
 // attempt fix type error when using custom field component
 type ControllerWithoutRender<T extends FieldValues> = Omit<
@@ -74,44 +87,44 @@ export const ProjectItemStatusScehma = z.object({
 })
 
 const CreateSandboxFormDataSchema = z.object({
-  applicationType: z.string().min(1, 'Required'),
+  applicationType: z.string().min(1, requiredText),
   isNewProjectNeeded: z.boolean().optional().nullable(),
   existingProject: ProjectSchema.optional().nullable(),
-  environmentType: z.string().min(1, 'Required'),
+  environmentType: z.string().min(1, requiredText),
   applicationShortName: z
     .string()
-    .min(1, 'Required')
-    .max(4, 'Max 4 characters')
-    .regex(/^[A-Z]+$/i, 'Only letters'),
-  applicationDetail: z.string().min(1, 'Required'),
-  organizationUnit: z.string().min(1, 'Required'),
-  projectAdministrator: z.string().min(1, 'Required'),
-  costCenter: z.string().min(1, 'Required').regex(/^\d+$/, 'number'),
-  isPrivacyData: z.boolean().or(z.string().min(1, 'Required')),
-  dataClassification: z.string().min(1, 'Required'),
+    .min(1, requiredText)
+    .max(4, applicationShortNameMaxChar)
+    .regex(/^[A-Z]+$/i, applicationShortNameOnlyLetter),
+  applicationDetail: z.string().min(1, requiredText),
+  organizationUnit: z.string().min(1, requiredText),
+  projectAdministrator: z.string().min(1, requiredText),
+  costCenter: z.string().min(1, requiredText).regex(/^\d+$/, costCenterHelper),
+  isPrivacyData: z.boolean().or(z.string().min(1, requiredText)),
+  dataClassification: z.string().min(1, requiredText),
 })
 const CreateProjectFormDataSchema = z.object({
-  applicationType: z.string().min(1, 'Required'),
-  operatingSystem: z.string().min(1, 'Required'),
+  applicationType: z.string().min(1, requiredText),
+  operatingSystem: z.string().min(1, requiredText),
   shouldCreateSubscription: z.boolean(),
-  environmentType: z.string().min(1, 'Required'),
+  environmentType: z.string().min(1, requiredText),
   applicationShortName: z
     .string()
-    .min(1, 'Required')
-    .max(4, 'Max 4 characters')
-    .regex(/^[A-Z]+$/i, 'Only letters'),
-  applicationDetail: z.string().min(1, 'Required'),
-  organizationUnit: z.string().min(1, 'Required'),
-  projectAdministrator: z.string().min(1, 'Required'),
-  costCenter: z.string().min(1, 'Required').regex(/^\d+$/, 'Numbers only'),
-  cmdbApplicationName: z.string().min(1, 'Required'),
+    .min(1, requiredText)
+    .max(4, applicationShortNameMaxChar)
+    .regex(/^[A-Z]+$/i, applicationShortNameOnlyLetter),
+  applicationDetail: z.string().min(1, requiredText),
+  organizationUnit: z.string().min(1, requiredText),
+  projectAdministrator: z.string().min(1, requiredText),
+  costCenter: z.string().min(1, requiredText).regex(/^\d+$/, costCenterHelper),
+  cmdbApplicationName: z.string().min(1, requiredText),
   cmdbApplicationId: z
     .string()
-    .min(1, 'Required')
-    .regex(/^\d+$/, 'Numbers only'),
-  isPrivacyData: z.boolean().or(z.string().min(1, 'Required')),
-  dataClassification: z.string().min(1, 'Required'),
-  supportPartner: z.string().min(1, 'Required'),
+    .min(1, requiredText)
+    .regex(/^\d+$/, cmdbApplicationIdHelper),
+  isPrivacyData: z.boolean().or(z.string().min(1, requiredText)),
+  dataClassification: z.string().min(1, requiredText),
+  supportPartner: z.string().min(1, requiredText),
 })
 export const CreateFormDataSchema = z.discriminatedUnion('actionType', [
   CreateSandboxFormDataSchema.extend({

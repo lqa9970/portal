@@ -1,16 +1,26 @@
-[
-  {
+{
+  "in.queue": "In Queue",
+  "failed.at": "Failed at",
+  "in.progress": "In progress",
+  "successfully.created.at": "Successfully created at",
+  "error": "Error",
+  "completed": "Completed",
+  "welcome": "Welcome",
+  "existing.projects": "Existing projects",
+  "only.created.by.you": "Only created by you",
+  "filter.by.name": "Filter by name",
+  "sandbox.template": {
     "name": "New Sandbox",
     "type": "sandbox",
     "helperText": "Single sandbox environment for small short living tests and proof of concepts.",
     "description": "Environment will be automatically deleted after 30 days",
     "ctaString": "Create Sandbox"
   },
-  {
+  "project.template": {
     "name": "New Project",
     "type": "project",
     "helperText": "Project with the possibility to create multiple environments for long living live solutions.",
     "description": "",
     "ctaString": "Create Project"
   }
-]
+}

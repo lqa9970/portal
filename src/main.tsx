@@ -13,6 +13,7 @@ import {
 } from '@azure/msal-browser'
 import { msalConfig } from './msal/authConfig'
 import { MsalProvider } from '@azure/msal-react'
+import './utils/locales/i18n'
 
 export const msalInstance = new PublicClientApplication(msalConfig)
 // Account selection logic is app dependent. Adjust as needed for different use cases.

@@ -72,18 +72,18 @@ const getProjectTemplates = () => {
   const { t } = i18n
   return [
     {
-      name: t('sandbox.template.name') as string,
-      type: t('sandbox.template.type') as string,
-      helperText: t('sandbox.template.helperText') as string,
-      description: t('sandbox.template.description') as string,
-      ctaString: t('sandbox.template.ctaString') as string,
+      name: t('card.sandbox.template.name') as string,
+      type: t('card.sandbox.template.type') as string,
+      helperText: t('card.sandbox.template.helperText') as string,
+      description: t('card.sandbox.template.description') as string,
+      ctaString: t('card.sandbox.template.ctaString') as string,
     },
     {
-      name: t('project.template.name') as string,
-      type: t('project.template.type') as string,
-      helperText: t('project.template.helperText') as string,
-      description: t('project.template.description') as string,
-      ctaString: t('project.template.ctaString') as string,
+      name: t('card.project.template.name') as string,
+      type: t('card.project.template.type') as string,
+      helperText: t('card.project.template.helperText') as string,
+      description: t('card.project.template.description') as string,
+      ctaString: t('card.project.template.ctaString') as string,
     },
   ]
 }

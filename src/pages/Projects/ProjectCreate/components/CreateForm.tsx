@@ -400,7 +400,7 @@ const CreateForm = () => {
             <CustomRadioInput
               control={control}
               name="isPrivacyData"
-              label={t('privacy.data"')}
+              label={t('privacy.data')}
               description={t('privacy.data.description')}
               options={yesNoOptions.map((option) =>
                 watchExistingProject ? { ...option, disabled: true } : option

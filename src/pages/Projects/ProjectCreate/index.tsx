@@ -15,8 +15,7 @@ const ProjectCreate = () => {
         {t('home')}
       </Button>
       <Typography variant="h5" sx={{ mb: 5 }}>
-        {t('new')}{' '}
-        {isSandbox ? t('sandbox.template.type') : t('project.template.type')}
+        {t('new')} {isSandbox ? t('sandbox') : t('project')}
       </Typography>
       <CreateForm />
     </Container>

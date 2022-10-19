@@ -47,7 +47,7 @@ export const ProjectSchema = z.object({
   applicationType: z.enum(['public', 'private']),
   status: ProjectStatusEnum,
   operatingSystem: z.enum(['windows', 'ubuntu']).nullable(),
-  environmentType: z.enum(['sandbox', 'dev', 'test', 'qa', 'prod']),
+  environmentType: EnvironmentTypeEnum,
   applicationName: z.string(),
   applicationShortName: z.string(),
   shouldCreateSubscription: z.boolean(),

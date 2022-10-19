@@ -1,27 +1,15 @@
-function capitalize(str: string) {
-  const lower = str.toLowerCase()
-  return `${str.charAt(0).toUpperCase()}${lower.slice(1)}`
-}
+import i18n from './locales/i18n'
 
 const getTerminology = (val: string | boolean | undefined | null) => {
+  const { t } = i18n
   switch (val) {
-    case undefined:
-      return ''
-    case null:
-      return ''
     case true:
-      return 'Yes'
+      return t('yes')
     case false:
-      return 'No'
-    case 'prod':
-      return 'Production'
-    case 'dev':
-      return 'Development'
-    case 'qa':
-      return 'QA'
+      return t('no')
     default:
       if (typeof val === 'string') {
-        return capitalize(val)
+        return t(val) as string
       }
       return ''
   }

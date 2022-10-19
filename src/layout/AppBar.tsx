@@ -13,8 +13,10 @@ import { useAccount, useMsal } from '@azure/msal-react'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import getApplicationConfiguration from '@api/getApplicationConfiguration'
+import { useTranslation } from 'react-i18next'
 
 export default function NCAppBar() {
+  const { t } = useTranslation()
   const { instance } = useMsal()
   const account = useAccount()
 
@@ -76,7 +78,7 @@ export default function NCAppBar() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <MenuItem onClick={handleLogout}>{t('logout')}</MenuItem>
                 </Menu>
               </Box>
             )}

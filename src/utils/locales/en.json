@@ -52,5 +52,6 @@
   "close": "Close",
   "create.environment": "Create environment",
   "cancel": "Cancel",
+  "logout": "Logout",
   "application.details": "Application details"
 }

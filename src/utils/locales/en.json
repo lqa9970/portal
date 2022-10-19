@@ -31,12 +31,15 @@
   "application.type": "Application type",
   "application.operating.system": "Application Operating system",
   "environment.type": "Environment type",
+  "environment.type.description": "Are the resources deployed for this request going to be used for development, testing (QA) or production purposes? A request for a new cloud project can be submitted for each environment separately.",
   "subscription": "Subscription",
   "application.short.name": "Application short name",
   "application.detail": "Application detail",
   "organisation.unit": "Organisation unit or Business domain",
   "project.administrator": "Project administrator",
   "cost.center": "Cost center",
+  "cost.center.description": "Applications WBS Code",
+  "cost.center.helper": "Numbers only",
   "cmdb.application.name": "Efecte (CMDB) Application name",
   "cmdb.application.id": "Efecte (CMDB) Application ID",
   "privacy.data": "Privacy data",
@@ -46,5 +49,8 @@
   "project.status": " Project status",
   "project.not.yet.started": "Process not yet started, try again in few minutes",
   "retry": "Retry",
-  "close": "Close"
+  "close": "Close",
+  "create.environment": "Create environment",
+  "cancel": "Cancel",
+  "application.details": "Application details"
 }

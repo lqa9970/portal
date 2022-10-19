@@ -10,12 +10,14 @@ import getTerminology from '@utils/getTerminology'
 import { createProject } from '@api'
 import { Cached } from '@mui/icons-material'
 import { queryClient } from '@App'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   project: Project
 }
 
 const AddEnvironmentForm = ({ project }: Props) => {
+  const { t } = useTranslation()
   const { rowKey } = useParams()
   const { control, handleSubmit } = useForm({
     defaultValues: { environmentType: '', costCenter: project.costCenter },
@@ -72,8 +74,8 @@ const AddEnvironmentForm = ({ project }: Props) => {
           <CustomRadioInput
             control={control}
             name="environmentType"
-            label="Environment type"
-            description="Are the resources deployed for this request going to be used for development, testing (QA) or production purposes? A request for a new cloud project can be submitted for each environment separately."
+            label={t('environment.type')}
+            description={t('environment.type.description')}
             options={environmentOptions}
           />
         </Grid>
@@ -82,9 +84,9 @@ const AddEnvironmentForm = ({ project }: Props) => {
             control={control}
             name="costCenter"
             defaultValue=""
-            helperText="Numbers only"
-            label="Cost Center"
-            description="Applications WBS Code"
+            label={t('cost.center')}
+            helperText={t('cost.center.helper')}
+            description={t('cost.center.description')}
           />
         </Grid>
         <Grid xs={12} sx={{ mt: 4 }}>
@@ -94,10 +96,10 @@ const AddEnvironmentForm = ({ project }: Props) => {
             type="submit"
             endIcon={isCreatingProject ? <Cached /> : null}
           >
-            Create environment
+            {t('create.environment')}
           </Button>
           <Button component={RouterLink} to={`/projects/${rowKey}`}>
-            Cancel
+            {t('cancel')}
           </Button>
         </Grid>
       </Grid>

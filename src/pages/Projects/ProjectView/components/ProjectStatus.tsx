@@ -17,17 +17,20 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { ProjectStatus as ProjectStatusType } from '@utils/types'
 import { getProjectStatus } from '@api'
+import i18n from '@utils/locales/i18n'
+import { useTranslation } from 'react-i18next'
 
 function getHelperTextFromStatus(status: ProjectStatusType) {
+  const { t } = i18n
   switch (status) {
     case 'Completed':
-      return 'Finished successfully'
+      return t('finished.successfully') as string
     case 'In Progress':
-      return 'In progress'
+      return t('in.progress') as string
     case 'In Queue':
-      return 'Not started'
+      return t('in.queue') as string
     case 'Error':
-      return 'Failed to run this process'
+      return t('failed.to.run.this.process') as string
   }
 }
 
@@ -51,6 +54,7 @@ type Params = {
 }
 
 const ProjectStatus = ({ handleClose, open }: Props) => {
+  const { t } = useTranslation()
   const { rowKey } = useParams() as Params
   const { data, isLoading, isRefetching, isSuccess, refetch } = useQuery(
     ['getProjectStatus', rowKey],
@@ -73,7 +77,7 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
     >
       <DialogTitle id="project-status-title">
         <Box display="flex" gap={1} alignItems="center">
-          Project status {(isLoading || isRefetching) && <Cached />}
+          {t('project.status')} {(isLoading || isRefetching) && <Cached />}
         </Box>
       </DialogTitle>
       <DialogContent>
@@ -105,16 +109,14 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
           </List>
         )}
         {isSuccess && data.length === 0 && (
-          <Typography>
-            Process not yet started, try again in few minutes
-          </Typography>
+          <Typography>{t('project.not.yet.started')}</Typography>
         )}
       </DialogContent>
       <DialogActions sx={{ pb: 4 }}>
         <Button variant="contained" color="primary" onClick={() => refetch()}>
-          Retry
+          {t('retry')}
         </Button>
-        <Button onClick={handleClose}>Close</Button>
+        <Button onClick={handleClose}>{t('close')}</Button>
       </DialogActions>
     </Dialog>
   )

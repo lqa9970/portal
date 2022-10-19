@@ -3,6 +3,7 @@ import Loading from '@components/Loading'
 import { ArrowBackIosNew } from '@mui/icons-material'
 import { Button, Container } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 import ProjectDetail from './components/ProjectDetail'
 
@@ -12,6 +13,7 @@ type Params = {
 
 const ProjectView = () => {
   const { rowKey } = useParams() as Params
+  const { t } = useTranslation()
   const { data, isLoading, isSuccess, isError } = useQuery(
     ['getProject', rowKey],
     () => getProject(rowKey)
@@ -21,10 +23,10 @@ const ProjectView = () => {
     <Container sx={{ mt: '1.4rem', overflow: 'hidden' }}>
       <Button component={RouterLink} to="/" sx={{ ml: -2, mb: 2.5 }}>
         <ArrowBackIosNew sx={{ mr: 2 }} />
-        Home
+        {t('home')}
       </Button>
       {isLoading && <Loading />}
-      {isError && <div>something went wrong!</div>}
+      {isError && <div>{t('something.went.wrong')}!</div>}
       {isSuccess && <ProjectDetail project={data} />}
     </Container>
   )

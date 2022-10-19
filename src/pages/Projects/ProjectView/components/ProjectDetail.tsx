@@ -6,12 +6,14 @@ import { Project } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import ProjectStatus from './ProjectStatus'
 import { addDays, differenceInDays } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   project: Project
 }
 
 const ProjectDetail = ({ project }: Props) => {
+  const { t } = useTranslation()
   const isSandbox = project?.environmentType === 'sandbox'
   const [projectStatusModalOpen, setProjectStatusModalOpen] = usePersistedState(
     'projectStatusModalOpen',
@@ -30,7 +32,7 @@ const ProjectDetail = ({ project }: Props) => {
                 `. ${differenceInDays(
                   addDays(new Date(project.timestamp), 30),
                   new Date()
-                )} days left.`}
+                )} ${t('days.left')}.`}
             </Typography>
           </Box>
         </Grid>
@@ -40,12 +42,12 @@ const ProjectDetail = ({ project }: Props) => {
             variant="contained"
             sx={{ gap: 2 }}
           >
-            Check Status
+            {t('check.status')}
           </Button>
         </Grid>
         <Grid xs={12}>
           <Typography gutterBottom variant="h6">
-            Application type
+            {t('application.type')}
           </Typography>
           <Typography variant="body1">
             {getTerminology(project.applicationType)}
@@ -54,7 +56,7 @@ const ProjectDetail = ({ project }: Props) => {
         {!isSandbox && (
           <Grid xs={12}>
             <Typography gutterBottom variant="h6">
-              Application Operating system
+              {t('application.operating.system')}
             </Typography>
             <Typography variant="body1">
               {getTerminology(project.operatingSystem)}
@@ -66,7 +68,7 @@ const ProjectDetail = ({ project }: Props) => {
           <>
             <Grid xs={12} sm={6}>
               <Typography gutterBottom variant="h6">
-                Environment type
+                {t('environment.type')}
               </Typography>
               <Typography variant="body1">
                 {getTerminology(project.environmentType)}
@@ -74,7 +76,7 @@ const ProjectDetail = ({ project }: Props) => {
             </Grid>
             <Grid xs={12} sm={6}>
               <Typography gutterBottom variant="h6">
-                Subscription
+                {t('subscription')}
               </Typography>
               <Typography variant="body1">
                 {getTerminology(project.shouldCreateSubscription)}
@@ -85,7 +87,7 @@ const ProjectDetail = ({ project }: Props) => {
 
         <Grid xs={12}>
           <Typography gutterBottom variant="h6">
-            Application short name
+            {t('application.short.name')}
           </Typography>
           <Typography variant="body1">
             {project.applicationShortName}
@@ -93,20 +95,20 @@ const ProjectDetail = ({ project }: Props) => {
         </Grid>
         <Grid xs={12} sm={6}>
           <Typography gutterBottom variant="h6">
-            Application detail
+            {t('application.detail')}
           </Typography>
           <Typography variant="body1">{project.applicationDetail}</Typography>
         </Grid>
         <Grid xs={12} sm={6}></Grid>
         <Grid xs={12} sm={6}>
           <Typography gutterBottom variant="h6">
-            Organisation unit or Business domain
+            {t('organisation.unit')}
           </Typography>
           <Typography variant="body1"> {project.organizationUnit} </Typography>
         </Grid>
         <Grid xs={12} sm={6}>
           <Typography gutterBottom variant="h6">
-            Project administrator
+            {t('project.administrator')}
           </Typography>
           <Typography sx={{ wordBreak: 'break-word' }} variant="body1">
             {project.projectAdministrator}
@@ -114,7 +116,7 @@ const ProjectDetail = ({ project }: Props) => {
         </Grid>
         <Grid xs={12}>
           <Typography gutterBottom variant="h6">
-            Cost center
+            {t('cost.center')}
           </Typography>
           <Typography variant="body1">{project.costCenter}</Typography>
         </Grid>
@@ -123,7 +125,7 @@ const ProjectDetail = ({ project }: Props) => {
           <>
             <Grid xs={12} sm={6}>
               <Typography gutterBottom variant="h6">
-                Efecte (CMDB) Application name
+                {t('cmdb.application.name')}
               </Typography>
               <Typography variant="body1">
                 {project.cmdbApplicationName}
@@ -131,7 +133,7 @@ const ProjectDetail = ({ project }: Props) => {
             </Grid>
             <Grid xs={12} sm={6}>
               <Typography gutterBottom variant="h6">
-                Efecte (CMDB) Application ID
+                {t('cmdb.application.id')}
               </Typography>
               <Typography variant="body1">
                 {project.cmdbApplicationId}
@@ -142,7 +144,7 @@ const ProjectDetail = ({ project }: Props) => {
 
         <Grid xs={12} sm={6}>
           <Typography gutterBottom variant="h6">
-            Privacy data
+            {t('privacy.data')}
           </Typography>
           <Typography variant="body1">
             {getTerminology(project.isPrivacyData)}
@@ -150,7 +152,7 @@ const ProjectDetail = ({ project }: Props) => {
         </Grid>
         <Grid xs={12} sm={6}>
           <Typography gutterBottom variant="h6">
-            Data Classification
+            {t('data.classification')}
           </Typography>
           <Typography variant="body1">
             {getTerminology(project.dataClassification)}
@@ -159,7 +161,7 @@ const ProjectDetail = ({ project }: Props) => {
         {!isSandbox && (
           <Grid xs={12} sm={6}>
             <Typography gutterBottom variant="h6">
-              Infrastructure business partner
+              {t('infrastructure.business.partner')}
             </Typography>
             <Typography variant="body1">
               {getTerminology(project.supportPartner)}
@@ -176,7 +178,7 @@ const ProjectDetail = ({ project }: Props) => {
               color="primary"
               sx={{ mr: 4, mt: 2 }}
             >
-              Add environment to project
+              {t('add.environment.to.project')}
             </Button>
           )}
         </Grid>

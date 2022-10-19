@@ -43,9 +43,11 @@ import { useEffect, useState } from 'react'
 import { createProject } from '@api'
 import useDebounce from '@utils/useDebounce'
 import { queryClient } from '@App'
+import { useTranslation } from 'react-i18next'
 
 const CreateForm = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { type } = useParams()
   const isSandbox = type === 'sandbox'
   const [userSearchTerm, setUserSearchTerm] = useState('')
@@ -134,9 +136,8 @@ const CreateForm = () => {
             <CustomRadioInput
               control={control}
               name="applicationType"
-              label="Application type"
-              description="Is application accessible directly from Internet (public) or only internally (private). 
-              Internal workloads cannot have public ip's."
+              label={t('application.type')}
+              description={t('application.type.description')}
               options={
                 isSandbox
                   ? sandboxApplicationTypeOptions
@@ -151,8 +152,8 @@ const CreateForm = () => {
                 <CustomRadioInput
                   control={control}
                   name="isNewProjectNeeded"
-                  label="Is a new Azure DevOps project needed"
-                  description="Is a new Azure DevOps project named after the application needed? Azure DevOps projects can be created also for projects residing at Google Cloud Platform"
+                  label={t('is.new.project.needed')}
+                  description={t('is.new.project.needed.description')}
                   options={yesNoOptions}
                 />
               </Grid>
@@ -201,8 +202,8 @@ const CreateForm = () => {
                             return (
                               <>
                                 <Typography variant="body1">
-                                  Existing Azure DevOps project used?
-                                  <Tooltip title="If project has existing ADO project, requester can select that one to be used.">
+                                  {t('existing.project')}
+                                  <Tooltip title={t('existing.project.description')}>
                                     <IconButton>
                                       <Info color="primary" />
                                     </IconButton>
@@ -233,8 +234,8 @@ const CreateForm = () => {
                   control={control}
                   disabled={!!watchExistingProject}
                   name="operatingSystem"
-                  label="Application Operating system"
-                  description="Operating system version of Software"
+                  label={t('application.operating.system')}
+                  description={t('application.operating.system.description')}
                   select
                   options={operatingSystemOptions}
                 />
@@ -249,8 +250,8 @@ const CreateForm = () => {
                 <CustomRadioInput
                   control={control}
                   name="environmentType"
-                  label="Environment type"
-                  description="Are the resources deployed for this request going to be used for development, testing (QA) or production purposes? A request for a new cloud project can be submitted for each environment separately."
+                  label={t('environment.type')}
+                  description={t('environment.type.description')}
                   options={environmentTypeOptions}
                 />
               </Grid>
@@ -258,7 +259,7 @@ const CreateForm = () => {
                 <CustomRadioInput
                   control={control}
                   name="shouldCreateSubscription"
-                  label="Create dedicated environment"
+                  label={t('create.dedicated.environment')}
                   options={yesNoOptions}
                 />
               </Grid>
@@ -273,13 +274,13 @@ const CreateForm = () => {
               error={
                 !checkingApplicationShortName && !isApplicationShortNameValid
               }
-              label="Application short name"
+              label={t('application.short.name')}
               helperText={
                 !checkingApplicationShortName && !isApplicationShortNameValid
-                  ? 'Short name is not available. Please use another short name'
-                  : 'No blanks, only letters. Max 4 characters'
+                  ? t('short.name.not.available')
+                  : t('application.short.name.helper')
               }
-              description="Short name for the application system this project is to deploy. Most important data entry on the form with the most impact. This is used in the naming convention creating resources. You can use the name that is/ will be used when referring to the project in spoken language. Preferably one word written in English alphabets, without spacing or special characters."
+              description={t('application.short.name.description')}
               InputProps={{
                 endAdornment: checkingApplicationShortName ? (
                   <InputAdornment position="end">
@@ -298,8 +299,8 @@ const CreateForm = () => {
               disabled={!!watchExistingProject}
               multiline
               rows={4}
-              label="Application detail"
-              description="Short description for the application. For small applications it may be the same as ApplicationName."
+              label={t('application.detail')}
+              description={t('application.detail.description')}
             />
           </Grid>
           <Grid xs={12} sm={6}></Grid>
@@ -309,8 +310,8 @@ const CreateForm = () => {
               control={control}
               disabled={!!watchExistingProject}
               name="organizationUnit"
-              label="Organization Unit or Business domain"
-              description="Organization or Business unit that owns the workload."
+              label={t('organisation.unit')}
+              description={t('organisation.unit.description')}
             />
           </Grid>
           <Grid xs={12} sm={6}>
@@ -336,8 +337,10 @@ const CreateForm = () => {
                     return (
                       <>
                         <Typography variant="body1">
-                          Project Administrator
-                          <Tooltip title="Person who can authorize access request to project in Orion IAM.">
+                          {t('project.administrator')}
+                          <Tooltip
+                            title={t('project.administrator.description')}
+                          >
                             <IconButton>
                               <Info color="primary" />
                             </IconButton>
@@ -366,9 +369,9 @@ const CreateForm = () => {
               control={control}
               disabled={!!watchExistingProject}
               name="costCenter"
-              helperText="Numbers only"
-              label="Cost Center"
-              description="Applications WBS Code"
+              label={t('cost.center')}
+              helperText={t('cost.center.helper')}
+              description={t('cost.center.description')}
             />
           </Grid>
 
@@ -379,15 +382,15 @@ const CreateForm = () => {
                 <CustomTextField
                   control={control}
                   name="cmdbApplicationName"
-                  label="Efecte (CMDB) Application name"
+                  label={t('cmdb.application.name')}
                 />
               </Grid>
               <Grid xs={12} sm={6}>
                 <CustomTextField
                   control={control}
                   name="cmdbApplicationId"
-                  helperText="Numbers only"
-                  label="Efecte (CMDB) Application ID"
+                  label={t('cmdb.application.id')}
+                  helperText={t('cmdb.application.id.helper')}
                 />
               </Grid>
             </>
@@ -397,8 +400,8 @@ const CreateForm = () => {
             <CustomRadioInput
               control={control}
               name="isPrivacyData"
-              label="Privacy data"
-              description="Does the project involve processing of personal data? Personal data means any information relating to an identified or identifiable natural person (‘data subject’). An identifiable natural person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, home address, date of birth, picture, voice recording, an identification number (customer number, ID number), location data, an online identifier (email address, IP address), economic data etc."
+              label={t('privacy.data"')}
+              description={t('privacy.data.description')}
               options={yesNoOptions.map((option) =>
                 watchExistingProject ? { ...option, disabled: true } : option
               )}
@@ -408,8 +411,8 @@ const CreateForm = () => {
             <CustomRadioInput
               control={control}
               name="dataClassification"
-              label="Data Classification"
-              description="Ensure that the information is properly classified according to the Protection and Classification of Orion Information Standard. "
+              label={t('data.classification')}
+              description={t('data.classification.description')}
               options={
                 isSandbox
                   ? sandboxDataClassification.map((option) =>
@@ -426,7 +429,7 @@ const CreateForm = () => {
               <CustomTextField
                 control={control}
                 name="supportPartner"
-                label="Infrastructure support partner"
+                label={t('infrastructure.business.partner')}
               />
             </Grid>
           )}
@@ -438,10 +441,10 @@ const CreateForm = () => {
                 type="submit"
                 endIcon={isCreatingProject ? <Cached /> : null}
               >
-                Create project
+                {t('create.project')}
               </Button>
               <Button component={RouterLink} to="/" sx={{ ml: 4 }}>
-                Cancel
+                {t('cancel')}
               </Button>
             </Box>
           </Grid>

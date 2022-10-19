@@ -276,7 +276,7 @@ const CreateForm = () => {
               label="Application short name"
               helperText={
                 !checkingApplicationShortName && !isApplicationShortNameValid
-                  ? 'Please use another short name'
+                  ? 'Short name is not available. Please use another short name'
                   : 'No blanks, only letters. Max 4 characters'
               }
               description="Short name for the application system this project is to deploy. Most important data entry on the form with the most impact. This is used in the naming convention creating resources. You can use the name that is/ will be used when referring to the project in spoken language. Preferably one word written in English alphabets, without spacing or special characters."

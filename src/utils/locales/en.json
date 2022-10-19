@@ -39,7 +39,6 @@
   "application.operating.system": "Application Operating system",
   "environment.type": "Environment type",
   "environment.type.description": "Are the resources deployed for this request going to be used for development, testing (QA) or production purposes? A request for a new cloud project can be submitted for each environment separately.",
-  "subscription": "Subscription",
   "create.dedicated.environment": "Create dedicated environment",
   "application.short.name": "Application short name",
   "application.short.name.description": "Short name for the application system this project is to deploy. Most important data entry on the form with the most impact. This is used in the naming convention creating resources. You can use the name that is/ will be used when referring to the project in spoken language. Preferably one word written in English alphabets, without spacing or special characters.",

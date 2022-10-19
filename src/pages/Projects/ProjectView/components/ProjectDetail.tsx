@@ -76,7 +76,7 @@ const ProjectDetail = ({ project }: Props) => {
             </Grid>
             <Grid xs={12} sm={6}>
               <Typography gutterBottom variant="h6">
-                {t('subscription')}
+                {t('create.dedicated.environment')}
               </Typography>
               <Typography variant="body1">
                 {getTerminology(project.shouldCreateSubscription)}

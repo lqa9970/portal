@@ -20,6 +20,7 @@ import CustomRadioInput from '@components/form-components/CustomRadioInput'
 import CustomTextField from '@components/form-components/CustomTextField'
 import {
   checkApplicationShortNameValid,
+  // uncomment to show select existing project
   // getProjects,
   getUsers,
 } from '@api'
@@ -44,6 +45,16 @@ import { createProject } from '@api'
 import useDebounce from '@utils/useDebounce'
 import { queryClient } from '@App'
 import { useTranslation } from 'react-i18next'
+
+// uncomment to show select existing project
+// type ChangedFields = [
+//   'applicationShortName',
+//   'applicationDetail',
+//   'organizationUnit',
+//   'projectAdministrator',
+//   'costCenter',
+//   'isPrivacyData'
+// ]
 
 const CreateForm = () => {
   const navigate = useNavigate()
@@ -86,6 +97,7 @@ const CreateForm = () => {
       return getUsers({ data: userSearchTermDebounce })
     }
   )
+  // uncomment to show select existing project
   // const { data: projectData = [] } = useQuery(['getProjects'], () =>
   //   getProjects()
   // )
@@ -146,7 +158,7 @@ const CreateForm = () => {
             />
           </Grid>
 
-          {/* {isSandbox && (
+          {isSandbox && (
             <>
               <Grid xs={12}>
                 <CustomRadioInput
@@ -157,8 +169,8 @@ const CreateForm = () => {
                   options={yesNoOptions}
                 />
               </Grid>
-
-              {watchIsNewProjectNeeded === false && (
+              {/* uncomment to show select existing project */}
+              {/* {watchIsNewProjectNeeded === false && (
                 <>
                   <Grid xs={12} sm={6}>
                     <Controller
@@ -173,20 +185,17 @@ const CreateForm = () => {
                             }
                             if (!v) return
                             field.onChange(v)
-                            setValue(
+                            const changedFields: ChangedFields = [
                               'applicationShortName',
-                              v.applicationShortName
-                            )
-                            setValue('applicationDetail', v.applicationDetail)
-                            setValue('applicationDetail', v.applicationDetail)
-                            setValue('operatingSystem', v.operatingSystem)
-                            setValue('organizationUnit', v.organizationUnit)
-                            setValue(
+                              'applicationDetail',
+                              'organizationUnit',
                               'projectAdministrator',
-                              v.projectAdministrator
-                            )
-                            setValue('costCenter', v.costCenter)
-                            setValue('isPrivacyData', v.isPrivacyData)
+                              'costCenter',
+                              'isPrivacyData',
+                            ]
+                            for (const field of changedFields) {
+                              setValue(field, v[field])
+                            }
                           }}
                           fullWidth
                           getOptionLabel={(option) =>
@@ -203,7 +212,9 @@ const CreateForm = () => {
                               <>
                                 <Typography variant="body1">
                                   {t('existing.project')}
-                                  <Tooltip title={t('existing.project.description')}>
+                                  <Tooltip
+                                    title={t('existing.project.description')}
+                                  >
                                     <IconButton>
                                       <Info color="primary" />
                                     </IconButton>
@@ -223,9 +234,9 @@ const CreateForm = () => {
                   </Grid>
                   <Grid xs={6}> </Grid>
                 </>
-              )}
+              )} */}
             </>
-          )} */}
+          )}
 
           {!isSandbox && (
             <>

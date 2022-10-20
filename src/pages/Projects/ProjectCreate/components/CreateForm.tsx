@@ -116,6 +116,9 @@ const CreateForm = () => {
         applicationShortName: applicationShortNameDebounce,
         environmentType: watchEnvironmentType,
       })
+    },
+    {
+      staleTime: 0,
     }
   )
 

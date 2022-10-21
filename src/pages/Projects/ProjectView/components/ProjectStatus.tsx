@@ -114,7 +114,7 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
       </DialogContent>
       <DialogActions sx={{ pb: 4 }}>
         <Button variant="contained" color="primary" onClick={() => refetch()}>
-          {t('retry')}
+          {t('fetch.latest.data')}
         </Button>
         <Button onClick={handleClose}>{t('close')}</Button>
       </DialogActions>

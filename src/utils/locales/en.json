@@ -67,7 +67,7 @@
   "add.environment.to.project": "Add environment to project",
   "project.status": " Project status",
   "project.not.yet.started": "Process not yet started, try again in few minutes",
-  "retry": "Retry",
+  "fetch.latest.data": "Fetch latest data",
   "close": "Close",
   "create.environment": "Create environment",
   "cancel": "Cancel",

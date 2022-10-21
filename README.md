@@ -14,8 +14,9 @@ This is a portal where users can order DevOps Foundation projects.
 2. Apply code best practices to improve application performance, increase code readability and maintainability.
 3. Application needs to be easy-to-use by non technical users. Meaning that all inputs and actions from the users need to be validated. Info and error messages need to be shown accordingly.
 4. New functional and non-functional requirements need to be up-to-date to provide developers with needed information.
+5. Ensure security aspects by implement authentication flow suggested by Microsoft.
 
-# Technology used
+# Technology
 1.  [Typescript](https://www.typescriptlang.org/): Improve code quality, code maintainability, and developer experience.
 2.  [React](https://reactjs.org/): Modern and established library to create frontend application.
 3.  [Vite](https://vitejs.dev/): Mordern scaffolding and bundling project tool. Alternative for create-react-app which is no longer actively maintained.
@@ -40,8 +41,7 @@ This is a portal where users can order DevOps Foundation projects.
 6.  Make sure that the development server run on http://localhost:3000 to match the Azure Storage redirect url configuration.
 7.  Make changes directly to main branch or create and develop from a feature branch.
 8.  Push to main branch or create and merge the pull request to main branch which triggers automatic deployment to development environment.
-9.  Document the changes in confluence
-
+9.  Document the changes
 
 # Test the project
 We use cypress to run end-to-end and integration test suite.
@@ -57,6 +57,9 @@ We can build the project locally and check the size of the built files.
 > npm run build 
 2. A **dist** folder will be created in the root level. 
 3. Additionally you can check the **stats.html** file inside dist to review the library used in this project.
+
+# Code structure
+There are no strict rule on the structure of the code. However, please review [react-folder-structure](https://www.robinwieruch.de/react-folder-structure/) section TECHNICAL FOLDERS and FEATURE FOLDERS to develop maintainable, scalable and sensible project structure.
 
 # Contact us
 If you run into problem with this project, please contact [Nordcloud](https://nordcloud.com/contact/) for supports. 

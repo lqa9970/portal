@@ -31,6 +31,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
     {
       select: (data) =>
         data.map((item) => ({ label: getTerminology(item), value: item })),
+      staleTime: 0,
     }
   )
 
@@ -41,6 +42,19 @@ const AddEnvironmentForm = ({ project }: Props) => {
       navigate(`/projects/${data.rowKey}`)
     },
   })
+
+  if (environmentOptions.length === 0) {
+    return (
+      <>
+        <Box minHeight={70}>
+          <Typography variant="h5">{project.applicationName}</Typography>
+        </Box>
+        <Box textAlign="center">
+          <Typography variant="h6">{t('all.environments.created')}</Typography>
+        </Box>
+      </>
+    )
+  }
 
   return (
     <form

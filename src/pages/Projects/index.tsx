@@ -96,11 +96,14 @@ const Projects = () => {
     'isViewingOwnProject',
     true
   )
-  const { data, isLoading, isSuccess } = useQuery(
-    ['getProjects', isViewingOwnProject],
-    () => getProjects({ isViewingOwnProject })
+  const {
+    data: projects,
+    isLoading,
+    isSuccess,
+  } = useQuery(['getProjects', isViewingOwnProject], () =>
+    getProjects({ isViewingOwnProject })
   )
-  const filterProjects = data?.filter(({ applicationName }) =>
+  const filterProjects = projects?.filter(({ applicationName }) =>
     applicationName.toLowerCase().includes(filterText.toLowerCase())
   )
 
@@ -187,7 +190,12 @@ const Projects = () => {
       </Grid>
       <Box width="100%">
         {isLoading && <Loading />}
-        {isSuccess && (
+        {isSuccess && projects.length === 0 && (
+          <Box textAlign="center">
+            <Typography>{t('no.projects')}</Typography>
+          </Box>
+        )}
+        {isSuccess && projects.length > 0 && (
           <List>
             {filterProjects?.map(
               ({ applicationName, rowKey, timestamp, status }) => (

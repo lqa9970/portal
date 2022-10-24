@@ -20,7 +20,8 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       cacheTime: 24 * 1000 * 60 * 60, // 1 day
-      staleTime: 5 * 1000 * 60, // 5 mins
+      // enable this line if there are too much request to Azure Functions
+      // staleTime: 5 * 1000 * 60, // 5 mins
     },
   },
 })

@@ -29,7 +29,7 @@ export const projectDefaultValues: CreateFormData = {
   cmdbApplicationId: '',
   isPrivacyData: '',
   dataClassification: '',
-  supportPartner: '',
+  supportPartner: 'Nordcloud',
 }
 
 export const sandboxApplicationTypeOptions: RadioOption[] = [

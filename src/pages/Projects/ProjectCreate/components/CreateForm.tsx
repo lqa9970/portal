@@ -45,6 +45,7 @@ import { createProject } from '@api'
 import useDebounce from '@utils/useDebounce'
 import { queryClient } from '@App'
 import { useTranslation } from 'react-i18next'
+import { useAccount } from '@azure/msal-react'
 
 // uncomment to show select existing project
 // type ChangedFields = [
@@ -58,6 +59,7 @@ import { useTranslation } from 'react-i18next'
 
 const CreateForm = () => {
   const navigate = useNavigate()
+  const account = useAccount()
   const { t } = useTranslation()
   const { type } = useParams()
   const isSandbox = type === 'sandbox'
@@ -89,6 +91,12 @@ const CreateForm = () => {
       setValue('existingProject', null)
     }
   }, [watchIsNewProjectNeeded])
+
+  useEffect(() => {
+    if (account) {
+      setValue('projectAdministrator', account.username)
+    }
+  }, [account])
 
   const { data: userData = [], isLoading: isLoadingUsers } = useQuery(
     ['getUsers', userSearchTermDebounce],
@@ -161,7 +169,8 @@ const CreateForm = () => {
             />
           </Grid>
 
-          {isSandbox && (
+          {/* uncomment this to show select existing project */}
+          {/* {isSandbox && (
             <>
               <Grid xs={12}>
                 <CustomRadioInput
@@ -172,8 +181,7 @@ const CreateForm = () => {
                   options={yesNoOptions}
                 />
               </Grid>
-              {/* uncomment to show select existing project */}
-              {/* {watchIsNewProjectNeeded === false && (
+              {watchIsNewProjectNeeded === false && (
                 <>
                   <Grid xs={12} sm={6}>
                     <Controller
@@ -237,9 +245,9 @@ const CreateForm = () => {
                   </Grid>
                   <Grid xs={6}> </Grid>
                 </>
-              )} */}
+              )}
             </>
-          )}
+          )} */}
 
           {!isSandbox && (
             <>
@@ -274,6 +282,7 @@ const CreateForm = () => {
                   control={control}
                   name="shouldCreateSubscription"
                   label={t('create.dedicated.environment')}
+                  description={t('create.dedicated.environment.description')}
                   options={yesNoOptions}
                 />
               </Grid>

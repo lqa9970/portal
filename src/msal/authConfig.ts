@@ -20,9 +20,12 @@ export const msalConfig: Configuration = {
 
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
 export const loginRequest: RedirectRequest = {
-  scopes: ['openid', 'profile', 'User.Read'],
+  scopes: ['openid', 'profile', 'User.Read', 'offline_access'],
 }
 
 export const tokenRequest: SilentRequest = {
-  scopes: [`${import.meta.env.PORTAL_BACKEND_IDENTIFIER}/user_impersonation`],
+  scopes: [
+    `${import.meta.env.PORTAL_BACKEND_IDENTIFIER}/user_impersonation`,
+    'offline_access',
+  ],
 }

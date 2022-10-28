@@ -77,6 +77,7 @@ const CreateForm = () => {
     resolver: zodResolver(CreateFormDataSchema),
   })
 
+  const watchProjectAdministrator = watch('projectAdministrator')
   const watchIsNewProjectNeeded = watch('isNewProjectNeeded')
   const watchExistingProject = watch('existingProject')
   const watchEnvironmentType = watch('environmentType') as EnvironmentType
@@ -86,17 +87,12 @@ const CreateForm = () => {
     400
   )
 
+  // clear existingProject value when isNewProjectNeeded change
   useEffect(() => {
     if (watchIsNewProjectNeeded) {
       setValue('existingProject', null)
     }
   }, [watchIsNewProjectNeeded])
-
-  useEffect(() => {
-    if (account) {
-      setValue('projectAdministrator', account.username)
-    }
-  }, [account])
 
   const { data: userData = [], isLoading: isLoadingUsers } = useQuery(
     ['getUsers', userSearchTermDebounce],
@@ -105,6 +101,18 @@ const CreateForm = () => {
       return getUsers({ data: userSearchTermDebounce })
     }
   )
+  // this is used to populate user principal, it is different from user email
+  useEffect(() => {
+    if (account) {
+      setUserSearchTerm(account.username)
+    }
+  }, [account])
+  useEffect(() => {
+    if (!watchProjectAdministrator && userData.length === 1) {
+      setValue('projectAdministrator', userData[0])
+    }
+  }, [userData, watchProjectAdministrator])
+
   // uncomment to show select existing project
   // const { data: projectData = [] } = useQuery(['getProjects'], () =>
   //   getProjects()

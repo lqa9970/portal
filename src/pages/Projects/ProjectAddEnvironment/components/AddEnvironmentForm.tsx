@@ -68,7 +68,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
           applicationShortName: project.applicationShortName,
           applicationDetail: project.applicationDetail,
           organizationUnit: project.organizationUnit,
-          projectAdministrator: project.projectAdministrator,
+          applicationAdministrator: project.applicationAdministrator,
           costCenter: data.costCenter,
           cmdbApplicationName: project.cmdbApplicationName as string,
           cmdbApplicationId: project.cmdbApplicationId as string,

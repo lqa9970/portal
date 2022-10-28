@@ -151,7 +151,7 @@ const injectTokens = (tokenResponse: ExternalTokenResponse) => {
 
 export const login = (cachedTokenResponse: unknown) => {
   let tokenResponse = null
-  let chainable: Cypress.Chainable = cy.visit('http://localhost:3000/')
+  let chainable: Cypress.Chainable = cy.visit('/')
 
   if (!cachedTokenResponse) {
     chainable = chainable.request({

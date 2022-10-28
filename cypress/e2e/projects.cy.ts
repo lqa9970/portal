@@ -3,31 +3,32 @@ describe('Test application', () => {
     cy.login()
   })
   it('can see user name', () => {
-    cy.visit('http://localhost:3000/')
+    cy.visit('/')
     cy.contains('Technical DevOps Foundation')
   })
   it('can see project list', () => {
-    cy.visit('http://localhost:3000/')
+    cy.visit('/')
     cy.contains('tesa-sandbox')
     cy.contains('tepa-dev')
+    cy.contains('tepa-prod')
   })
   it('can navigate to create sandbox', () => {
-    cy.visit('http://localhost:3000/')
+    cy.visit('/')
     cy.get('[data-cy="create-sandbox"]').click()
     cy.contains('New Sandbox')
   })
   it('can navigate to create project', () => {
-    cy.visit('http://localhost:3000/')
+    cy.visit('/')
     cy.contains('New Project')
   })
   it('show errors messages for required fields', () => {
-    cy.visit('http://localhost:3000/projects/create/sandbox')
+    cy.visit('/projects/create/sandbox')
     cy.wait(1000)
     cy.get('[data-cy="submit"]').click()
     cy.contains('Required')
   })
   it('show errors messages for applicationShortName', () => {
-    cy.visit('http://localhost:3000/projects/create/sandbox')
+    cy.visit('/projects/create/sandbox')
     cy.wait(1000)
     cy.get('[data-cy="submit"]').click()
     cy.contains('Required')
@@ -40,7 +41,7 @@ describe('Test application', () => {
     cy.contains('Short name is not available. Please use another short name')
   })
   it('show errors messages for costCenter', () => {
-    cy.visit('http://localhost:3000/projects/create/sandbox')
+    cy.visit('/projects/create/sandbox')
     cy.wait(1000)
     cy.get('[data-cy="submit"]').click()
     cy.get('[data-cy="costCenter"]').type('a')

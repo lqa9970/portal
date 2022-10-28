@@ -4,6 +4,7 @@ dotenv.config()
 
 export default defineConfig({
   e2e: {
+    baseUrl: 'http://localhost:3000/',
     env: {
       tenantId: process.env.CYPRESS_TENANT_ID,
       clientId: process.env.CYPRESS_BACKEND_CLIENT_ID,

@@ -7,6 +7,7 @@ const {
   username,
   password,
   backendIdentifier,
+  refreshToken,
 } = Cypress.env()
 
 const authority = `https://login.microsoftonline.com/${tenantId}`
@@ -71,6 +72,7 @@ const buildAccessTokenEntity = (
     realm,
     // Scopes _must_ be lowercase or the token won't be found
     target: scopes.map((s: string) => s.toLowerCase()).join(' '),
+    tokenType: 'Bearer',
   }
 }
 
@@ -79,7 +81,8 @@ const buildRefreshTokenEntity = (homeAccountId: string, secret: string) => ({
   credentialType: 'RefreshToken',
   environment,
   homeAccountId,
-  secret: secret,
+  secret: refreshToken,
+  // secret
 })
 
 const injectTokens = (tokenResponse: ExternalTokenResponse) => {
@@ -108,29 +111,27 @@ const injectTokens = (tokenResponse: ExternalTokenResponse) => {
     realm
   )
 
-  const accessTokenKey = `${homeAccountId}-${environment}-accesstoken-${clientId}-${realm}-${apiScopes.join(
-    ' '
-  )}`
+  const accessTokenKey = `${homeAccountId}-${environment}-accesstoken-${clientId}-${realm}-openid profile offline_access--`
   const accessTokenEntity = buildAccessTokenEntity(
     homeAccountId,
     tokenResponse.access_token,
     tokenResponse.expires_in,
     tokenResponse.ext_expires_in,
     realm,
-    apiScopes
+    ['openid', 'profile', 'offline_access']
   )
 
-  // const userImpersonationAccessTokenKey = `${homeAccountId}-${environment}-accesstoken-${clientId}-${realm}-${[
-  //   `${backendIdentifier}/user_impersonation`,
-  // ].join(' ')}`
-  // const userImpersonationAccessTokenEntity = buildAccessTokenEntity(
-  //   homeAccountId,
-  //   tokenResponse.access_token,
-  //   tokenResponse.expires_in,
-  //   tokenResponse.ext_expires_in,
-  //   realm,
-  //   [`${backendIdentifier}/user_impersonation`]
-  // )
+  const userImpersonationAccessTokenKey = `${homeAccountId}-${environment}-accesstoken-${clientId}-${realm}-${[
+    `${backendIdentifier}/user_impersonation`,
+  ].join(' ')}--`
+  const userImpersonationAccessTokenEntity = buildAccessTokenEntity(
+    homeAccountId,
+    tokenResponse.access_token,
+    tokenResponse.expires_in,
+    tokenResponse.ext_expires_in,
+    realm,
+    [`${backendIdentifier}/user_impersonation`]
+  )
 
   const refreshTokenKey = `${homeAccountId}-${environment}-refreshtoken-${clientId}-${realm}---`
   const refreshTokenEntity = buildRefreshTokenEntity(
@@ -142,10 +143,10 @@ const injectTokens = (tokenResponse: ExternalTokenResponse) => {
   sessionStorage.setItem(idTokenKey, JSON.stringify(idTokenEntity))
   sessionStorage.setItem(accessTokenKey, JSON.stringify(accessTokenEntity))
   sessionStorage.setItem(refreshTokenKey, JSON.stringify(refreshTokenEntity))
-  // sessionStorage.setItem(
-  //   userImpersonationAccessTokenKey,
-  //   JSON.stringify(userImpersonationAccessTokenEntity)
-  // )
+  sessionStorage.setItem(
+    userImpersonationAccessTokenKey,
+    JSON.stringify(userImpersonationAccessTokenEntity)
+  )
 }
 
 export const login = (cachedTokenResponse: unknown) => {

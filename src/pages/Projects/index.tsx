@@ -138,6 +138,7 @@ const Projects = () => {
                     sx={{ ml: 0 }}
                     startIcon={<Add />}
                     component={RouterLink}
+                    data-cy={`create-${type}`}
                     to={`create/${type}`}
                   >
                     {ctaString}

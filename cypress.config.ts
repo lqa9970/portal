@@ -11,6 +11,7 @@ export default defineConfig({
       username: process.env.CYPRESS_TEST_USERNAME,
       password: process.env.CYPRESS_TEST_PASSWORD,
       backendIdentifier: process.env.CYPRESS_BACKEND_IDENTIFIER,
+      refreshToken: process.env.CYPRESS_REFRESH_TOKEN,
     },
   },
 })

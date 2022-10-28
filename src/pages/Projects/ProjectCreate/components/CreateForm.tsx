@@ -301,6 +301,7 @@ const CreateForm = () => {
             <CustomTextField
               control={control}
               name="applicationShortName"
+              data-cy="applicationShortName"
               disabled={!!watchExistingProject}
               error={
                 !checkingApplicationShortName && !isApplicationShortNameValid
@@ -400,6 +401,7 @@ const CreateForm = () => {
               control={control}
               disabled={!!watchExistingProject}
               name="costCenter"
+              data-cy="costCenter"
               label={t('cost.center')}
               helperText={t('cost.center.helper')}
               description={t('cost.center.description')}
@@ -469,6 +471,7 @@ const CreateForm = () => {
             <Box mt={4}>
               <Button
                 variant="contained"
+                data-cy="submit"
                 type="submit"
                 endIcon={isCreatingProject ? <Cached /> : null}
               >

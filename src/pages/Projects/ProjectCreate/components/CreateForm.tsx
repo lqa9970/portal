@@ -77,7 +77,7 @@ const CreateForm = () => {
     resolver: zodResolver(CreateFormDataSchema),
   })
 
-  const watchapplicationAdministrator = watch('applicationAdministrator')
+  const watchApplicationAdministrator = watch('applicationAdministrator')
   const watchIsNewProjectNeeded = watch('isNewProjectNeeded')
   const watchExistingProject = watch('existingProject')
   const watchEnvironmentType = watch('environmentType') as EnvironmentType
@@ -108,10 +108,10 @@ const CreateForm = () => {
     }
   }, [account])
   useEffect(() => {
-    if (!watchapplicationAdministrator && userData.length === 1) {
+    if (!watchApplicationAdministrator && userData.length === 1) {
       setValue('applicationAdministrator', userData[0])
     }
-  }, [userData, watchapplicationAdministrator])
+  }, [userData, watchApplicationAdministrator])
 
   // uncomment to show select existing project
   // const { data: projectData = [] } = useQuery(['getProjects'], () =>

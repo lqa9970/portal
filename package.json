@@ -40,8 +40,6 @@
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
     "@vitejs/plugin-react": "^2.1.0",
-    "cypress": "^10.10.0",
-    "cypress-msal-login": "^1.0.5",
     "eslint": "^8.25.0",
     "eslint-plugin-react": "^7.31.10",
     "jsonwebtoken": "^8.5.1",

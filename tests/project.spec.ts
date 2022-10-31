@@ -6,11 +6,11 @@ const login = async (page) => {
   await page.goto('http://localhost:3000/')
   await page
     .getByPlaceholder(/Email/)
-    .fill(process.env.CYPRESS_TEST_USERNAME as string)
+    .fill(process.env.PORTAL_TEST_USERNAME as string)
   await page.getByRole('button', { name: 'Next' }).click()
   await page
     .getByPlaceholder(/Password/)
-    .fill(process.env.CYPRESS_TEST_PASSWORD as string)
+    .fill(process.env.PORTAL_TEST_PASSWORD as string)
   await page.getByRole('button', { name: 'Sign in' }).click()
   await page.getByRole('button', { name: 'Yes' }).click()
   await expect(page).toHaveURL('http://localhost:3000/projects')

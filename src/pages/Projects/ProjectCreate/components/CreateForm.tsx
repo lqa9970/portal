@@ -52,7 +52,7 @@ import { useAccount } from '@azure/msal-react'
 //   'applicationShortName',
 //   'applicationDetail',
 //   'organizationUnit',
-//   'projectAdministrator',
+//   'applicationAdministrator',
 //   'costCenter',
 //   'isPrivacyData'
 // ]
@@ -77,7 +77,7 @@ const CreateForm = () => {
     resolver: zodResolver(CreateFormDataSchema),
   })
 
-  const watchProjectAdministrator = watch('projectAdministrator')
+  const watchapplicationAdministrator = watch('applicationAdministrator')
   const watchIsNewProjectNeeded = watch('isNewProjectNeeded')
   const watchExistingProject = watch('existingProject')
   const watchEnvironmentType = watch('environmentType') as EnvironmentType
@@ -108,10 +108,10 @@ const CreateForm = () => {
     }
   }, [account])
   useEffect(() => {
-    if (!watchProjectAdministrator && userData.length === 1) {
-      setValue('projectAdministrator', userData[0])
+    if (!watchapplicationAdministrator && userData.length === 1) {
+      setValue('applicationAdministrator', userData[0])
     }
-  }, [userData, watchProjectAdministrator])
+  }, [userData, watchapplicationAdministrator])
 
   // uncomment to show select existing project
   // const { data: projectData = [] } = useQuery(['getProjects'], () =>
@@ -208,7 +208,7 @@ const CreateForm = () => {
                               'applicationShortName',
                               'applicationDetail',
                               'organizationUnit',
-                              'projectAdministrator',
+                              'applicationAdministrator',
                               'costCenter',
                               'isPrivacyData',
                             ]
@@ -349,7 +349,7 @@ const CreateForm = () => {
           <Grid xs={12} sm={6}>
             <Controller
               control={control}
-              name="projectAdministrator"
+              name="applicationAdministrator"
               render={({ field }) => (
                 <Autocomplete
                   {...field}
@@ -369,9 +369,9 @@ const CreateForm = () => {
                     return (
                       <>
                         <Typography variant="body1">
-                          {t('project.administrator')}
+                          {t('application.administrator')}
                           <Tooltip
-                            title={t('project.administrator.description')}
+                            title={t('application.administrator.description')}
                           >
                             <IconButton>
                               <Info color="primary" />
@@ -381,10 +381,10 @@ const CreateForm = () => {
                         <TextField
                           margin="dense"
                           sx={{ mb: '1rem' }}
-                          error={Boolean(errors.projectAdministrator)}
+                          error={Boolean(errors.applicationAdministrator)}
                           helperText={
-                            errors.projectAdministrator
-                              ? errors.projectAdministrator?.message
+                            errors.applicationAdministrator
+                              ? errors.applicationAdministrator?.message
                               : ''
                           }
                           {...params}

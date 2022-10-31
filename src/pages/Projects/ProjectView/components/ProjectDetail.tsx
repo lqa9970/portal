@@ -108,10 +108,10 @@ const ProjectDetail = ({ project }: Props) => {
         </Grid>
         <Grid xs={12} sm={6}>
           <Typography gutterBottom variant="h6">
-            {t('project.administrator')}
+            {t('application.administrator')}
           </Typography>
           <Typography sx={{ wordBreak: 'break-word' }} variant="body1">
-            {project.projectAdministrator}
+            {project.applicationAdministrator}
           </Typography>
         </Grid>
         <Grid xs={12}>

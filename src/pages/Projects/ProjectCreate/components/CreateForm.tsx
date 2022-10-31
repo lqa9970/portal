@@ -475,7 +475,7 @@ const CreateForm = () => {
                 type="submit"
                 endIcon={isCreatingProject ? <Cached /> : null}
               >
-                {t('create.project')}
+                {isSandbox ? t('create.sandbox') : t('create.project')}
               </Button>
               <Button component={RouterLink} to="/" sx={{ ml: 4 }}>
                 {t('cancel')}

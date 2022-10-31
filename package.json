@@ -32,6 +32,7 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.27.1",
     "@types/loadable__component": "^5.13.4",
     "@types/node": "^18.11.2",
     "@types/react": "^18.0.21",

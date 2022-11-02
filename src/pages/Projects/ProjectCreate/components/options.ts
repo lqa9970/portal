@@ -30,6 +30,7 @@ export const projectDefaultValues: CreateFormData = {
   isPrivacyData: '',
   dataClassification: '',
   infrastructureVendor: 'Nordcloud',
+  applicationVendor: '',
 }
 
 export const sandboxApplicationTypeOptions: RadioOption[] = [

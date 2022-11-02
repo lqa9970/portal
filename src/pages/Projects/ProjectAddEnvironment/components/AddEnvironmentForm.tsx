@@ -5,7 +5,7 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Project } from '@utils/types'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { listAvailableEnvironments } from '@api'
+import { listEnvironments } from '@api'
 import getTerminology from '@utils/getTerminology'
 import { createProject } from '@api'
 import { Cached } from '@mui/icons-material'
@@ -26,11 +26,15 @@ const AddEnvironmentForm = ({ project }: Props) => {
   const navigate = useNavigate()
 
   const { data: environmentOptions = [] } = useQuery(
-    ['listAvailableEnvironments', project.applicationShortName],
-    () => listAvailableEnvironments(project.rowKey),
+    ['listEnvironments', project.applicationShortName],
+    () => listEnvironments(project.rowKey),
     {
       select: (data) =>
-        data.map((item) => ({ label: getTerminology(item), value: item })),
+        data.map((item) => ({
+          label: getTerminology(item.name),
+          value: item.name,
+          disabled: item.IsAlreadyCreated,
+        })),
       staleTime: 0,
     }
   )
@@ -43,7 +47,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
     },
   })
 
-  if (environmentOptions.length === 0) {
+  if (environmentOptions.every((option) => option.disabled)) {
     return (
       <>
         <Box minHeight={70}>
@@ -75,6 +79,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
           isPrivacyData: project.isPrivacyData,
           dataClassification: project.dataClassification,
           infrastructureVendor: project.infrastructureVendor as string,
+          applicationVendor: project.applicationVendor as string,
         })
       )}
     >

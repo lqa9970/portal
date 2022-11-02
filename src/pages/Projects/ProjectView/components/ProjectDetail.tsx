@@ -127,17 +127,13 @@ const ProjectDetail = ({ project }: Props) => {
               <Typography gutterBottom variant="h6">
                 {t('cmdb.system.name')}
               </Typography>
-              <Typography variant="body1">
-                {project.cmdbApplicationName}
-              </Typography>
+              <Typography variant="body1">{project.cmdbSystemName}</Typography>
             </Grid>
             <Grid xs={12} sm={6}>
               <Typography gutterBottom variant="h6">
                 {t('cmdb.system.id')}
               </Typography>
-              <Typography variant="body1">
-                {project.cmdbApplicationId}
-              </Typography>
+              <Typography variant="body1">{project.cmdbSystemId}</Typography>
             </Grid>
           </>
         )}

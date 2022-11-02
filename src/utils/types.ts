@@ -13,7 +13,7 @@ const applicationShortNameOnlyLetter = t(
   'application.short.name.only.letter'
 ) as string
 const costCenterHelper = t('cost.center.helper') as string
-const cmdbApplicationIdHelper = t('cmdb.system.id.helper') as string
+const cmdbSystemIdHelper = t('cmdb.system.id.helper') as string
 
 // attempt fix type error when using custom field component
 type ControllerWithoutRender<T extends FieldValues> = Omit<
@@ -68,8 +68,8 @@ export const ProjectSchema = z.object({
   organizationUnit: z.string(),
   applicationAdministrator: z.string(),
   costCenter: z.string(),
-  cmdbApplicationName: z.string().nullable(),
-  cmdbApplicationId: z.string().nullable(),
+  cmdbSystemName: z.string().nullable(),
+  cmdbSystemId: z.string().nullable(),
   isPrivacyData: z.boolean(),
   dataClassification: z.enum(['public', 'internal', 'confidential', 'secret']),
   infrastructureVendor: z.string().nullable(),
@@ -118,11 +118,11 @@ const CreateProjectFormDataSchema = z.object({
   organizationUnit: z.string().min(1, requiredText),
   applicationAdministrator: z.string().min(1, requiredText),
   costCenter: z.string().min(1, requiredText).regex(/^\d+$/, costCenterHelper),
-  cmdbApplicationName: z.string().min(1, requiredText),
-  cmdbApplicationId: z
+  cmdbSystemName: z.string().min(1, requiredText),
+  cmdbSystemId: z
     .string()
     .min(1, requiredText)
-    .regex(/^\d+$/, cmdbApplicationIdHelper),
+    .regex(/^\d+$/, cmdbSystemIdHelper),
   isPrivacyData: z.boolean().or(z.string().min(1, requiredText)),
   dataClassification: z.string().min(1, requiredText),
   infrastructureVendor: z.string().min(1, requiredText),

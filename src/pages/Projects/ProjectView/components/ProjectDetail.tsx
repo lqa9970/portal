@@ -158,16 +158,26 @@ const ProjectDetail = ({ project }: Props) => {
             {getTerminology(project.dataClassification)}
           </Typography>
         </Grid>
-        {!isSandbox && (
-          <Grid xs={12} sm={6}>
-            <Typography gutterBottom variant="h6">
-              {t('infrastructure.vendor')}
-            </Typography>
-            <Typography variant="body1">
-              {getTerminology(project.infrastructureVendor)}
-            </Typography>
-          </Grid>
-        )}
+        {!isSandbox ? (
+          <>
+            <Grid xs={12} sm={6}>
+              <Typography gutterBottom variant="h6">
+                {t('infrastructure.vendor')}
+              </Typography>
+              <Typography variant="body1">
+                {getTerminology(project.infrastructureVendor)}
+              </Typography>
+            </Grid>
+            <Grid xs={12} sm={6}>
+              <Typography gutterBottom variant="h6">
+                {t('application.vendor')}
+              </Typography>
+              <Typography variant="body1">
+                {getTerminology(project.applicationVendor)}
+              </Typography>
+            </Grid>
+          </>
+        ) : null}
 
         <Grid xs={12} sx={{ mt: 4 }}>
           {!isSandbox && (

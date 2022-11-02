@@ -457,15 +457,24 @@ const CreateForm = () => {
               }
             />
           </Grid>
-          {!isSandbox && (
-            <Grid xs={12} sm={6}>
-              <CustomTextField
-                control={control}
-                name="supportPartner"
-                label={t('infrastructure.business.partner')}
-              />
-            </Grid>
-          )}
+          {!isSandbox ? (
+            <>
+              <Grid xs={12} sm={6}>
+                <CustomTextField
+                  control={control}
+                  name="applicationVendor"
+                  label={t('application.vendor')}
+                />
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <CustomTextField
+                  control={control}
+                  name="supportPartner"
+                  label={t('infrastructure.vendor')}
+                />
+              </Grid>
+            </>
+          ) : null}
 
           <Grid xs={12}>
             <Box mt={4}>

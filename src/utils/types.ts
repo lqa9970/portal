@@ -73,6 +73,7 @@ export const ProjectSchema = z.object({
   isPrivacyData: z.boolean(),
   dataClassification: z.enum(['public', 'internal', 'confidential', 'secret']),
   supportPartner: z.string().nullable(),
+  applicationVendor: z.string().nullable(),
   timestamp: z.string(),
 })
 
@@ -125,6 +126,7 @@ const CreateProjectFormDataSchema = z.object({
   isPrivacyData: z.boolean().or(z.string().min(1, requiredText)),
   dataClassification: z.string().min(1, requiredText),
   supportPartner: z.string().min(1, requiredText),
+  applicationVendor: z.string().min(1, requiredText),
 })
 export const CreateFormDataSchema = z.discriminatedUnion('actionType', [
   CreateSandboxFormDataSchema.extend({

@@ -161,7 +161,7 @@ const ProjectDetail = ({ project }: Props) => {
         {!isSandbox && (
           <Grid xs={12} sm={6}>
             <Typography gutterBottom variant="h6">
-              {t('infrastructure.business.partner')}
+              {t('infrastructure.vendor')}
             </Typography>
             <Typography variant="body1">
               {getTerminology(project.supportPartner)}

@@ -164,7 +164,7 @@ const ProjectDetail = ({ project }: Props) => {
               {t('infrastructure.vendor')}
             </Typography>
             <Typography variant="body1">
-              {getTerminology(project.supportPartner)}
+              {getTerminology(project.infrastructureVendor)}
             </Typography>
           </Grid>
         )}

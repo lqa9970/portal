@@ -469,7 +469,7 @@ const CreateForm = () => {
               <Grid xs={12} sm={6}>
                 <CustomTextField
                   control={control}
-                  name="supportPartner"
+                  name="infrastructureVendor"
                   label={t('infrastructure.vendor')}
                 />
               </Grid>

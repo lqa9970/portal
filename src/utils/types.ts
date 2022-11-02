@@ -72,7 +72,7 @@ export const ProjectSchema = z.object({
   cmdbApplicationId: z.string().nullable(),
   isPrivacyData: z.boolean(),
   dataClassification: z.enum(['public', 'internal', 'confidential', 'secret']),
-  supportPartner: z.string().nullable(),
+  infrastructureVendor: z.string().nullable(),
   applicationVendor: z.string().nullable(),
   timestamp: z.string(),
 })
@@ -125,7 +125,7 @@ const CreateProjectFormDataSchema = z.object({
     .regex(/^\d+$/, cmdbApplicationIdHelper),
   isPrivacyData: z.boolean().or(z.string().min(1, requiredText)),
   dataClassification: z.string().min(1, requiredText),
-  supportPartner: z.string().min(1, requiredText),
+  infrastructureVendor: z.string().min(1, requiredText),
   applicationVendor: z.string().min(1, requiredText),
 })
 export const CreateFormDataSchema = z.discriminatedUnion('actionType', [

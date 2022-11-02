@@ -74,7 +74,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
           cmdbApplicationId: project.cmdbApplicationId as string,
           isPrivacyData: project.isPrivacyData,
           dataClassification: project.dataClassification,
-          supportPartner: project.supportPartner as string,
+          infrastructureVendor: project.infrastructureVendor as string,
         })
       )}
     >

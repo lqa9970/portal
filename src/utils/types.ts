@@ -13,7 +13,7 @@ const applicationShortNameOnlyLetter = t(
   'application.short.name.only.letter'
 ) as string
 const costCenterHelper = t('cost.center.helper') as string
-const cmdbApplicationIdHelper = t('cmdb.application.id.helper') as string
+const cmdbApplicationIdHelper = t('cmdb.system.id.helper') as string
 
 // attempt fix type error when using custom field component
 type ControllerWithoutRender<T extends FieldValues> = Omit<

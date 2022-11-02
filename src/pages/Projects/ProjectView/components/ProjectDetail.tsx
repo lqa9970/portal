@@ -125,7 +125,7 @@ const ProjectDetail = ({ project }: Props) => {
           <>
             <Grid xs={12} sm={6}>
               <Typography gutterBottom variant="h6">
-                {t('cmdb.application.name')}
+                {t('cmdb.system.name')}
               </Typography>
               <Typography variant="body1">
                 {project.cmdbApplicationName}
@@ -133,7 +133,7 @@ const ProjectDetail = ({ project }: Props) => {
             </Grid>
             <Grid xs={12} sm={6}>
               <Typography gutterBottom variant="h6">
-                {t('cmdb.application.id')}
+                {t('cmdb.system.id')}
               </Typography>
               <Typography variant="body1">
                 {project.cmdbApplicationId}

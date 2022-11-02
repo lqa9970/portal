@@ -415,15 +415,15 @@ const CreateForm = () => {
                 <CustomTextField
                   control={control}
                   name="cmdbApplicationName"
-                  label={t('cmdb.application.name')}
+                  label={t('cmdb.system.name')}
                 />
               </Grid>
               <Grid xs={12} sm={6}>
                 <CustomTextField
                   control={control}
                   name="cmdbApplicationId"
-                  label={t('cmdb.application.id')}
-                  helperText={t('cmdb.application.id.helper')}
+                  label={t('cmdb.system.id')}
+                  helperText={t('cmdb.system.id.helper')}
                 />
               </Grid>
             </>

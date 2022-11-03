@@ -33,7 +33,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
         data.map((item) => ({
           label: getTerminology(item.name),
           value: item.name,
-          disabled: item.IsAlreadyCreated,
+          disabled: item.isAlreadyCreated,
         })),
       staleTime: 0,
     }
@@ -47,7 +47,12 @@ const AddEnvironmentForm = ({ project }: Props) => {
     },
   })
 
-  if (environmentOptions.every((option) => option.disabled)) {
+  console.log('environmentOptions', environmentOptions)
+
+  if (
+    environmentOptions.length > 0 &&
+    environmentOptions.every((option) => option.disabled)
+  ) {
     return (
       <>
         <Box minHeight={70}>

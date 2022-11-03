@@ -6,7 +6,7 @@ import { EnvironmentType } from '@utils/types'
 
 type Response = {
   name: EnvironmentType
-  IsAlreadyCreated: boolean
+  isAlreadyCreated: boolean
 }
 
 export default async function listEnvironments(rowKey: string) {

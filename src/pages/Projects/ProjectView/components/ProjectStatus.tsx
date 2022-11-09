@@ -65,6 +65,8 @@ const ProjectStatus = ({ handleClose, open }: Props) => {
           (a, b) =>
             parseInt(a.subItemOrderNumber) - parseInt(b.subItemOrderNumber)
         ),
+      refetchOnWindowFocus: false,
+      enabled: false, // disable this query from automatically running
     }
   )
   return (

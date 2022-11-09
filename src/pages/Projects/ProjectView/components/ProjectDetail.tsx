@@ -1,15 +1,20 @@
-import {} from '@mui/icons-material'
+import { Cached } from '@mui/icons-material'
 import { Box, Button, Typography, Unstable_Grid2 as Grid } from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useParams } from 'react-router-dom'
 import getTerminology from '@utils/getTerminology'
 import { Project } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import ProjectStatus from './ProjectStatus'
 import { addDays, differenceInDays } from 'date-fns'
 import { useTranslation } from 'react-i18next'
+import { useQuery } from '@tanstack/react-query'
+import calculateCost from '@api/projects/calculateCost'
 
 type Props = {
   project: Project
+}
+type Params = {
+  rowKey: string
 }
 
 const ProjectDetail = ({ project }: Props) => {
@@ -19,6 +24,18 @@ const ProjectDetail = ({ project }: Props) => {
     'projectStatusModalOpen',
     false
   )
+  const { rowKey } = useParams() as Params
+
+  const { isFetching, refetch } = useQuery(
+    ['calculateCost', rowKey],
+    () => calculateCost(rowKey),
+    {
+      refetchOnWindowFocus: false,
+      enabled: false, // disable this query from automatically running
+    }
+  )
+
+  console.log('isFetching', isFetching)
   return (
     <Box mb={16} overflow="hidden">
       <Grid container rowSpacing={6} columnSpacing={12}>
@@ -38,9 +55,17 @@ const ProjectDetail = ({ project }: Props) => {
         </Grid>
         <Grid xs={12} sm={6} sx={{ textAlign: 'right' }}>
           <Button
+            variant="outlined"
+            sx={{ mr: 2, mb: 2 }}
+            onClick={() => refetch()}
+            endIcon={isFetching ? <Cached /> : null}
+          >
+            {t('download.cost.report')}
+          </Button>
+          <Button
             onClick={() => setProjectStatusModalOpen(true)}
             variant="contained"
-            sx={{ gap: 2 }}
+            sx={{ mb: 2 }}
           >
             {t('check.status')}
           </Button>

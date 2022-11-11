@@ -95,5 +95,5 @@
   "required": "Required",
   "all.environments.created": "All environments have been created for this project.",
   "no.projects": "Create a sandbox or project to start.",
-  "download.cost.report": "Download cost report"
+  "project.total.cost": "Project total cost"
 }

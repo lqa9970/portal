@@ -26,16 +26,9 @@ const ProjectDetail = ({ project }: Props) => {
   )
   const { rowKey } = useParams() as Params
 
-  const { isFetching, refetch } = useQuery(
-    ['calculateCost', rowKey],
-    () => calculateCost(rowKey),
-    {
-      refetchOnWindowFocus: false,
-      enabled: false, // disable this query from automatically running
-    }
+  const { data, isLoading } = useQuery(['calculateCost', rowKey], () =>
+    calculateCost(rowKey)
   )
-
-  console.log('isFetching', isFetching)
   return (
     <Box mb={16} overflow="hidden">
       <Grid container rowSpacing={6} columnSpacing={12}>
@@ -54,14 +47,6 @@ const ProjectDetail = ({ project }: Props) => {
           </Box>
         </Grid>
         <Grid xs={12} sm={6} sx={{ textAlign: 'right' }}>
-          <Button
-            variant="outlined"
-            sx={{ mr: 2, mb: 2 }}
-            onClick={() => refetch()}
-            endIcon={isFetching ? <Cached /> : null}
-          >
-            {t('download.cost.report')}
-          </Button>
           <Button
             onClick={() => setProjectStatusModalOpen(true)}
             variant="contained"
@@ -139,11 +124,17 @@ const ProjectDetail = ({ project }: Props) => {
             {project.applicationAdministrator}
           </Typography>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={6}>
           <Typography gutterBottom variant="h6">
             {t('cost.center')}
           </Typography>
           <Typography variant="body1">{project.costCenter}</Typography>
+        </Grid>
+        <Grid xs={12} sm={6}>
+          <Typography gutterBottom variant="h6">
+            {t('project.total.cost')}
+          </Typography>
+          <Typography variant="body1">{data}</Typography>
         </Grid>
 
         {!isSandbox && (

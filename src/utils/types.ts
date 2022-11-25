@@ -140,6 +140,11 @@ export const CreateFormDataSchema = z.discriminatedUnion('actionType', [
   }),
 ])
 
+export const AddEnvFormDataSchema = z.object({
+  environmentType: z.string().min(1, requiredText),
+  costCenter: z.string().min(1, requiredText).regex(/^\d+$/, costCenterHelper),
+})
+
 export type CreateFormData = z.infer<typeof CreateFormDataSchema>
 export type ProjectStatus = z.infer<typeof ProjectStatusEnum>
 export type EnvironmentType = z.infer<typeof EnvironmentTypeEnum>

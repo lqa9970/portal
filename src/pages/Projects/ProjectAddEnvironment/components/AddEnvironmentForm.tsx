@@ -3,7 +3,7 @@ import CustomTextField from '@components/form-components/CustomTextField'
 import { Box, Button, Unstable_Grid2 as Grid, Typography } from '@mui/material'
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { Project } from '@utils/types'
+import { AddEnvFormDataSchema, Project } from '@utils/types'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { listEnvironments } from '@api'
 import getTerminology from '@utils/getTerminology'
@@ -11,6 +11,7 @@ import { createProject } from '@api'
 import { Cached } from '@mui/icons-material'
 import { queryClient } from '@App'
 import { useTranslation } from 'react-i18next'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 type Props = {
   project: Project
@@ -21,6 +22,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
   const { rowKey } = useParams()
   const { control, handleSubmit } = useForm({
     defaultValues: { environmentType: '', costCenter: project.costCenter },
+    resolver: zodResolver(AddEnvFormDataSchema),
   })
 
   const navigate = useNavigate()

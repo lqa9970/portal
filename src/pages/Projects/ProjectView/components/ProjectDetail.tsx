@@ -1,4 +1,3 @@
-import { Cached } from '@mui/icons-material'
 import { Box, Button, Typography, Unstable_Grid2 as Grid } from '@mui/material'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 import getTerminology from '@utils/getTerminology'
@@ -26,7 +25,7 @@ const ProjectDetail = ({ project }: Props) => {
   )
   const { rowKey } = useParams() as Params
 
-  const { data, isLoading } = useQuery(['calculateCost', rowKey], () =>
+  const { data } = useQuery(['calculateCost', rowKey], () =>
     calculateCost(rowKey)
   )
   return (

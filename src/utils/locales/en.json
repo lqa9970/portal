@@ -85,7 +85,7 @@
   "prod": "Production",
   "private": "Private",
   "windows": "Windows",
-  "ubuntu": "Ubuntu",
+  "linux": "Linux",
   "public": "Public",
   "internal": "Internal",
   "confidential": "Confidential",

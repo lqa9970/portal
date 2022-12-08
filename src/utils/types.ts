@@ -59,7 +59,7 @@ export const ProjectSchema = z.object({
   rowKey: z.string(),
   applicationType: z.enum(['public', 'private']),
   status: ProjectStatusEnum,
-  operatingSystem: z.enum(['windows', 'ubuntu']).nullable(),
+  operatingSystem: z.enum(['windows', 'linux']).nullable(),
   environmentType: EnvironmentTypeEnum,
   applicationName: z.string(),
   applicationShortName: z.string(),

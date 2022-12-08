@@ -1,4 +1,8 @@
+import i18n from '@utils/locales/i18n'
 import { CreateFormData, RadioOption, SelectOption } from '@utils/types'
+
+// i18n text
+const { t } = i18n
 
 export const sandboxDefaultValues: CreateFormData = {
   actionType: 'create-sandbox',
@@ -34,81 +38,81 @@ export const projectDefaultValues: CreateFormData = {
 }
 
 export const sandboxApplicationTypeOptions: RadioOption[] = [
-  { label: 'Public', value: 'public' },
+  { label: t('public'), value: 'public' },
   { label: 'Private', value: 'private', disabled: true },
 ]
 
 export const sandboxDataClassification: RadioOption[] = [
-  { label: 'Public', value: 'public' },
-  { label: 'Internal', value: 'internal', disabled: true },
+  { label: t('public'), value: 'public' },
+  { label: t('internal'), value: 'internal', disabled: true },
   {
-    label: 'Confidential',
+    label: t('confidential'),
     value: 'confidential',
     disabled: true,
   },
-  { label: 'Secret', value: 'secret', disabled: true },
+  { label: t('secret'), value: 'secret', disabled: true },
 ]
 
 export const projectApplicationTypeOptions: RadioOption[] = [
-  { label: 'Public', value: 'public' },
-  { label: 'Private', value: 'private' },
+  { label: t('public'), value: 'public' },
+  { label: t('private'), value: 'private' },
 ]
 
 export const projectDataClassification: RadioOption[] = [
-  { label: 'Public', value: 'public' },
-  { label: 'Internal', value: 'internal' },
-  { label: 'Confidential', value: 'confidential' },
-  { label: 'Secret', value: 'secret' },
+  { label: t('public'), value: 'public' },
+  { label: t('internal'), value: 'internal' },
+  { label: t('confidential'), value: 'confidential' },
+  { label: t('secret'), value: 'secret' },
 ]
 
 export const operatingSystemOptions: SelectOption[] = [
   {
-    label: 'Windows',
+    label: t('windows'),
     value: 'windows',
   },
   {
-    label: 'Ubuntu',
-    value: 'ubuntu',
+    label: t('linux'),
+    value: 'linux',
   },
 ]
 
 export const environmentTypeOptions: RadioOption[] = [
   {
-    label: 'Dev',
+    label: t('dev'),
     value: 'dev',
   },
   {
-    label: 'Test',
+    label: t('test'),
     value: 'test',
   },
   {
-    label: 'QA',
+    label: t('qa'),
     value: 'qa',
   },
   {
-    label: 'Prod',
+    label: t('prod'),
     value: 'prod',
   },
 ]
 
 export const yesNoOptions: RadioOption[] = [
   {
-    label: 'Yes',
+    label: t('yes'),
     value: true,
   },
   {
-    label: 'No',
+    label: t('no'),
     value: false,
   },
 ]
 
 export const yesNoOptionsDisableNo: RadioOption[] = [
   {
-    label: 'Yes',
+    label: t('yes'),
     value: true,
   },
   {
-    label: 'No',
+    label: t('no'),
     value: false,
     disabled: true,
   },

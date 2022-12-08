@@ -66,7 +66,10 @@ const CustomRadioInput = <T extends FieldValues>({
               ))}
             </RadioGroup>
             {error && (
-              <FormHelperText error={Boolean(error)}>
+              <FormHelperText
+                sx={{ fontSize: '0.9rem' }}
+                error={Boolean(error)}
+              >
                 {error.message}
               </FormHelperText>
             )}

@@ -47,6 +47,7 @@ const CustomTextField = <T extends FieldValues>({
           {...field}
           helperText={error ? error.message : textFieldProps.helperText}
           inputRef={field.ref}
+          FormHelperTextProps={{ sx: { fontSize: '0.9rem' } }}
         >
           {textFieldProps.select &&
             options?.map(({ label, value }) => (

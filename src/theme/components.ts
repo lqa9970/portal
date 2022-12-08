@@ -26,6 +26,11 @@ const components: Components = {
       }),
     },
   },
+  MuiTooltip: {
+    styleOverrides: {
+      tooltip: { fontSize: '1rem' },
+    },
+  },
 }
 
 export default components

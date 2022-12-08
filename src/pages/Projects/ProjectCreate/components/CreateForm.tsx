@@ -34,6 +34,7 @@ import {
   sandboxDataClassification,
   sandboxDefaultValues,
   yesNoOptions,
+  yesNoOptionsDisableNo,
 } from './options'
 import {
   CreateFormData,
@@ -86,13 +87,19 @@ const CreateForm = () => {
     watchApplicationShortName,
     400
   )
-
+  const watchApplicationType = watch('applicationType')
   // clear existingProject value when isNewProjectNeeded change
   useEffect(() => {
     if (watchIsNewProjectNeeded) {
       setValue('existingProject', null)
     }
   }, [watchIsNewProjectNeeded])
+
+  useEffect(() => {
+    if (watchApplicationType == 'public') {
+      setValue('shouldCreateSubscription', true)
+    }
+  }, [watchApplicationType])
 
   const { data: userData = [], isLoading: isLoadingUsers } = useQuery(
     ['getUsers', userSearchTermDebounce],
@@ -291,7 +298,11 @@ const CreateForm = () => {
                   name="shouldCreateSubscription"
                   label={t('create.dedicated.environment')}
                   description={t('create.dedicated.environment.description')}
-                  options={yesNoOptions}
+                  options={
+                    watchApplicationType == 'public'
+                      ? yesNoOptionsDisableNo
+                      : yesNoOptions
+                  }
                 />
               </Grid>
             </>

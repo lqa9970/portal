@@ -39,7 +39,7 @@
   "application.operating.system": "Application Operating system",
   "application.operating.system.description": "Operating system version of Software to be deployed.",
   "environment.type": "Environment type",
-  "environment.type.description": "Are the resources deployed for this request going to be used for development, testing (QA) or production purposes? A request for a new cloud project can be submitted for each environment separately.",
+  "environment.type.description": "Projects always start with a development environment. Additional environments can later be added to existing projects.",
   "create.dedicated.environment": "Create dedicated environment",
   "create.dedicated.environment.description": "A dedicated environment means for Azure that it creates it's own subscription for the workloads",
   "application.short.name": "Application short name",

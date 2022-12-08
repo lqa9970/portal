@@ -80,17 +80,14 @@ export const environmentTypeOptions: RadioOption[] = [
   {
     label: 'Test',
     value: 'test',
-    disabled: true,
   },
   {
     label: 'QA',
     value: 'qa',
-    disabled: true,
   },
   {
     label: 'Prod',
     value: 'prod',
-    disabled: true,
   },
 ]
 
@@ -102,5 +99,17 @@ export const yesNoOptions: RadioOption[] = [
   {
     label: 'No',
     value: false,
+  },
+]
+
+export const yesNoOptionsDisableNo: RadioOption[] = [
+  {
+    label: 'Yes',
+    value: true,
+  },
+  {
+    label: 'No',
+    value: false,
+    disabled: true,
   },
 ]

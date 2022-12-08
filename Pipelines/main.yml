@@ -1,17 +1,21 @@
 trigger:
-- main
-- production
+  branches:
+    include:
+    - main
+    - production
+  paths:
+    exclude:
+    - Pipelines/*
 
 variables:
-- group: 'ncdof-PortalVariables'
-- name: environment
-  ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
-    value: production
-  ${{ else }}:
-    value: development
+- group: 'portal-dev'
+- name: company
+  value: 'nc'
+- name: solution
+  value: 'dof'
 - name: env
   ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
-    value: prod
+    value: prd
   ${{ else }}:
     value: dev
 
@@ -27,5 +31,5 @@ stages:
   parameters: 
     STORAGE_KEY: $(PORTAL_STORAGE_KEY)
     storageAccount: $(PORTAL_STORAGE_ACCOUNT)
-    environment: 'nc-dof-portal-$(environment)'
-    azureSubscription: 'spn-devops-dof-$(environment)'
+    environment: 'portal-$(env)'
+    azureSubscription: 'spn-devops-dof-$(env)'

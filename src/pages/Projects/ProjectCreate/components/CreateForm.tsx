@@ -164,25 +164,27 @@ const CreateForm = () => {
     >
       <Box mb={16} overflow="hidden">
         <Grid container rowSpacing={2} columnSpacing={12}>
-          <Grid xs={12}>
-            <Controller
-              name="applicationType"
-              control={control}
-              render={() => <div></div>}
-            />
+          {!isSandbox && (
+            <Grid xs={12}>
+              <Controller
+                name="applicationType"
+                control={control}
+                render={() => <div></div>}
+              />
 
-            <CustomRadioInput
-              control={control}
-              name="applicationType"
-              label={t('application.type')}
-              description={t('application.type.description')}
-              options={
-                isSandbox
-                  ? sandboxApplicationTypeOptions
-                  : projectApplicationTypeOptions
-              }
-            />
-          </Grid>
+              <CustomRadioInput
+                control={control}
+                name="applicationType"
+                label={t('application.type')}
+                description={t('application.type.description')}
+                options={
+                  isSandbox
+                    ? sandboxApplicationTypeOptions
+                    : projectApplicationTypeOptions
+                }
+              />
+            </Grid>
+          )}
 
           {/* uncomment this to show select existing project */}
           {/* {isSandbox && (

@@ -31,7 +31,7 @@
   "days.left": "days left",
   "check.status": "Check Status",
   "application.type": "Application type",
-  "application.type.description": "Application type",
+  "application.type.description": "Is application accessible from Internet (public) or only internally (private). Internal workloads cannot have public ip's.",
   "is.new.project.needed": "Is a new Azure DevOps project needed",
   "is.new.project.needed.description": "Is a new Azure DevOps project named after the application needed? Azure DevOps projects can be created also for projects residing at Google Cloud Platform",
   "existing.project": "Existing Azure DevOps project used?",

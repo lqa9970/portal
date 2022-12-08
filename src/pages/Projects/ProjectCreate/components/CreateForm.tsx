@@ -356,7 +356,11 @@ const CreateForm = () => {
               disabled={!!watchExistingProject}
               name="organizationUnit"
               label={t('organisation.unit')}
-              description={t('organisation.unit.description')}
+              description={
+                isSandbox
+                  ? t('organisation.unit.description.sandbox')
+                  : t('organisation.unit.description')
+              }
             />
           </Grid>
           <Grid xs={12} sm={6}>

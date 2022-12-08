@@ -44,13 +44,12 @@ export const sandboxApplicationTypeOptions: RadioOption[] = [
 
 export const sandboxDataClassification: RadioOption[] = [
   { label: t('public'), value: 'public' },
-  { label: t('internal'), value: 'internal', disabled: true },
+  { label: t('internal'), value: 'internal' },
   {
     label: t('confidential'),
     value: 'confidential',
-    disabled: true,
   },
-  { label: t('secret'), value: 'secret', disabled: true },
+  { label: t('secret'), value: 'secret' },
 ]
 
 export const projectApplicationTypeOptions: RadioOption[] = [

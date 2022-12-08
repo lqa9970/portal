@@ -26,6 +26,8 @@ import {
   ErrorOutline,
   Cached,
   PendingActions,
+  ArrowUpward,
+  ArrowDownward,
 } from '@mui/icons-material'
 
 import { useState } from 'react'
@@ -96,6 +98,9 @@ const Projects = () => {
     'isViewingOwnProject',
     true
   )
+
+  const [isAscending, setIsAscending] = useState(true)
+
   const {
     data: projects,
     isLoading,
@@ -103,9 +108,15 @@ const Projects = () => {
   } = useQuery(['getProjects', isViewingOwnProject], () =>
     getProjects({ isViewingOwnProject })
   )
-  const filterProjects = projects?.filter(({ applicationName }) =>
-    applicationName.toLowerCase().includes(filterText.toLowerCase())
-  )
+  const filterProjects = projects
+    ?.filter(({ applicationName }) =>
+      applicationName.toLowerCase().includes(filterText.toLowerCase())
+    )
+    .sort(
+      (a, b) =>
+        (isAscending ? 1 : -1) *
+        a.applicationName.localeCompare(b.applicationName)
+    )
 
   return (
     <Container sx={{ mt: '4.306rem' }}>
@@ -173,20 +184,32 @@ const Projects = () => {
             />
           </FormGroup>
         </Grid>
-        <Grid xs={12} sm={4}>
-          <TextField
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            placeholder={t('filter.by.name')}
-            fullWidth
-          />
+        <Grid xs={12}>
+          <Box display="flex" alignItems="center" gap={4}>
+            <TextField
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              placeholder={t('filter.by.name')}
+              sx={{ maxWidth: '300px', width: '100%', minWidth: '200px' }}
+            />
+
+            {isAscending ? (
+              <IconButton onClick={() => setIsAscending(false)}>
+                <ArrowUpward sx={{ fontSize: '2.4rem' }} />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => setIsAscending(true)}>
+                <ArrowDownward sx={{ fontSize: '2.4rem' }} />
+              </IconButton>
+            )}
+          </Box>
         </Grid>
       </Grid>
       <Box width="100%">

@@ -32,4 +32,4 @@ stages:
     STORAGE_KEY: $(PORTAL_STORAGE_KEY)
     storageAccount: $(PORTAL_STORAGE_ACCOUNT)
     environment: 'portal-$(env)'
-    azureSubscription: 'spn-devops-dof-$(env)'
+    azureSubscription: 'devops-foundation-$(env)'

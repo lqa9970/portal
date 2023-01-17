@@ -8,11 +8,7 @@ trigger:
 
 variables:
 - group: 'common'
-- group: 
-  ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
-    value: 'portal-prd'
-  ${{ else }}:
-    value: 'portal-dev'
+- group: ${{ if eq(variables['Build.SourceBranchName'], 'production') }}: 'portal-prd' ${{ else }}: 'portal-dev'
 - name: env
   ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
     value: prd

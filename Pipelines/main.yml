@@ -9,7 +9,7 @@ trigger:
 variables:
 - group: 'common'
 - name: env
-  ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
+  ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     value: prd
   ${{ else }}:
     value: dev
@@ -25,5 +25,5 @@ stages:
 - template: deploy.yml
   parameters: 
     storageAccount: 'st${SOLUTION}${COMPANY}${env}weu1'
-    environment: 'portal-$(env)'
+    environment: 'portal-dev'
     serviceConnection: '$(SERVICE_CONNECTION_PREFIX)-$(env)'

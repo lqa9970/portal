@@ -9,10 +9,10 @@ parameters:
 stages:
 - stage: Deployportal
   displayName: Deploy portal stage
-  variables: ${{ parameters.environment }}
+  variables: 'portal-dev'
   jobs:
   - deployment: Deploy
-    displayName: Deploy    
+    displayName: Deploy
     environment: ${{ parameters.environment }}
     pool: 
       vmImage: 'windows-latest'
@@ -35,7 +35,7 @@ stages:
               Destination: 'AzureBlob'
               storage: ${{ parameters.storageAccount }}
               ContainerName: '$web'
-              
+
           - task: AzurePowerShell@5
             env:
               STORAGE_KEY: '$(PORTAL_STORAGE_KEY)'

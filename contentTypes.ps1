@@ -15,7 +15,7 @@ Function SetContentType
 }
 
 Write-Host "Jiihaa!"
-Write-Host "$Env:PORTAL_STORAGE_KEY"	
+Write-Host "$Env:PORTAL_STORAGE_KEY"
 Write-Host "$Env:PORTAL_STORAGE_ACCOUNT"
 Write-Host "$STORAGE_KEY"
 Write-Host "Loppu"

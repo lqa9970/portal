@@ -35,22 +35,10 @@ stages:
               Destination: 'AzureBlob'
               storage: ${{ parameters.storageAccount }}
               ContainerName: '$web'
-        
-          - task: AzurePowerShell@4
-                  displayName: Get the storage account key
-                  inputs:
-                    azureSubscription: '${{ parameters.serviceConnection }}'
-                    scriptType: 'InlineScript'
-                    Inline: |
-                      $var=ConvertFrom-Json '$(armOutputs)'
-                      $value=$var.storageAccountName.value
-                      Write-Host "##vso[task.setvariable variable=storageAccountName;]$value"
-                    azurePowerShellVersion: 'latestVersion'
-                    pwsh: true
-
+              
           - task: AzurePowerShell@5
             env:
-              STORAGE_KEY: $(PORTAL_STORAGE_KEY)
+              STORAGE_KEY: '$(PORTAL_STORAGE_KEY)'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               ScriptType: 'FilePath'

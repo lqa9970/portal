@@ -18,7 +18,7 @@ stages:
 - template: build.yml
   parameters: 
     apiUrl: 'https://func-$(SOLUTION)-backend-$(COMPANY)-$(env)-weu.azurewebsites.net'
-    backendIdentifier: 'api://$(PORTAL_BACKEND_IDENTIFIER)'
+    backendIdentifier: 'api://$(SP_BACKEND_CLIENT_ID)'
     TENANT_ID: $(TENANT_ID)
     SP_BACKEND_CLIENT_ID: $(SP_BACKEND_CLIENT_ID)
 
@@ -27,3 +27,4 @@ stages:
     storageAccount: 'st${SOLUTION}${COMPANY}${env}weu1'
     environment: 'portal-$(env)'
     serviceConnection: '$(SERVICE_CONNECTION_PREFIX)-$(env)'
+    STORAGE_KEY: $(PORTAL_STORAGE_KEY)

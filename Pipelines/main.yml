@@ -13,9 +13,10 @@ variables:
   ${{ else }}:
     value: dev
 - group: 'common'
-- group: 'portal-$(env)'
 
 stages:
+  variable:
+  - group: 'portal-${{ parameters.env }}'
 - template: build.yml
   parameters: 
     apiUrl: $(PORTAL_BACKEND_API_URL)

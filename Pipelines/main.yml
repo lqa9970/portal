@@ -27,4 +27,3 @@ stages:
     storageAccount: 'st${SOLUTION}${COMPANY}${env}weu1'
     environment: 'portal-$(env)'
     serviceConnection: '$(SERVICE_CONNECTION_PREFIX)-$(env)'
-    STORAGE_KEY: $(PORTAL_STORAGE_KEY)

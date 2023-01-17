@@ -9,7 +9,8 @@ parameters:
 stages:
 - stage: Deployportal
   displayName: Deploy portal stage
-  variables: 'portal-dev'
+  variables: 
+  - group: ${{ parameters.environment }}
   jobs:
   - deployment: Deploy
     displayName: Deploy

@@ -7,8 +7,13 @@ trigger:
     - Pipelines/*
 
 variables:
+- name: library
+  ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
+    value: 'portal-prd'
+  ${{ else }}:
+    value: 'portal-dev'
 - group: 'common'
-- group: ${{ if eq(variables['Build.SourceBranchName'], 'production') }}: 'portal-prd' ${{ else }}: 'portal-dev'
+- group: ${{library}}
 - name: env
   ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
     value: prd

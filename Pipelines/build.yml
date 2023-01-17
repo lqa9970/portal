@@ -3,9 +3,9 @@ parameters:
   type: string
 - name: backendIdentifier
   type: string
-- name: tenantId
+- name: TENANT_ID
   type: string
-- name: clientId
+- name: SP_BACKEND_CLIENT_ID
   type: string
 
 stages:
@@ -28,8 +28,8 @@ stages:
       env:
         REACT_APP_API_URL: ${{ parameters.apiUrl }}
         REACT_APP_BACKEND_IDENTIFIER: ${{ parameters.backendIdentifier }}
-        REACT_APP_TENANT_ID: ${{ parameters.tenantId }}
-        REACT_APP_CLIENT_ID: ${{ parameters.clientId }}
+        REACT_APP_TENANT_ID: ${{ parameters.TENANT_ID }}
+        REACT_APP_CLIENT_ID: ${{ parameters.SP_BACKEND_CLIENT_ID }}
       displayName: 'Prepare binaries'            
      
       

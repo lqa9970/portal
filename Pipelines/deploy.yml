@@ -5,7 +5,7 @@ parameters:
   type: string
 - name: storageAccount
   type: string
-- name: azureSubscription
+- name: serviceConnection
   type: string
 
 stages:
@@ -33,7 +33,7 @@ stages:
           - task: AzureFileCopy@3
             inputs:
               SourcePath: '$(Pipeline.Workspace)/drop-portal/portalextracted/'
-              azureSubscription: ${{ parameters.azureSubscription }}
+              azureSubscription: ${{ parameters.serviceConnection }}
               Destination: 'AzureBlob'
               storage: ${{ parameters.storageAccount }}
               ContainerName: '$web'
@@ -42,7 +42,7 @@ stages:
             env:
               STORAGE_KEY: ${{ parameters.STORAGE_KEY }}
             inputs:
-              azureSubscription: ${{ parameters.azureSubscription }}
+              azureSubscription: ${{ parameters.serviceConnection }}
               ScriptType: 'FilePath'
               ScriptPath: '$(Pipeline.Workspace)/drop-portal-ps/contentTypes.ps1'                            
               azurePowerShellVersion: 'LatestVersion'

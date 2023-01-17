@@ -1,23 +1,19 @@
 trigger:
   branches:
     include:
-    - main
-    - production
+    - dev
   paths:
     exclude:
     - Pipelines/*
 
 variables:
-- group: 'portal-dev'
-- name: company
-  value: 'nc'
-- name: solution
-  value: 'dof'
 - name: env
   ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
     value: prd
   ${{ else }}:
     value: dev
+- group: 'common'
+- group: 'portal-$(env)'
 
 stages:
 - template: build.yml
@@ -32,4 +28,4 @@ stages:
     STORAGE_KEY: $(PORTAL_STORAGE_KEY)
     storageAccount: $(PORTAL_STORAGE_ACCOUNT)
     environment: 'portal-$(env)'
-    azureSubscription: 'devops-foundation-$(env)'
+    serviceConnection: '$(SERVICE_CONNECTION_PREFIX)-$(env)'

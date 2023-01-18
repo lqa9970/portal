@@ -49,7 +49,7 @@ stages:
               ScriptType: 'InlineScript'
               Inline: |
                 $var=ConvertFrom-Json '$(resourceGroupName)'
-                Write-Host '$var.resourceGroupName <- Resource group name?'
+                Write-Host $var
                 $value=(Get-AzStorageAccountKey -ResourceGroupName "rg-dof-dev-weu" -Name "stdofncdevweu1")[0].Value
                 Write-Host "##vso[task.setvariable variable=storageAccountKey;]$value"
               pwsh: true

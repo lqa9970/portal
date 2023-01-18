@@ -49,8 +49,8 @@ stages:
               azurePowerShellVersion: LatestVersion
               ScriptType: 'InlineScript'
               Inline: |
-                $resourceGroupName = ${{ parameters.resourceGroupName }}
-                $storageAccountName = ${{ parameters.storageAccountName }}
+                $resourceGroupName = "${{ parameters.resourceGroupName }}"
+                $storageAccountName = "${{ parameters.storageAccountName }}"
                 Write-Host "SOF Jiihaa"
                 Write-Host "Directly written PORTAL_STORAGE_KEY = $Env:PORTAL_STORAGE_KEY"
                 Write-Host "Directly written PORTAL_STORAGE_ACCOUNT = $Env:PORTAL_STORAGE_ACCOUNT"

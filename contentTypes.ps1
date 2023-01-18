@@ -15,11 +15,11 @@ Function SetContentType
 }
 
 Write-Host "Jiihaa!"
-Write-Host "$Env:storageAccountName"
-Write-Host "$Env:storageAccountKey"
+Write-Host "$Env:STORAGE_ACCOUNT_NAME"
+Write-Host "$Env:STORAGE_ACCOUNT_KEY"
 Write-Host "Loppu"
 
-$context = New-AzStorageContext -StorageAccountName $Env:storageAccountName -StorageAccountKey $Env:storageAccountKey
+$context = New-AzStorageContext -StorageAccountName $Env:STORAGE_ACCOUNT_NAME -StorageAccountKey $Env:STORAGE_ACCOUNT_KEY
 
 Write-Host "Enabling static web site hosting on the storage account"
 

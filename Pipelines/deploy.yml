@@ -54,8 +54,8 @@ stages:
           - task: AzurePowerShell@5
             displayName: Get StorageAccountKey
             env: 
-              RESOURCE_GROUP_NAME: 'rg-dof-dev-weu'
-              STORAGE_ACCOUNT_NAME:  'stdofncdevweu1'
+              RESOURCE_GROUP_NAME: "${{ parameters.resourceGroupName }}"
+              STORAGE_ACCOUNT_NAME:  "${{ parameters.storageAccountName }}"
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: LatestVersion
@@ -67,7 +67,6 @@ stages:
                 Write-Host "Directly written PORTAL_STORAGE_KEY = $Env:PORTAL_STORAGE_KEY"
                 Write-Host "Directly written PORTAL_STORAGE_ACCOUNT = $Env:PORTAL_STORAGE_ACCOUNT"
                 Write-Host "Directly written SP_BACKEND_CLIENT_ID = $Env:SP_BACKEND_CLIENT_ID"
-                Write-Host "Directly written storageAccountName = $Env:storageAccountName"
                 Write-Host "Mapped RESOURCE_GROUP_NAME = $env:RESOURCE_GROUP_NAME"
                 Write-Host "Mapped STORAGE_ACCOUNT_NAME = $env:STORAGE_ACCOUNT_NAME"
                 Write-Host "EOF Jiihaa"
@@ -78,7 +77,7 @@ stages:
           - task: AzurePowerShell@5
             displayName: Set ContentTypes
             env:
-              STORAGE_KEY: '$(storageAccountKey)'
+              STORAGE_ACCOUNT_NAME:  "${{ parameters.storageAccountName }}"
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               ScriptType: 'FilePath'

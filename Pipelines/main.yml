@@ -24,6 +24,6 @@ stages:
 
 - template: deploy.yml
   parameters: 
-    storageAccount: 'st$(SOLUTION)$(COMPANY)$(env)weu1'
     environment: 'portal-dev'
     serviceConnection: '$(SERVICE_CONNECTION_PREFIX)-$(env)'
+    storageAccount: 'st$(SOLUTION)$(COMPANY)$(env)weu1'

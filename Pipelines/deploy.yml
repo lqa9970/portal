@@ -9,8 +9,6 @@ parameters:
 stages:
 - stage: Deployportal
   displayName: Deploy portal stage
-  variables: 
-  - group: ${{ parameters.environment }}
   jobs:
   - deployment: Deploy
     displayName: Deploy
@@ -38,8 +36,18 @@ stages:
               ContainerName: '$web'
 
           - task: AzurePowerShell@5
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: LatestVersion
+              ScriptType: 'InlineScript'
+              Inline: |
+                $value=(Get-AzStorageAccountKey -ResourceGroupName "rg-dof-dev-weu" -Name "stdofncdevweu1")[0].Value
+                Write-Host "##vso[task.setvariable variable=storageAccountKey;]$value"
+              pwsh: true
+
+          - task: AzurePowerShell@5
             env:
-              STORAGE_KEY: '$(PORTAL_STORAGE_KEY)'
+              STORAGE_KEY: '$(storageAccountKey)'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               ScriptType: 'FilePath'

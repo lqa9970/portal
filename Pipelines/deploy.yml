@@ -8,19 +8,17 @@ parameters:
 - name: storageAccount
   type: string
 
-variables:
-- name: resourceGroup
-  value: ${{ parameters.resourceGroup }}
-- name: storageAccount
-  value: ${{ parameters.storageAccount }}
-- name: storageAccountKey
-  value: ''
-
 stages:
 - stage: Deployportal
   displayName: Deploy portal stage
   variables: 
   - group: ${{ parameters.environment }}
+  - name: resourceGroup
+    value: ${{ parameters.resourceGroup }}
+  - name: storageAccount
+    value: ${{ parameters.storageAccount }}
+  - name: storageAccountKey
+    value: ''
   jobs:
   - deployment: Deploy
     displayName: Deploy

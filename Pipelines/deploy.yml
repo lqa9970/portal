@@ -38,23 +38,22 @@ stages:
               ContainerName: '$web'
 
           - task: AzurePowerShell@5
-            displayName: Get the storage account key 
+            displayName: Get storage account key 
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: LatestVersion
               ScriptType: 'InlineScript'
               Inline: |
-                Write-Host "$(parameters.storageAccount) <- The parameter value"
                 $value=(Get-AzStorageAccountKey -ResourceGroupName "rg-dof-dev-weu" -Name "$(parameters.storageAccount)")[0].Value
                 Write-Host "##vso[task.setvariable variable=storageAccountKey;]$value"
               pwsh: true
 
           - task: AzurePowerShell@5
-            displayName: Set content types with script
+            displayName: Set content types
             env:
               STORAGE_KEY: '$(storageAccountKey)'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               ScriptType: 'FilePath'
-              ScriptPath: '$(Pipeline.Workspace)/drop-portal-ps/contentTypes.ps1'                            
+              ScriptPath: '$(Pipeline.Workspace)/drop-portal-ps/contentTypes.ps1'              
               azurePowerShellVersion: 'LatestVersion'

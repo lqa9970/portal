@@ -67,13 +67,9 @@ stages:
                 Write-Host "Directly written PORTAL_STORAGE_KEY = $Env:PORTAL_STORAGE_KEY"
                 Write-Host "Directly written PORTAL_STORAGE_ACCOUNT = $Env:PORTAL_STORAGE_ACCOUNT"
                 Write-Host "Directly written SP_BACKEND_CLIENT_ID = $Env:SP_BACKEND_CLIENT_ID"
-                Write-Host "Directly written $resourceGroupName = $(resourceGroupName)"
-                Write-Host "Directly written $$resourceGroupName = $($resourceGroupName)"
                 Write-Host "Directly written storageAccountName = $Env:storageAccountName"
                 Write-Host "Mapped RESOURCE_GROUP_NAME = $env:RESOURCE_GROUP_NAME"
                 Write-Host "Mapped STORAGE_ACCOUNT_NAME = $env:STORAGE_ACCOUNT_NAME"
-                Write-Host "Inline resourceGroupName = $resourceGroupName"
-                Write-Host "Inline storageAccountName = $storageAccountName"
                 Write-Host "EOF Jiihaa"
                 $value=(Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName)[0].Value
                 Write-Host "##vso[task.setvariable variable=storageAccountKey;]$value"

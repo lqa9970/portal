@@ -49,6 +49,8 @@ stages:
               azurePowerShellVersion: LatestVersion
               ScriptType: 'InlineScript'
               Inline: |
+                $resourceGroupName = ${{ parameters.resourceGroupName }}
+                $storageAccountName = ${{ parameters.storageAccountName }}
                 Write-Host "SOF Jiihaa"
                 Write-Host "Directly written PORTAL_STORAGE_KEY = $Env:PORTAL_STORAGE_KEY"
                 Write-Host "Directly written PORTAL_STORAGE_ACCOUNT = $Env:PORTAL_STORAGE_ACCOUNT"
@@ -58,8 +60,10 @@ stages:
                 Write-Host "Directly written storageAccountName = $Env:storageAccountName"
                 Write-Host "Mapped RESOURCE_GROUP_NAME = $env:RESOURCE_GROUP_NAME"
                 Write-Host "Mapped STORAGE_ACCOUNT_NAME = $env:STORAGE_ACCOUNT_NAME"
+                Write-Host "Inline resourceGroupName = $resourceGroupName"
+                Write-Host "Inline storageAccountName = $storageAccountName"
                 Write-Host "EOF Jiihaa"
-                $value=(Get-AzStorageAccountKey -ResourceGroupName "rg-dof-dev-weu" -Name "stdofncdevweu1")[0].Value
+                $value=(Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName)[0].Value
                 Write-Host "##vso[task.setvariable variable=storageAccountKey;]$value"
               pwsh: true
 

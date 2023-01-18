@@ -25,6 +25,6 @@ stages:
 - template: deploy.yml
   parameters: 
     environment: 'portal-dev'
-    resourceGroup: 'rg-$(SOLUTION)-$(env)-weu'
+    resourceGroupName: 'rg-$(SOLUTION)-$(env)-weu'
     serviceConnection: '$(SERVICE_CONNECTION_PREFIX)-$(env)'
-    storageAccount: 'st$(SOLUTION)$(COMPANY)$(env)weu1'
+    storageAccountName: 'st$(SOLUTION)$(COMPANY)$(env)weu1'

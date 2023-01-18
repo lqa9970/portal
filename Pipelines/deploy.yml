@@ -1,11 +1,11 @@
 parameters:
 - name: environment
   type: string
-- name: resourceGroup
+- name: resourceGroupName
   type: string
 - name: serviceConnection
   type: string
-- name: storageAccount
+- name: storageAccountName
   type: string
 
 stages:
@@ -13,12 +13,8 @@ stages:
   displayName: Deploy portal stage
   variables: 
   - group: ${{ parameters.environment }}
-  - name: resourceGroup
-    value: ${{ parameters.resourceGroup }}
-  - name: storageAccount
-    value: ${{ parameters.storageAccount }}
-  - name: storageAccountKey
-    value: ''
+  - name: System.Debug
+    value: true
   jobs:
   - deployment: Deploy
     displayName: Deploy
@@ -52,7 +48,8 @@ stages:
               azurePowerShellVersion: LatestVersion
               ScriptType: 'InlineScript'
               Inline: |
-                Write-Host '$Env:storageAccount <- Storage account?'
+                $var=ConvertFrom-Json '$(resourceGroupName)'
+                Write-Host '$var.resourceGroupName <- Storage account?'
                 $value=(Get-AzStorageAccountKey -ResourceGroupName "rg-dof-dev-weu" -Name "stdofncdevweu1")[0].Value
                 Write-Host "##vso[task.setvariable variable=storageAccountKey;]$value"
               pwsh: true

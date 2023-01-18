@@ -18,6 +18,9 @@ Write-Host "Jiihaa!"
 Write-Host "$Env:PORTAL_STORAGE_KEY"
 Write-Host "$Env:PORTAL_STORAGE_ACCOUNT"
 Write-Host "$STORAGE_KEY"
+Write-Host "$Env:SP_BACKEND_CLIENT_ID"
+Write-Host "$Env:storageAccount"
+Write-Host "$Env:storageAccountKey"
 Write-Host "Loppu"
 
 $context = New-AzStorageContext -StorageAccountName $Env:PORTAL_STORAGE_ACCOUNT -StorageAccountKey $Env:PORTAL_STORAGE_KEY

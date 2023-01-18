@@ -42,14 +42,16 @@ stages:
               ContainerName: '$web'
 
           - task: AzurePowerShell@5
-            displayName: Get StorageAccountKey 
+            displayName: Get StorageAccountKey
+            env: 
+              RESOURCE_GROUP_NAME: '$(resourceGroupName)'
+              STORAGE_ACCOUNT_NAME:  '$(storageAccountName)'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: LatestVersion
               ScriptType: 'InlineScript'
               Inline: |
-                $var=ConvertFrom-Json '$(resourceGroupName)'
-                Write-Host $var
+                Write-Host "What is the variable STORAGE_ACCOUNT_NAME: $env:STORAGE_ACCOUNT_NAME"
                 $value=(Get-AzStorageAccountKey -ResourceGroupName "rg-dof-dev-weu" -Name "stdofncdevweu1")[0].Value
                 Write-Host "##vso[task.setvariable variable=storageAccountKey;]$value"
               pwsh: true

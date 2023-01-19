@@ -1,20 +1,15 @@
 trigger:
   branches:
     include:
-    - main
-    - production
+    - dev
   paths:
     exclude:
     - Pipelines/*
 
 variables:
-- group: 'portal-dev'
-- name: company
-  value: 'nc'
-- name: solution
-  value: 'dof'
+- group: 'common'
 - name: env
-  ${{ if eq(variables['Build.SourceBranchName'], 'production') }}:
+  ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     value: prd
   ${{ else }}:
     value: dev
@@ -22,14 +17,15 @@ variables:
 stages:
 - template: build.yml
   parameters: 
-    apiUrl: $(PORTAL_BACKEND_API_URL)
-    backendIdentifier: $(PORTAL_BACKEND_IDENTIFIER)
-    tenantId: $(PORTAL_TENANT_ID)
-    clientId: $(PORTAL_BACKEND_CLIENT_ID)
+    apiUrl: 'https://func-$(SOLUTION)-backend-$(COMPANY)-$(env)-weu.azurewebsites.net'
+    backendIdentifier: 'api://$(SP_BACKEND_CLIENT_ID)'
+    COMPANY_NAME: $(COMPANY_FULL_NAME)
+    TENANT_ID: $(TENANT_ID)
+    SP_BACKEND_CLIENT_ID: $(SP_BACKEND_CLIENT_ID)
 
 - template: deploy.yml
   parameters: 
-    STORAGE_KEY: $(PORTAL_STORAGE_KEY)
-    storageAccount: $(PORTAL_STORAGE_ACCOUNT)
-    environment: 'portal-$(env)'
-    azureSubscription: 'devops-foundation-$(env)'
+    environment: 'portal-dev'
+    resourceGroupName: 'rg-$(SOLUTION)-$(env)-weu'
+    serviceConnection: '$(SERVICE_CONNECTION_PREFIX)-$(env)'
+    storageAccountName: 'st$(SOLUTION)$(COMPANY)$(env)weu1'

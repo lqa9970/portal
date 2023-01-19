@@ -1,20 +1,19 @@
 parameters:
 - name: environment
   type: string
-- name: STORAGE_KEY
+- name: resourceGroupName
   type: string
-- name: storageAccount
+- name: serviceConnection
   type: string
-- name: azureSubscription
+- name: storageAccountName
   type: string
 
 stages:
 - stage: Deployportal
   displayName: Deploy portal stage
-  
   jobs:
   - deployment: Deploy
-    displayName: Deploy    
+    displayName: Deploy
     environment: ${{ parameters.environment }}
     pool: 
       vmImage: 'windows-latest'
@@ -30,19 +29,60 @@ stages:
               cleanDestinationFolder: true
               overwriteExistingFiles: false
 
+          - task: AzurePowerShell@5
+            displayName: 'Enable public network access'
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: LatestVersion
+              ScriptType: 'InlineScript'
+              Inline: |
+                $resourceGroupName = "${{ parameters.resourceGroupName }}"
+                $storageAccountName = "${{ parameters.storageAccountName }}"
+                Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Allow
+              pwsh: true
+
           - task: AzureFileCopy@3
             inputs:
               SourcePath: '$(Pipeline.Workspace)/drop-portal/portalextracted/'
-              azureSubscription: ${{ parameters.azureSubscription }}
+              azureSubscription: ${{ parameters.serviceConnection }}
               Destination: 'AzureBlob'
-              storage: ${{ parameters.storageAccount }}
+              storage: ${{ parameters.storageAccountName }}
               ContainerName: '$web'
-        
+
           - task: AzurePowerShell@5
-            env:
-              STORAGE_KEY: ${{ parameters.STORAGE_KEY }}
+            displayName: Get StorageAccountKey
+            env: 
+              RESOURCE_GROUP_NAME: "${{ parameters.resourceGroupName }}"
+              STORAGE_ACCOUNT_NAME:  "${{ parameters.storageAccountName }}"
             inputs:
-              azureSubscription: ${{ parameters.azureSubscription }}
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: LatestVersion
+              ScriptType: 'InlineScript'
+              Inline: |
+                $resourceGroupName = "${{ parameters.resourceGroupName }}"
+                $storageAccountName = "${{ parameters.storageAccountName }}"
+                $value=(Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName)[0].Value
+                Write-Host "##vso[task.setvariable variable=STORAGE_ACCOUNT_KEY;]$value"
+              pwsh: true
+
+          - task: AzurePowerShell@5
+            displayName: Set ContentTypes
+            env:
+              STORAGE_ACCOUNT_NAME:  "${{ parameters.storageAccountName }}"
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
               ScriptType: 'FilePath'
-              ScriptPath: '$(Pipeline.Workspace)/drop-portal-ps/contentTypes.ps1'                            
+              ScriptPath: '$(Pipeline.Workspace)/drop-portal-ps/contentTypes.ps1'              
               azurePowerShellVersion: 'LatestVersion'
+          
+          - task: AzurePowerShell@5
+            displayName: 'Disable public network access'
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: LatestVersion
+              ScriptType: 'InlineScript'
+              Inline: |
+                $resourceGroupName = "${{ parameters.resourceGroupName }}"
+                $storageAccountName = "${{ parameters.storageAccountName }}"
+                Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Deny
+              pwsh: true

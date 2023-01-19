@@ -26,10 +26,11 @@ stages:
     - script: |
         npm install && npm run build      
       env:
-        REACT_APP_API_URL: ${{ parameters.apiUrl }}
-        REACT_APP_BACKEND_IDENTIFIER: ${{ parameters.backendIdentifier }}
-        REACT_APP_TENANT_ID: ${{ parameters.TENANT_ID }}
-        REACT_APP_CLIENT_ID: ${{ parameters.SP_BACKEND_CLIENT_ID }}
+        PORTAL_BACKEND_API_URL: ${{ parameters.apiUrl }}
+        PORTAL_BACKEND_CLIENT_ID: ${{ parameters.SP_BACKEND_CLIENT_ID }}
+        PORTAL_BACKEND_IDENTIFIER: ${{ parameters.backendIdentifier }}
+        PORTAL_TENANT_ID: ${{ parameters.TENANT_ID }}
+        PORTAL_CUSTOMER_NAME: ${{ parameters.COMPANY_NAME }}
       displayName: 'Prepare binaries'            
      
     - task: ArchiveFiles@2

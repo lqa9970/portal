@@ -11,8 +11,6 @@ parameters:
 stages:
 - stage: Deployportal
   displayName: Deploy portal stage
-  variables: 
-  - group: ${{ parameters.environment }}
   jobs:
   - deployment: Deploy
     displayName: Deploy
@@ -63,13 +61,6 @@ stages:
               Inline: |
                 $resourceGroupName = "${{ parameters.resourceGroupName }}"
                 $storageAccountName = "${{ parameters.storageAccountName }}"
-                Write-Host "SOF Jiihaa"
-                Write-Host "Directly written PORTAL_STORAGE_KEY = $Env:PORTAL_STORAGE_KEY"
-                Write-Host "Directly written PORTAL_STORAGE_ACCOUNT = $Env:PORTAL_STORAGE_ACCOUNT"
-                Write-Host "Directly written SP_BACKEND_CLIENT_ID = $Env:SP_BACKEND_CLIENT_ID"
-                Write-Host "Mapped RESOURCE_GROUP_NAME = $Env:RESOURCE_GROUP_NAME"
-                Write-Host "Mapped STORAGE_ACCOUNT_NAME = $Env:STORAGE_ACCOUNT_NAME"
-                Write-Host "EOF Jiihaa"
                 $value=(Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName)[0].Value
                 Write-Host "##vso[task.setvariable variable=STORAGE_ACCOUNT_KEY;]$value"
               pwsh: true

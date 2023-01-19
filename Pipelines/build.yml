@@ -28,7 +28,7 @@ stages:
       env:
         REACT_APP_API_URL: ${{ parameters.apiUrl }}
         REACT_APP_BACKEND_IDENTIFIER: ${{ parameters.backendIdentifier }}
-        REACT_APP_TENANT_ID: '647b4812-c4fd-4afe-864b-a854de083eeb'
+        REACT_APP_TENANT_ID: ${{ parameters.TENANT_ID }}
         REACT_APP_CLIENT_ID: ${{ parameters.SP_BACKEND_CLIENT_ID }}
       displayName: 'Prepare binaries'            
      

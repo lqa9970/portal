@@ -19,6 +19,7 @@ stages:
   parameters: 
     apiUrl: 'https://func-$(SOLUTION)-backend-$(COMPANY)-$(env)-weu.azurewebsites.net'
     backendIdentifier: 'api://$(SP_BACKEND_CLIENT_ID)'
+    COMPANY_NAME: $(COMPANY_FULL_NAME)
     TENANT_ID: $(TENANT_ID)
     SP_BACKEND_CLIENT_ID: $(SP_BACKEND_CLIENT_ID)
 

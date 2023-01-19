@@ -3,6 +3,8 @@ parameters:
   type: string
 - name: backendIdentifier
   type: string
+- name: COMPANY_NAME
+  type: string
 - name: TENANT_ID
   type: string
 - name: SP_BACKEND_CLIENT_ID

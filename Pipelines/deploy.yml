@@ -41,13 +41,33 @@ stages:
                 Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Allow
               pwsh: true
 
-          - task: AzureFileCopy@5
+          # - task: AzureFileCopy@5
+          #   inputs:
+          #     SourcePath: '$(Pipeline.Workspace)/drop-portal/portalextracted/'
+          #     azureSubscription: ${{ parameters.serviceConnection }}
+          #     Destination: 'AzureBlob'
+          #     storage: ${{ parameters.storageAccountName }}
+          #     ContainerName: '$web'
+
+          - task: AzurePowerShell@5
+            displayName: 'File copy to blob'
             inputs:
-              SourcePath: '$(Pipeline.Workspace)/drop-portal/portalextracted/'
               azureSubscription: ${{ parameters.serviceConnection }}
-              Destination: 'AzureBlob'
-              storage: ${{ parameters.storageAccountName }}
-              ContainerName: '$web'
+              ScriptType: InlineScript
+              Inline: |
+                $context = New-AzStorageContext -StorageAccountName ${{ parameters.storageAccountName }} -UseConnectedAccount
+                $myFileBlob= @{
+                  File             = '$(Pipeline.Workspace)/drop-portal/portalextracted/'
+                  Container        = '$web'
+                  Blob             = '$(Pipeline.Workspace)/drop-portal/portalextracted/'
+                  Context          = $context
+                  StandardBlobTier = 'Hot'
+                }
+                Set-AzStorageBlobContent @myFileBlob
+              azurePowerShellVersion: LatestVersion
+              pwsh: true
+              workingDirectory: '$(System.DefaultWorkingDirectory)/_MyFolderName'
+
 
           - task: AzurePowerShell@5
             displayName: Get StorageAccountKey

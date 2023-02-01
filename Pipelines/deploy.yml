@@ -50,7 +50,7 @@ stages:
           #     ContainerName: '$web'
 
           - task: AzurePowerShell@5
-            displayName: 'File copy to blob'
+            displayName: 'Copy files to container'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: LatestVersion
@@ -61,10 +61,8 @@ stages:
                   Container        = '$web'
                   Context          = $context
                 }
-                Get-ChildItem -File -Recurse | Set-AzStorageBlobContent @myFileBlob
+                Get-ChildItem -Path '$(Pipeline.Workspace)/drop-portal/portalextracted/' -File -Recurse | Set-AzStorageBlobContent @myFileBlob
               pwsh: true
-              workingDirectory: '$(Pipeline.Workspace)/drop-portal/portalextracted/'
-
 
           - task: AzurePowerShell@5
             displayName: Get StorageAccountKey

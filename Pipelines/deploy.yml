@@ -40,7 +40,7 @@ stages:
                 $storageAccountName = "${{ parameters.storageAccountName }}"
                 Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Allow
               pwsh: true
-
+          
           - task: AzureFileCopy@3
             inputs:
               SourcePath: '$(Pipeline.Workspace)/drop-portal/portalextracted/'

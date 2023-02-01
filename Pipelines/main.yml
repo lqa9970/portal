@@ -7,7 +7,7 @@ trigger:
     - Pipelines/*
 
 variables:
-- group: 'common'
+- group: 'common-v2'
 - name: env
   ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     value: prd
@@ -17,7 +17,7 @@ variables:
 stages:
 - template: build.yml
   parameters: 
-    apiUrl: 'https://func-$(SOLUTION)-backend-$(COMPANY)-$(env)-weu.azurewebsites.net'
+    apiUrl: 'https://func-$(SOLUTION_SHORT_NAME)-backend-$(COMPANY_SHORT_NAME)-$(env)-weu.azurewebsites.net'
     backendIdentifier: 'api://$(SP_BACKEND_CLIENT_ID)'
     COMPANY_NAME: $(COMPANY_FULL_NAME)
     TENANT_ID: $(TENANT_ID)
@@ -26,6 +26,6 @@ stages:
 - template: deploy.yml
   parameters: 
     environment: 'portal-$(env)'
-    resourceGroupName: 'rg-$(SOLUTION)-$(env)-weu'
+    resourceGroupName: 'rg-$(SOLUTION_SHORT_NAME)-$(env)-weu-001'
     serviceConnection: '$(SERVICE_CONNECTION_PREFIX)-$(env)'
-    storageAccountName: 'st$(SOLUTION)$(COMPANY)$(env)weu1'
+    storageAccountName: 'st$(SOLUTION_SHORT_NAME)$(COMPANY_SHORT_NAME)$(env)weu1'

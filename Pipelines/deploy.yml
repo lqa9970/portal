@@ -53,6 +53,7 @@ stages:
             displayName: 'File copy to blob'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: LatestVersion
               ScriptType: InlineScript
               Inline: |
                 $context = New-AzStorageContext -StorageAccountName ${{ parameters.storageAccountName }} -UseConnectedAccount
@@ -64,9 +65,7 @@ stages:
                   StandardBlobTier = 'Hot'
                 }
                 Set-AzStorageBlobContent @myFileBlob
-              azurePowerShellVersion: LatestVersion
               pwsh: true
-              workingDirectory: '$(System.DefaultWorkingDirectory)/_MyFolderName'
 
 
           - task: AzurePowerShell@5

@@ -75,14 +75,14 @@ stages:
               ScriptPath: '$(Pipeline.Workspace)/drop-portal-ps/contentTypes.ps1'              
               azurePowerShellVersion: 'LatestVersion'
           
-          - task: AzurePowerShell@5
-            displayName: 'Disable public network access'
-            inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
-              azurePowerShellVersion: LatestVersion
-              ScriptType: 'InlineScript'
-              Inline: |
-                $resourceGroupName = "${{ parameters.resourceGroupName }}"
-                $storageAccountName = "${{ parameters.storageAccountName }}"
-                Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Deny
-              pwsh: true
+          # - task: AzurePowerShell@5
+          #   displayName: 'Disable public network access'
+          #   inputs:
+          #     azureSubscription: ${{ parameters.serviceConnection }}
+          #     azurePowerShellVersion: LatestVersion
+          #     ScriptType: 'InlineScript'
+          #     Inline: |
+          #       $resourceGroupName = "${{ parameters.resourceGroupName }}"
+          #       $storageAccountName = "${{ parameters.storageAccountName }}"
+          #       Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Deny
+          #     pwsh: true

@@ -1,0 +1,25 @@
+trigger:
+  branches: 
+    include:
+      - '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+  
+variables:
+- group: Repo-Connection-VG
+
+  
+steps:
+
+- checkout: self
+  persistCredentials: true
+  
+- bash: |
+    git remote add destination https://$(PAT)@$(ORION_REPO_REPO)
+    git fetch --unshallow origin '+refs/heads/*:refs/heads/*' --update-head-ok --tags
+    git --no-pager branch -a -vv
+    git tag
+    git push destination --all -f --follow-tags
+  displayName: 'Synchronize  repository'

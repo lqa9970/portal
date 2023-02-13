@@ -53,7 +53,7 @@ const ProjectStatusEnum = z.enum([
   'Error',
   'In Queue',
 ])
-const EnvironmentTypeEnum = z.enum(['sandbox', 'dev', 'test', 'qa', 'prod'])
+const EnvironmentTypeEnum = z.enum(['sandbox', 'dev', 'tst', 'qa', 'prd'])
 
 export const ProjectSchema = z.object({
   rowKey: z.string(),

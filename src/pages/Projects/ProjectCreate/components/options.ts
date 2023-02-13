@@ -81,7 +81,7 @@ export const environmentTypeOptions: RadioOption[] = [
     value: 'dev',
   },
   {
-    label: t('test'),
+    label: t('tst'),
     value: 'tst',
   },
   {
@@ -89,7 +89,7 @@ export const environmentTypeOptions: RadioOption[] = [
     value: 'qa',
   },
   {
-    label: t('prod'),
+    label: t('prd'),
     value: 'prd',
   },
 ]

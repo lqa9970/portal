@@ -7,7 +7,7 @@ trigger:
     - Pipelines/*
 
 variables:
-- group: 'common-agw'
+- group: 'common'
 - name: env
   ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     value: prd

@@ -17,6 +17,7 @@ type Params = {
 }
 
 const ProjectDetail = ({ project }: Props) => {
+  const reachedLimit = false
   const { t } = useTranslation()
   const isSandbox = project?.environmentType === 'sandbox'
   const [projectStatusModalOpen, setProjectStatusModalOpen] = usePersistedState(
@@ -192,15 +193,29 @@ const ProjectDetail = ({ project }: Props) => {
 
         <Grid xs={12} sx={{ mt: 4 }}>
           {!isSandbox && (
-            <Button
-              component={RouterLink}
-              to={`/projects/${project.rowKey}/add-environment`}
-              variant="contained"
-              color="primary"
-              sx={{ mr: 4, mt: 2 }}
-            >
-              {t('add.environment.to.project')}
-            </Button>
+            <>
+              {reachedLimit ? (
+                <Button
+                  component={RouterLink}
+                  to={`/projects/${project.rowKey}/add-environment`}
+                  variant="contained"
+                  color="primary"
+                  sx={{ mr: 4, mt: 2 }}
+                >
+                  {t('add.environment.to.project')}
+                </Button>
+              ) : (
+                <Button
+                  disabled
+                  component={RouterLink}
+                  to="#"
+                  variant="contained"
+                  sx={{ mr: 4, mt: 2 }}
+                >
+                  {t('maxed.out.env')}
+                </Button>
+              )}
+            </>
           )}
         </Grid>
       </Grid>

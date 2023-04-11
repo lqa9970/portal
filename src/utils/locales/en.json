@@ -96,5 +96,7 @@
   "required": "Required",
   "all.environments.created": "All environments have been created for this project.",
   "no.projects": "Create a sandbox or project to start.",
-  "project.total.cost": "Project total cost"
+  "project.total.cost": "Project total cost",
+
+  "maxed.out.env": "You reached max environments (4)"
 }

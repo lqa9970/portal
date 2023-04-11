@@ -37,7 +37,7 @@ This is a portal where users can order DevOps Foundation projects.
 # Installation and Development
 
 1.  Clone repository
-2.  Create a .env and add needed variables
+2.  Rename `.env.template` to `.env` and ask backend developers for needed variables
 3.  Install the project dependencies
     > npm install
 4.  Start the development server

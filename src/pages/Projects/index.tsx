@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   Card,
   CardContent,
   Container,
@@ -109,13 +110,12 @@ const Projects = () => {
     getProjects({ isViewingOwnProject })
   )
   const filterProjects = projects
-    ?.filter(({ applicationName }) =>
-      applicationName.toLowerCase().includes(filterText.toLowerCase())
+    ?.filter(({ projectName }) =>
+      projectName.toLowerCase().includes(filterText.toLowerCase())
     )
     .sort(
       (a, b) =>
-        (isAscending ? 1 : -1) *
-        a.applicationName.localeCompare(b.applicationName)
+        (isAscending ? 1 : -1) * a.projectName.localeCompare(b.projectName)
     )
 
   return (
@@ -222,7 +222,14 @@ const Projects = () => {
         {isSuccess && projects.length > 0 && (
           <List>
             {filterProjects?.map(
-              ({ applicationName, rowKey, timestamp, status }) => (
+              ({
+                projectName,
+                applicationName,
+                rowKey,
+                timestamp,
+                status,
+                environmentType,
+              }) => (
                 <div key={rowKey}>
                   <ListItem
                     divider
@@ -251,11 +258,42 @@ const Projects = () => {
                         maxWidth={300}
                       >
                         <ListItemText
+                          // sx={{ textTransform: 'uppercase', m: 1 }}
+                          // primary={projectName}
                           primary={applicationName}
                           secondary={getDateStringFromStatus(status, timestamp)}
                         />
                       </Box>
-                      {getIconFromStatus(status)}
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-around"
+                        width="100%"
+                        maxWidth={300}
+                      >
+                        <ButtonGroup
+                          variant="outlined"
+                          color="inherit"
+                          aria-label="outlined button group"
+                        >
+                          <Button>
+                            {environmentType}
+                            {getIconFromStatus(status)}
+                          </Button>
+                          <Button>
+                            {environmentType}
+                            {getIconFromStatus(status)}
+                          </Button>
+                          <Button>
+                            {environmentType}
+                            {getIconFromStatus(status)}
+                          </Button>
+                          <Button>
+                            {environmentType}
+                            {getIconFromStatus(status)}
+                          </Button>
+                        </ButtonGroup>
+                      </Box>
                     </ListItemButton>
                   </ListItem>
                 </div>

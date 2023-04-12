@@ -9,11 +9,11 @@ const requiredText = t('required') as string
 const applicationShortNameMaxChar = t(
   'application.short.name.max.character'
 ) as string
-const applicationShortNameOnlyLetter = t(
-  'application.short.name.only.letter'
+const applicationShortNameOnlyLetterAndDigit =t(
+  'application.short.name.only.letter.digit'
 ) as string
 const costCenterHelper = t('cost.center.helper') as string
-const cmdbSystemIdHelper = t('cmdb.system.id.helper') as string
+const cmdbSystemIdHelper = t('cmdb.system.id.letter.digit') as string
 
 // attempt fix type error when using custom field component
 type ControllerWithoutRender<T extends FieldValues> = Omit<
@@ -75,9 +75,11 @@ export const ProjectSchema = z.object({
   infrastructureVendor: z.string().nullable(),
   applicationVendor: z.string().nullable(),
   timestamp: z.string(),
+
+  projectName: z.string(),
 })
 
-export const ProjectItemStatusScehma = z.object({
+export const ProjectItemStatusSchema = z.object({
   subItemOrderNumber: z.string(),
   rowKey: z.string(),
   status: ProjectStatusEnum,
@@ -96,7 +98,7 @@ const CreateSandboxFormDataSchema = z.object({
     .string()
     .min(1, requiredText)
     .max(4, applicationShortNameMaxChar)
-    .regex(/^[A-Z]+$/i, applicationShortNameOnlyLetter),
+    .regex(/[A-Z0-9]+$/i, applicationShortNameOnlyLetterAndDigit),
   applicationDetail: z.string().min(1, requiredText),
   organizationUnit: z.string().min(1, requiredText),
   applicationAdministrator: z.string().min(1, requiredText),
@@ -113,7 +115,7 @@ const CreateProjectFormDataSchema = z.object({
     .string()
     .min(1, requiredText)
     .max(4, applicationShortNameMaxChar)
-    .regex(/^[A-Z]+$/i, applicationShortNameOnlyLetter),
+    .regex(/[A-Z0-9]+$/i, applicationShortNameOnlyLetterAndDigit),
   applicationDetail: z.string().min(1, requiredText),
   organizationUnit: z.string().min(1, requiredText),
   applicationAdministrator: z.string().min(1, requiredText),
@@ -122,7 +124,7 @@ const CreateProjectFormDataSchema = z.object({
   cmdbSystemId: z
     .string()
     .min(1, requiredText)
-    .regex(/^\d+$/, cmdbSystemIdHelper),
+    .regex(/[A-Z\-0-9]+$/i, cmdbSystemIdHelper),
   isPrivacyData: z.boolean().or(z.string().min(1, requiredText)),
   dataClassification: z.string().min(1, requiredText),
   infrastructureVendor: z.string().min(1, requiredText),
@@ -151,4 +153,4 @@ export type EnvironmentType = z.infer<typeof EnvironmentTypeEnum>
 
 // response type
 export type Project = z.infer<typeof ProjectSchema>
-export type ProjectItemStatus = z.infer<typeof ProjectItemStatusScehma>
+export type ProjectItemStatus = z.infer<typeof ProjectItemStatusSchema>

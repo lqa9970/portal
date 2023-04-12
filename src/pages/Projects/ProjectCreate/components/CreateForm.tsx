@@ -440,7 +440,6 @@ const CreateForm = () => {
                   control={control}
                   name="cmdbSystemId"
                   label={t('cmdb.system.id')}
-                  helperText={t('cmdb.system.id.helper')}
                 />
               </Grid>
             </>

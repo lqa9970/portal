@@ -264,7 +264,7 @@ const Projects = () => {
                           secondary={getDateStringFromStatus(status, timestamp)}
                         />
                       </Box>
-                      <Box
+                      {/* <Box
                         display="flex"
                         alignItems="center"
                         justifyContent="space-around"
@@ -293,7 +293,7 @@ const Projects = () => {
                             {getIconFromStatus(status)}
                           </Button>
                         </ButtonGroup>
-                      </Box>
+                      </Box> */}
                     </ListItemButton>
                   </ListItem>
                 </div>

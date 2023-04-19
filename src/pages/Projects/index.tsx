@@ -23,7 +23,6 @@ import {
   Add,
   Check,
   Search,
-  ArrowForwardIos,
   ErrorOutline,
   Cached,
   PendingActions,
@@ -36,27 +35,27 @@ import { ProjectStatus } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import { useAccount } from '@azure/msal-react'
 import { useQuery } from '@tanstack/react-query'
-import { getProjects } from '@api'
+import { getProjectEnvList } from '@api'
 import Loading from '@components/Loading'
-import { format } from 'date-fns'
+// import { format } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import i18n from '@utils/locales/i18n'
 
-function getDateStringFromStatus(status: ProjectStatus, timestamp: string) {
-  const date = new Date(timestamp)
-  const dateString = format(date, 'MM/dd/yyyy')
-  const { t } = i18n
-  switch (status) {
-    case 'In Queue':
-      return t('in.queue') as string
-    case 'Error':
-      return `${t('failed.at')} ${dateString}` as string
-    case 'In Progress':
-      return t('in.progress') as string
-    case 'Completed':
-      return `${t('successfully.created.at')} ${dateString}` as string
-  }
-}
+// function getDateStringFromStatus(status: ProjectStatus, timestamp: string) {
+//   const date = new Date(timestamp)
+//   const dateString = format(date, 'MM/dd/yyyy')
+//   const { t } = i18n
+//   switch (status) {
+//     case 'In Queue':
+//       return t('in.queue') as string
+//     case 'Error':
+//       return `${t('failed.at')} ${dateString}` as string
+//     case 'In Progress':
+//       return t('in.progress') as string
+//     case 'Completed':
+//       return `${t('successfully.created.at')} ${dateString}` as string
+//   }
+// }
 
 function getIconFromStatus(status: ProjectStatus) {
   switch (status) {
@@ -103,19 +102,21 @@ const Projects = () => {
   const [isAscending, setIsAscending] = useState(true)
 
   const {
-    data: projects,
+    data: applications,
     isLoading,
     isSuccess,
-  } = useQuery(['getProjects', isViewingOwnProject], () =>
-    getProjects({ isViewingOwnProject })
+  } = useQuery(['getProjectEnvList', isViewingOwnProject], () =>
+    getProjectEnvList({ isViewingOwnProject })
   )
-  const filterProjects = projects
-    ?.filter(({ projectName }) =>
-      projectName.toLowerCase().includes(filterText.toLowerCase())
+
+  const filterApplications = applications
+    ?.filter(({ applicationShortName }) =>
+      applicationShortName.toLowerCase().includes(filterText.toLowerCase())
     )
     .sort(
       (a, b) =>
-        (isAscending ? 1 : -1) * a.projectName.localeCompare(b.projectName)
+        (isAscending ? 1 : -1) *
+        a.applicationShortName.localeCompare(b.applicationShortName)
     )
 
   return (
@@ -163,7 +164,7 @@ const Projects = () => {
 
       <Grid sx={{ mb: 5 }} container spacing={4}>
         <Grid sx={{ my: 'auto' }} xs={12} sm={6}>
-          <Typography variant="h6">{t('existing.projects')}</Typography>
+          <Typography variant="h6">{t('existing.applications')}</Typography>
         </Grid>
         <Grid xs={12} sm={6}>
           <FormGroup>
@@ -214,91 +215,59 @@ const Projects = () => {
       </Grid>
       <Box width="100%">
         {isLoading && <Loading />}
-        {isSuccess && projects.length === 0 && (
+        {isSuccess && applications.length === 0 && (
           <Box textAlign="center">
             <Typography>{t('no.projects')}</Typography>
           </Box>
         )}
-        {isSuccess && projects.length > 0 && (
+        {isSuccess && applications.length > 0 && (
           <List>
-            {filterProjects?.map(
-              ({
-                projectName,
-                applicationName,
-                rowKey,
-                timestamp,
-                status,
-                environmentType,
-              }) => (
-                <div key={rowKey}>
-                  <ListItem
-                    divider
-                    secondaryAction={
-                      <IconButton
-                        component={RouterLink}
-                        to={rowKey}
-                        edge="end"
-                        aria-label="cta"
-                      >
-                        <ArrowForwardIos />
-                      </IconButton>
-                    }
-                    disablePadding
-                  >
-                    <ListItemButton
-                      // sx={{ gap: 4 }}
-                      component={RouterLink}
-                      to={rowKey}
+            {filterApplications?.map((app: any) => (
+              <div key={filterApplications.indexOf(app)}>
+                <ListItem divider disablePadding>
+                  <ListItemButton>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-around"
+                      width="100%"
+                      maxWidth={300}
                     >
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-around"
-                        width="100%"
-                        maxWidth={300}
+                      <ListItemText
+                        sx={{ textTransform: 'uppercase', m: 1 }}
+                        primary={app.applicationShortName}
+                      />
+                    </Box>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      width="100%"
+                      maxWidth={300}
+                    >
+                      <ButtonGroup
+                        variant="outlined"
+                        color="inherit"
+                        aria-label="outlined button group"
                       >
-                        <ListItemText
-                          // sx={{ textTransform: 'uppercase', m: 1 }}
-                          // primary={projectName}
-                          primary={applicationName}
-                          secondary={getDateStringFromStatus(status, timestamp)}
-                        />
-                      </Box>
-                      {/* <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-around"
-                        width="100%"
-                        maxWidth={300}
-                      >
-                        <ButtonGroup
-                          variant="outlined"
-                          color="inherit"
-                          aria-label="outlined button group"
-                        >
-                          <Button>
-                            {environmentType}
-                            {getIconFromStatus(status)}
-                          </Button>
-                          <Button>
-                            {environmentType}
-                            {getIconFromStatus(status)}
-                          </Button>
-                          <Button>
-                            {environmentType}
-                            {getIconFromStatus(status)}
-                          </Button>
-                          <Button>
-                            {environmentType}
-                            {getIconFromStatus(status)}
-                          </Button>
-                        </ButtonGroup>
-                      </Box> */}
-                    </ListItemButton>
-                  </ListItem>
-                </div>
-              )
-            )}
+                        {app.environmentGroup.map((env: any) => {
+                          return (
+                            <div key={env.rowKey}>
+                              <ListItemButton
+                                component={RouterLink}
+                                to={env.rowKey}
+                              >
+                                {env.environmentType.toLowerCase()}
+                                {getIconFromStatus(env.status)}
+                              </ListItemButton>
+                            </div>
+                          )
+                        })}
+                      </ButtonGroup>
+                    </Box>
+                  </ListItemButton>
+                </ListItem>
+              </div>
+            ))}
           </List>
         )}
       </Box>

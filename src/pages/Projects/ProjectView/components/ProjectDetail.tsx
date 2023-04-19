@@ -8,6 +8,7 @@ import { addDays, differenceInDays } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import calculateCost from '@api/projects/calculateCost'
+import { getProjectEnvList } from '@api'
 
 type Props = {
   project: Project
@@ -17,7 +18,6 @@ type Params = {
 }
 
 const ProjectDetail = ({ project }: Props) => {
-  // const reachedLimit = false       limit check
   const { t } = useTranslation()
   const isSandbox = project?.environmentType === 'sandbox'
   const [projectStatusModalOpen, setProjectStatusModalOpen] = usePersistedState(
@@ -25,10 +25,30 @@ const ProjectDetail = ({ project }: Props) => {
     false
   )
   const { rowKey } = useParams() as Params
-
-  const { data } = useQuery(['calculateCost', rowKey], () =>
+  const { data: cost } = useQuery(['calculateCost', rowKey], () =>
     calculateCost(rowKey)
   )
+
+  const { data: applications } = useQuery(['getProjectEnvList'], () =>
+    getProjectEnvList()
+  )
+
+  let numberOfEnvs = 0
+  let reachedLimit = false
+
+  applications?.map((app) => {
+    if (
+      project.projectName.toLowerCase() ==
+      app.applicationShortName.toLowerCase()
+    ) {
+      numberOfEnvs = app.environmentGroup.length
+    }
+  })
+
+  if (numberOfEnvs == 4) {
+    reachedLimit = true
+  }
+
   return (
     <Box mb={16} overflow="hidden">
       <Grid container rowSpacing={6} columnSpacing={12}>
@@ -134,7 +154,7 @@ const ProjectDetail = ({ project }: Props) => {
           <Typography gutterBottom variant="h6">
             {t('project.total.cost')}
           </Typography>
-          <Typography variant="body1">{data}</Typography>
+          <Typography variant="body1">{cost}</Typography>
         </Grid>
 
         {!isSandbox && (
@@ -194,17 +214,17 @@ const ProjectDetail = ({ project }: Props) => {
         <Grid xs={12} sx={{ mt: 4 }}>
           {!isSandbox && (
             <>
-              {/* {reachedLimit ? ( */}
-              <Button
-                component={RouterLink}
-                to={`/projects/${project.rowKey}/add-environment`}
-                variant="contained"
-                color="primary"
-                sx={{ mr: 4, mt: 2 }}
-              >
-                {t('add.environment.to.project')}
-              </Button>
-              {/* ) : (
+              {reachedLimit == false ? (
+                <Button
+                  component={RouterLink}
+                  to={`/projects/${project.rowKey}/add-environment`}
+                  variant="contained"
+                  color="primary"
+                  sx={{ mr: 4, mt: 2 }}
+                >
+                  {t('add.environment.to.project')}
+                </Button>
+              ) : (
                 <Button
                   disabled
                   component={RouterLink}
@@ -214,7 +234,7 @@ const ProjectDetail = ({ project }: Props) => {
                 >
                   {t('maxed.out.env')}
                 </Button>
-              )} */}
+              )}
             </>
           )}
         </Grid>

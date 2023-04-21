@@ -53,6 +53,14 @@ const ProjectStatusEnum = z.enum([
   'Error',
   'In Queue',
 ])
+
+const UserRoleEnum = z.enum([
+  'ProjectViewer',
+  'SandboxViewer',
+  'FullViewer',
+  'InvalidUser'
+])
+
 const EnvironmentTypeEnum = z.enum(['sandbox', 'dev', 'tst', 'qa', 'prd'])
 
 export const ProjectSchema = z.object({
@@ -150,6 +158,7 @@ export const AddEnvFormDataSchema = z.object({
 
 export type CreateFormData = z.infer<typeof CreateFormDataSchema>
 export type ProjectStatus = z.infer<typeof ProjectStatusEnum>
+export type UserRole = z.infer<typeof UserRoleEnum>
 export type EnvironmentType = z.infer<typeof EnvironmentTypeEnum>
 
 // response type

@@ -35,9 +35,8 @@ import { ProjectStatus } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import { useAccount } from '@azure/msal-react'
 import { useQuery } from '@tanstack/react-query'
-import { getProjectEnvList } from '@api'
+import { getProjectEnvList, getUserRole } from '@api'
 import Loading from '@components/Loading'
-// import { format } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import i18n from '@utils/locales/i18n'
 
@@ -67,6 +66,141 @@ function getIconFromStatus(status: ProjectStatus) {
       return <Cached />
     case 'Completed':
       return <Check color="success" />
+  }
+}
+
+const RoleRender = () => {
+  const { data } = useQuery(['getUserRole'], () => getUserRole())
+
+  const sandboxView = getProjectTemplates()[0]
+  const projectView = getProjectTemplates()[1]
+  const { t } = useTranslation()
+
+  switch (data) {
+    case 'FullViewer':
+      return (
+        <>
+          <Grid sx={{ mb: 8 }} container spacing={4}>
+            {getProjectTemplates().map(
+              ({ name, helperText, description, ctaString, type }) => (
+                <Grid key={name} xs={12} sm={6}>
+                  <Card>
+                    <CardContent>
+                      <Box minHeight={90}>
+                        <Typography
+                          sx={{
+                            fontWeight: 700,
+                            fontSize: '1.15rem',
+                          }}
+                        >
+                          {name}
+                        </Typography>
+                        <Typography variant="subtitle2">
+                          {helperText}
+                        </Typography>
+                      </Box>
+                      <Box minHeight={60}>
+                        <Typography color="text.secondary" variant="subtitle2">
+                          {description}
+                        </Typography>
+                      </Box>
+                      <Button
+                        sx={{ ml: 0 }}
+                        startIcon={<Add />}
+                        component={RouterLink}
+                        data-cy={`create-${type}`}
+                        to={`create/${type}`}
+                      >
+                        {ctaString}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )
+            )}
+          </Grid>
+        </>
+      )
+    case 'ProjectViewer':
+      return (
+        <>
+          <Grid sx={{ mb: 8 }} container spacing={4}>
+            <Card sx={{ maxWidth: 500 }}>
+              <CardContent>
+                <Box minHeight={90}>
+                  <Typography
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: '1.15rem',
+                    }}
+                  >
+                    {projectView.name}
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    {projectView.helperText}
+                  </Typography>
+                </Box>
+                <Box minHeight={60}>
+                  <Typography color="text.secondary" variant="subtitle2">
+                    {projectView.description}
+                  </Typography>
+                </Box>
+                <Button
+                  sx={{ ml: 0 }}
+                  startIcon={<Add />}
+                  component={RouterLink}
+                  data-cy={`create-${projectView.type}`}
+                  to={`create/${projectView.type}`}
+                >
+                  {projectView.ctaString}
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+        </>
+      )
+    case 'SandboxViewer':
+      return (
+        <>
+          <Grid sx={{ mb: 8 }} container spacing={4}>
+            <Card sx={{ maxWidth: 500 }}>
+              <CardContent>
+                <Box minHeight={90}>
+                  <Typography
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: '1.15rem',
+                    }}
+                  >
+                    {sandboxView.name}
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    {sandboxView.helperText}
+                  </Typography>
+                </Box>
+                <Box minHeight={60}>
+                  <Typography color="text.secondary" variant="subtitle2">
+                    {sandboxView.description}
+                  </Typography>
+                </Box>
+                <Button
+                  sx={{ ml: 0 }}
+                  startIcon={<Add />}
+                  component={RouterLink}
+                  data-cy={`create-${sandboxView.type}`}
+                  to={`create/${sandboxView.type}`}
+                >
+                  {sandboxView.ctaString}
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+        </>
+      )
+    case 'InvalidUser':
+      return <p>{t('you.cant.create.env')}</p>
+    default:
+      return null
   }
 }
 
@@ -124,43 +258,8 @@ const Projects = () => {
       <Typography variant="h5" sx={{ mb: 5 }}>
         {t('welcome')}, {account?.name}
       </Typography>
-      <Grid sx={{ mb: 8 }} container spacing={4}>
-        {getProjectTemplates().map(
-          ({ name, helperText, description, ctaString, type }) => (
-            <Grid key={name} xs={12} sm={6}>
-              <Card>
-                <CardContent>
-                  <Box minHeight={90}>
-                    <Typography
-                      sx={{
-                        fontWeight: 700,
-                        fontSize: '1.15rem',
-                      }}
-                    >
-                      {name}
-                    </Typography>
-                    <Typography variant="subtitle2">{helperText}</Typography>
-                  </Box>
-                  <Box minHeight={60}>
-                    <Typography color="text.secondary" variant="subtitle2">
-                      {description}
-                    </Typography>
-                  </Box>
-                  <Button
-                    sx={{ ml: 0 }}
-                    startIcon={<Add />}
-                    component={RouterLink}
-                    data-cy={`create-${type}`}
-                    to={`create/${type}`}
-                  >
-                    {ctaString}
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          )
-        )}
-      </Grid>
+
+      <RoleRender />
 
       <Grid sx={{ mb: 5 }} container spacing={4}>
         <Grid sx={{ my: 'auto' }} xs={12} sm={6}>

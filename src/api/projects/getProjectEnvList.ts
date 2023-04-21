@@ -13,6 +13,7 @@ const getProjectEnvList = async (params?: Params) => {
   const token = await getToken(tokenRequest)
   const headers = generateAuthHeaders(token)
 
+
   const { data } = await api.get<Project[]>(
     `/projects-envlist${
       params?.isViewingOwnProject ? '?isViewingOwnProject=true' : ''

@@ -101,5 +101,6 @@
   "no.projects": "Create a sandbox or project to start.",
   "project.total.cost": "Project total cost",
 
-  "maxed.out.env": "You reached max environments (4)"
+  "maxed.out.env": "You reached max environments (4)",
+  "you.cant.create.env": "You are not authorized to create any applications. But feel free to check out existing ones below :)"
 }

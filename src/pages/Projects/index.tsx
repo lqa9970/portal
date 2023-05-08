@@ -31,7 +31,7 @@ import {
 } from '@mui/icons-material'
 
 import { useState } from 'react'
-import { ProjectStatus } from '@utils/types'
+import { ProjectStatus, Project } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import { useAccount } from '@azure/msal-react'
 import { useQuery } from '@tanstack/react-query'
@@ -55,6 +55,13 @@ import i18n from '@utils/locales/i18n'
 //       return `${t('successfully.created.at')} ${dateString}` as string
 //   }
 // }
+
+type Env = {
+  environmentType: string
+  rowKey: string
+  status: ProjectStatus
+  isAlreadyCreated: boolean
+}
 
 function getIconFromStatus(status: ProjectStatus) {
   switch (status) {
@@ -243,6 +250,23 @@ const Projects = () => {
     getProjectEnvList({ isViewingOwnProject })
   )
 
+  // const fetchCreatedEnv = (applicationShortName: string, rowkey: string) => {
+  //   const { data: environmentOptions = [] } = useQuery(
+  //     ['listEnvironments', applicationShortName],
+  //     () => listEnvironments(rowkey),
+  //     {
+  //       select: (data) =>
+  //         data.map((item) => ({
+  //           label: getTerminology(item.name),
+  //           value: item.name,
+  //           disabled: item.isAlreadyCreated,
+  //         })),
+  //       staleTime: 0,
+  //     }
+  //   )
+  //   return environmentOptions
+  // }
+
   const filterApplications = applications
     ?.filter(({ applicationShortName }) =>
       applicationShortName.toLowerCase().includes(filterText.toLowerCase())
@@ -258,7 +282,6 @@ const Projects = () => {
       <Typography variant="h5" sx={{ mb: 5 }}>
         {t('welcome')}, {account?.name}
       </Typography>
-
       <RoleRender />
 
       <Grid sx={{ mb: 5 }} container spacing={4}>
@@ -321,7 +344,7 @@ const Projects = () => {
         )}
         {isSuccess && applications.length > 0 && (
           <List>
-            {filterApplications?.map((app: any) => (
+            {filterApplications?.map((app: Project) => (
               <div key={filterApplications.indexOf(app)}>
                 <ListItem divider disablePadding>
                   <ListItemButton>
@@ -348,18 +371,32 @@ const Projects = () => {
                         color="inherit"
                         aria-label="outlined button group"
                       >
-                        {app.environmentGroup.map((env: any) => {
-                          return (
-                            <div key={env.rowKey}>
-                              <ListItemButton
-                                component={RouterLink}
-                                to={env.rowKey}
-                              >
-                                {env.environmentType.toLowerCase()}
-                                {getIconFromStatus(env.status)}
-                              </ListItemButton>
-                            </div>
-                          )
+                        {app.environmentGroup.map((env: Env, index: number) => {
+                          if (!env.rowKey) {
+                            return (
+                              <div key={index}>
+                                <ListItemButton
+                                  component={RouterLink}
+                                  to={env.rowKey}
+                                  disabled
+                                >
+                                  {env.environmentType.toLowerCase()}
+                                </ListItemButton>
+                              </div>
+                            )
+                          } else {
+                            return (
+                              <div key={env.rowKey}>
+                                <ListItemButton
+                                  component={RouterLink}
+                                  to={env.rowKey}
+                                >
+                                  {env.environmentType.toLowerCase()}
+                                  {getIconFromStatus(env.status)}
+                                </ListItemButton>
+                              </div>
+                            )
+                          }
                         })}
                       </ButtonGroup>
                     </Box>

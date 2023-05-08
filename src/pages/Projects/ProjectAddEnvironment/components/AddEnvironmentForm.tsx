@@ -49,8 +49,6 @@ const AddEnvironmentForm = ({ project }: Props) => {
     },
   })
 
-  console.log('environmentOptions', environmentOptions)
-
   if (
     environmentOptions.length > 0 &&
     environmentOptions.every((option) => option.disabled)

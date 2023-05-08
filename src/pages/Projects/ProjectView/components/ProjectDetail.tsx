@@ -13,6 +13,13 @@ import { getProjectEnvList } from '@api'
 type Props = {
   project: Project
 }
+type Env = {
+  environmentType: string
+  rowKey: string
+  status: any
+  isAlreadyCreated: boolean
+}
+
 type Params = {
   rowKey: string
 }
@@ -41,7 +48,11 @@ const ProjectDetail = ({ project }: Props) => {
       project.projectName.toLowerCase() ==
       app.applicationShortName.toLowerCase()
     ) {
-      numberOfEnvs = app.environmentGroup.length
+      app.environmentGroup.map((env: Env) => {
+        if (env.isAlreadyCreated == true) {
+          numberOfEnvs++
+        }
+      })
     }
   })
 

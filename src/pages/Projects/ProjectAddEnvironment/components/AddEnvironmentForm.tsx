@@ -56,7 +56,9 @@ const AddEnvironmentForm = ({ project }: Props) => {
     return (
       <>
         <Box minHeight={70}>
-          <Typography variant="h5">{project.applicationName}</Typography>
+          <Typography variant="h5">
+            {project.applicationName.slice(0, 4).toUpperCase()}
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Typography variant="h6">{t('all.environments.created')}</Typography>
@@ -91,7 +93,9 @@ const AddEnvironmentForm = ({ project }: Props) => {
       <Grid container rowSpacing={2} columnSpacing={12}>
         <Grid xs={12} sm={6}>
           <Box minHeight={70}>
-            <Typography variant="h5">{project.applicationName}</Typography>
+            <Typography variant="h5">
+              {project.applicationName.slice(0, 4).toLocaleUpperCase()}
+            </Typography>
           </Box>
         </Grid>
         <Grid xs={12}>

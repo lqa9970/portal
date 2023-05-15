@@ -277,6 +277,14 @@ const Projects = () => {
         a.applicationShortName.localeCompare(b.applicationShortName)
     )
 
+  const getRowKey = (app: Project) => {
+    for (let i = 0; i < app.environmentGroup.length; i++) {
+      if (app.environmentGroup[i].rowKey !== null) {
+        return app.environmentGroup[i].rowKey
+      }
+    }
+  }
+
   return (
     <Container sx={{ mt: '4.306rem' }}>
       <Typography variant="h5" sx={{ mb: 5 }}>
@@ -344,8 +352,8 @@ const Projects = () => {
         )}
         {isSuccess && applications.length > 0 && (
           <List>
-            {filterApplications?.map((app: Project) => (
-              <div key={filterApplications.indexOf(app)}>
+            {filterApplications?.map((app: Project, index) => (
+              <div key={index}>
                 <ListItem divider disablePadding>
                   <ListItemButton>
                     <Box
@@ -375,25 +383,35 @@ const Projects = () => {
                           if (!env.rowKey) {
                             return (
                               <div key={index}>
-                                <ListItemButton
+                                <Button
+                                  variant="outlined"
                                   component={RouterLink}
-                                  to={env.rowKey}
-                                  disabled
+                                  to={`${getRowKey(app)}/add-environment`}
+                                  sx={{
+                                    width: 70,
+                                    m: 1.5,
+                                    color: 'text.disabled',
+                                  }}
                                 >
-                                  {env.environmentType.toLowerCase()}
-                                </ListItemButton>
+                                  {env.environmentType.toUpperCase()}
+                                </Button>
                               </div>
                             )
                           } else {
                             return (
                               <div key={env.rowKey}>
-                                <ListItemButton
+                                <Button
+                                  variant="outlined"
                                   component={RouterLink}
                                   to={env.rowKey}
+                                  sx={{
+                                    width: 70,
+                                    m: 1.5,
+                                  }}
                                 >
-                                  {env.environmentType.toLowerCase()}
+                                  {env.environmentType.toUpperCase()}
                                   {getIconFromStatus(env.status)}
-                                </ListItemButton>
+                                </Button>
                               </div>
                             )
                           }

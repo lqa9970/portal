@@ -1,7 +1,7 @@
 import { Box, Button, Typography, Unstable_Grid2 as Grid } from '@mui/material'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 import getTerminology from '@utils/getTerminology'
-import { Project } from '@utils/types'
+import { Project, ProjectStatus as ProjectStatusType } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import ProjectStatus from './ProjectStatus'
 import { addDays, differenceInDays } from 'date-fns'
@@ -16,7 +16,7 @@ type Props = {
 type Env = {
   environmentType: string
   rowKey: string
-  status: any
+  status: ProjectStatusType
   isAlreadyCreated: boolean
 }
 

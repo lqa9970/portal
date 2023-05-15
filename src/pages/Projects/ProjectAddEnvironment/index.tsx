@@ -30,7 +30,9 @@ const ProjectAddEnvironment = () => {
         sx={{ ml: -2, mb: 2.5 }}
       >
         <ArrowBackIosNew sx={{ mr: 2 }} />
-        {t('application.details')}
+        {project?.applicationShortName}
+        <>&nbsp;</>
+        {t('env.details')}
       </Button>
       {isLoading && <Loading />}
       {isSuccess && <AddEnvironmentForm project={project} />}

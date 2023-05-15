@@ -85,7 +85,7 @@ export const ProjectSchema = z.object({
   timestamp: z.string(),
 
   projectName: z.string(),
-  environmentGroup: z.any(),
+  environmentGroup: z.any().array(),
 })
 
 export const ProjectItemStatusSchema = z.object({

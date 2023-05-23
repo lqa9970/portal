@@ -19,11 +19,16 @@ type Props = {
 
 const AddEnvironmentForm = ({ project }: Props) => {
   const { t } = useTranslation()
-  const { rowKey } = useParams()
+  const { rowKey, env } = useParams()
   const { control, handleSubmit } = useForm({
-    defaultValues: { environmentType: '', costCenter: project.costCenter },
+    defaultValues: {
+      environmentType: `${env}`,
+      costCenter: project.costCenter,
+    },
     resolver: zodResolver(AddEnvFormDataSchema),
   })
+
+  // const findRadioDefault = (environmentOptions) => {}
 
   const navigate = useNavigate()
 
@@ -105,13 +110,13 @@ const AddEnvironmentForm = ({ project }: Props) => {
             label={t('environment.type')}
             description={t('environment.type.description')}
             options={environmentOptions}
+            defaultValue=""
           />
         </Grid>
         <Grid xs={12} sm={6}>
           <CustomTextField
             control={control}
             name="costCenter"
-            defaultValue=""
             label={t('cost.center')}
             helperText={t('cost.center.helper')}
             description={t('cost.center.description')}

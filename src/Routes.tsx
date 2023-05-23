@@ -22,6 +22,10 @@ const Router = () => {
               path=":rowKey/add-environment"
               element={<ProjectAddEnvironment />}
             />
+            <Route
+              path=":rowKey/add-environment/env=:env"
+              element={<ProjectAddEnvironment />}
+            />
             <Route index element={<Projects />} />
           </Route>
         </Route>

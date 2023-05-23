@@ -16,6 +16,7 @@ import {
   Switch,
   FormGroup,
   FormControlLabel,
+  Pagination,
 } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import Grid from '@mui/material/Unstable_Grid2'
@@ -30,7 +31,7 @@ import {
   ArrowDownward,
 } from '@mui/icons-material'
 
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { ProjectStatus, Project } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import { useAccount } from '@azure/msal-react'
@@ -39,6 +40,7 @@ import { getProjectEnvList, getUserRole } from '@api'
 import Loading from '@components/Loading'
 import { useTranslation } from 'react-i18next'
 import i18n from '@utils/locales/i18n'
+import usePagination from '../../utils/usePagination'
 
 // function getDateStringFromStatus(status: ProjectStatus, timestamp: string) {
 //   const date = new Date(timestamp)
@@ -250,23 +252,6 @@ const Projects = () => {
     getProjectEnvList({ isViewingOwnProject })
   )
 
-  // const fetchCreatedEnv = (applicationShortName: string, rowkey: string) => {
-  //   const { data: environmentOptions = [] } = useQuery(
-  //     ['listEnvironments', applicationShortName],
-  //     () => listEnvironments(rowkey),
-  //     {
-  //       select: (data) =>
-  //         data.map((item) => ({
-  //           label: getTerminology(item.name),
-  //           value: item.name,
-  //           disabled: item.isAlreadyCreated,
-  //         })),
-  //       staleTime: 0,
-  //     }
-  //   )
-  //   return environmentOptions
-  // }
-
   const filterApplications = applications
     ?.filter(({ applicationShortName }) =>
       applicationShortName.toLowerCase().includes(filterText.toLowerCase())
@@ -284,6 +269,14 @@ const Projects = () => {
       }
     }
   }
+
+  // const _DATA = usePagination(filterApplications, 3)
+  // const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
+  //   setCurrentPage(page)
+  //   _DATA?.jump(page)
+  // }
+
+  // console.log('_DATA', _DATA?.currentData())
 
   return (
     <Container sx={{ mt: '4.306rem' }}>
@@ -343,7 +336,7 @@ const Projects = () => {
           </Box>
         </Grid>
       </Grid>
-      <Box width="100%">
+      <Box width="100%" my={10}>
         {isLoading && <Loading />}
         {isSuccess && applications.length === 0 && (
           <Box textAlign="center">
@@ -352,10 +345,16 @@ const Projects = () => {
         )}
         {isSuccess && applications.length > 0 && (
           <List>
+            {/* {_DATA?.currentData().map((app: Project, index) => ( */}
             {filterApplications?.map((app: Project, index) => (
               <div key={index}>
                 <ListItem divider disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
                     <Box
                       display="flex"
                       alignItems="center"
@@ -373,6 +372,7 @@ const Projects = () => {
                       alignItems="center"
                       width="100%"
                       maxWidth={300}
+                      sx={{ mr: 2, pr: 2 }}
                     >
                       <ButtonGroup
                         variant="outlined"
@@ -386,7 +386,9 @@ const Projects = () => {
                                 <Button
                                   variant="outlined"
                                   component={RouterLink}
-                                  to={`${getRowKey(app)}/add-environment`}
+                                  to={`${getRowKey(app)}/add-environment/env=${
+                                    env.environmentType
+                                  }`}
                                   sx={{
                                     width: 70,
                                     m: 1.5,
@@ -424,6 +426,13 @@ const Projects = () => {
             ))}
           </List>
         )}
+        {/* {_DATA?.currentData() !== undefined ? (
+          <Pagination
+            count={Math.ceil(_DATA?.currentData().length / 2)}
+            page={currentPage}
+            onChange={handleChangePage}
+          />
+        ) : null} */}
       </Box>
     </Container>
   )

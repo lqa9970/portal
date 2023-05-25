@@ -235,6 +235,7 @@ const getProjectTemplates = () => {
 
 const Projects = () => {
   const account = useAccount()
+  const [currentPage, setCurrentPage] = useState(1)
   const { t } = useTranslation()
   const [filterText, setFilterText] = useState('')
   const [isViewingOwnProject, setIsViewingOwnProject] = usePersistedState(
@@ -270,13 +271,13 @@ const Projects = () => {
     }
   }
 
-  // const _DATA = usePagination(filterApplications, 3)
-  // const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
-  //   setCurrentPage(page)
-  //   _DATA?.jump(page)
-  // }
+  const _DATA = usePagination(filterApplications, 10)
+  const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
+    setCurrentPage(page)
+    _DATA?.jump(page)
+  }
 
-  // console.log('_DATA', _DATA?.currentData())
+  console.log('_DATA', _DATA?.currentData())
 
   return (
     <Container sx={{ mt: '4.306rem' }}>
@@ -345,8 +346,7 @@ const Projects = () => {
         )}
         {isSuccess && applications.length > 0 && (
           <List>
-            {/* {_DATA?.currentData().map((app: Project, index) => ( */}
-            {filterApplications?.map((app: Project, index) => (
+            {_DATA?.currentData().map((app: Project, index) => (
               <div key={index}>
                 <ListItem divider disablePadding>
                   <ListItemButton
@@ -426,13 +426,13 @@ const Projects = () => {
             ))}
           </List>
         )}
-        {/* {_DATA?.currentData() !== undefined ? (
+        {_DATA?.currentData() !== undefined ? (
           <Pagination
-            count={Math.ceil(_DATA?.currentData().length / 2)}
+            count={Math.ceil(_DATA?.currentData().length / 10)}
             page={currentPage}
             onChange={handleChangePage}
           />
-        ) : null} */}
+        ) : null}
       </Box>
     </Container>
   )

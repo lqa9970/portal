@@ -1,4 +1,5 @@
 export { default as getUsers } from './users/getUsers'
+export { default as getUserRole } from './users/getUserRole'
 export { default as getProjects } from './projects/getProjects'
 export { default as getProject } from './projects/getProject'
 export { default as getProjectEnvList } from './projects/getProjectEnvList'

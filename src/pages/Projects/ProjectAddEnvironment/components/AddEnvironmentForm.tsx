@@ -19,11 +19,16 @@ type Props = {
 
 const AddEnvironmentForm = ({ project }: Props) => {
   const { t } = useTranslation()
-  const { rowKey } = useParams()
+  const { rowKey, env } = useParams()
   const { control, handleSubmit } = useForm({
-    defaultValues: { environmentType: '', costCenter: project.costCenter },
+    defaultValues: {
+      environmentType: `${env}`,
+      costCenter: project.costCenter,
+    },
     resolver: zodResolver(AddEnvFormDataSchema),
   })
+
+  // const findRadioDefault = (environmentOptions) => {}
 
   const navigate = useNavigate()
 
@@ -49,8 +54,6 @@ const AddEnvironmentForm = ({ project }: Props) => {
     },
   })
 
-  console.log('environmentOptions', environmentOptions)
-
   if (
     environmentOptions.length > 0 &&
     environmentOptions.every((option) => option.disabled)
@@ -58,7 +61,9 @@ const AddEnvironmentForm = ({ project }: Props) => {
     return (
       <>
         <Box minHeight={70}>
-          <Typography variant="h5">{project.applicationName}</Typography>
+          <Typography variant="h5">
+            {project.applicationName.slice(0, 4).toUpperCase()}
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Typography variant="h6">{t('all.environments.created')}</Typography>
@@ -93,7 +98,9 @@ const AddEnvironmentForm = ({ project }: Props) => {
       <Grid container rowSpacing={2} columnSpacing={12}>
         <Grid xs={12} sm={6}>
           <Box minHeight={70}>
-            <Typography variant="h5">{project.applicationName}</Typography>
+            <Typography variant="h5">
+              {project.applicationName.slice(0, 4).toLocaleUpperCase()}
+            </Typography>
           </Box>
         </Grid>
         <Grid xs={12}>
@@ -103,13 +110,13 @@ const AddEnvironmentForm = ({ project }: Props) => {
             label={t('environment.type')}
             description={t('environment.type.description')}
             options={environmentOptions}
+            defaultValue=""
           />
         </Grid>
         <Grid xs={12} sm={6}>
           <CustomTextField
             control={control}
             name="costCenter"
-            defaultValue=""
             label={t('cost.center')}
             helperText={t('cost.center.helper')}
             description={t('cost.center.description')}

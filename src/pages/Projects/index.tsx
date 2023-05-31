@@ -271,13 +271,11 @@ const Projects = () => {
     }
   }
 
-  const _DATA = usePagination(filterApplications, 10)
+  const _DATA = usePagination(filterApplications, 5)
   const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page)
     _DATA?.jump(page)
   }
-
-  console.log('_DATA', _DATA?.currentData())
 
   return (
     <Container sx={{ mt: '4.306rem' }}>
@@ -428,7 +426,7 @@ const Projects = () => {
         )}
         {_DATA?.currentData() !== undefined ? (
           <Pagination
-            count={Math.ceil(_DATA?.currentData().length / 10)}
+            count={Math.ceil((applications?.length as number) / 5)}
             page={currentPage}
             onChange={handleChangePage}
           />

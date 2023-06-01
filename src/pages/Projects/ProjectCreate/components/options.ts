@@ -24,6 +24,7 @@ export const projectDefaultValues: CreateFormData = {
   operatingSystem: '',
   environmentType: 'dev',
   shouldCreateSubscription: false,
+  shouldCreateDomain: false,
   applicationShortName: '',
   applicationDetail: '',
   organizationUnit: '',
@@ -72,6 +73,17 @@ export const operatingSystemOptions: SelectOption[] = [
   {
     label: t('linux'),
     value: 'linux',
+  },
+]
+
+export const domainOptions: RadioOption[] = [
+  {
+    label: t('IT'),
+    value: 'IT',
+  },
+  {
+    label: t('Domain'),
+    value: 'Domain',
   },
 ]
 

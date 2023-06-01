@@ -72,6 +72,7 @@ export const ProjectSchema = z.object({
   applicationName: z.string(),
   applicationShortName: z.string(),
   shouldCreateSubscription: z.boolean(),
+  shouldCreateDomain: z.boolean(),
   applicationDetail: z.string(),
   organizationUnit: z.string(),
   applicationAdministrator: z.string(),
@@ -119,6 +120,7 @@ const CreateProjectFormDataSchema = z.object({
   applicationType: z.string().min(1, requiredText),
   operatingSystem: z.string().min(1, requiredText),
   shouldCreateSubscription: z.boolean(),
+  shouldCreateDomain: z.boolean(),
   environmentType: z.string().min(1, requiredText),
   applicationShortName: z
     .string()

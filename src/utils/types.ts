@@ -83,7 +83,7 @@ export const ProjectSchema = z.object({
   infrastructureVendor: z.string().nullable(),
   applicationVendor: z.string().nullable(),
   timestamp: z.string(),
-
+  type: z.string(),
   projectName: z.string(),
   environmentGroup: z.any().array(),
 })

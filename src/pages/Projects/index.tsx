@@ -12,7 +12,6 @@ import {
   ListItem,
   ListItemText,
   IconButton,
-  ListItemButton,
   Switch,
   FormGroup,
   FormControlLabel,
@@ -30,8 +29,8 @@ import {
   ArrowDownward,
 } from '@mui/icons-material'
 
-import { useState } from 'react'
-import { ProjectStatus, Project } from '@utils/types'
+import { useState, useEffect } from 'react'
+import { ProjectStatus, Project, UserRole } from '@utils/types'
 import usePersistedState from '@utils/usePersistedState'
 import { useAccount } from '@azure/msal-react'
 import { useQuery } from '@tanstack/react-query'
@@ -63,6 +62,11 @@ type Env = {
   isAlreadyCreated: boolean
 }
 
+type RoleProps = {
+  role?: UserRole
+  apps?: Project[]
+}
+
 function getIconFromStatus(status: ProjectStatus) {
   switch (status) {
     case 'In Queue':
@@ -76,14 +80,12 @@ function getIconFromStatus(status: ProjectStatus) {
   }
 }
 
-const RoleRender = () => {
-  const { data } = useQuery(['getUserRole'], () => getUserRole())
-
+const RoleRenderCreate = ({ role }: RoleProps) => {
   const sandboxView = getProjectTemplates()[0]
   const projectView = getProjectTemplates()[1]
   const { t } = useTranslation()
 
-  switch (data) {
+  switch (role) {
     case 'FullViewer':
       return (
         <>
@@ -239,6 +241,9 @@ const Projects = () => {
     'isViewingOwnProject',
     true
   )
+  const [roleFilteredApps, setRoleFilteredApps] = useState<
+    Array<Project> | undefined
+  >([])
 
   const [isAscending, setIsAscending] = useState(true)
 
@@ -250,6 +255,8 @@ const Projects = () => {
     getProjectEnvList({ isViewingOwnProject })
   )
 
+  const { data: userRole } = useQuery(['getUserRole'], () => getUserRole())
+
   const filterApplications = applications
     ?.filter(({ applicationShortName }) =>
       applicationShortName.toLowerCase().includes(filterText.toLowerCase())
@@ -259,6 +266,29 @@ const Projects = () => {
         (isAscending ? 1 : -1) *
         a.applicationShortName.localeCompare(b.applicationShortName)
     )
+
+  useEffect(() => {
+    switch (userRole) {
+      case 'FullViewer':
+        setRoleFilteredApps(filterApplications)
+        break
+      case 'SandboxViewer':
+        setRoleFilteredApps(
+          filterApplications?.filter((app) => app.type == 'Sandbox')
+        )
+        break
+      case 'ProjectViewer':
+        setRoleFilteredApps(
+          filterApplications?.filter((app) => app.type == 'Project')
+        )
+        break
+      case 'InvalidUser':
+        setRoleFilteredApps([])
+        break
+      default:
+        break
+    }
+  }, [filterApplications])
 
   const getRowKey = (app: Project) => {
     for (let i = 0; i < app.environmentGroup.length; i++) {
@@ -273,7 +303,8 @@ const Projects = () => {
       <Typography variant="h5" sx={{ mb: 5 }}>
         {t('welcome')}, {account?.name}
       </Typography>
-      <RoleRender />
+
+      <RoleRenderCreate role={userRole} />
 
       <Grid sx={{ mb: 5 }} container spacing={4}>
         <Grid sx={{ my: 'auto' }} xs={12} sm={6}>
@@ -328,18 +359,17 @@ const Projects = () => {
       </Grid>
       <Box width="100%" my={10}>
         {isLoading && <Loading />}
-        {isSuccess && applications.length === 0 && (
+        {isSuccess && roleFilteredApps?.length === 0 && (
           <Box textAlign="center">
-            <Typography>{t('no.projects')}</Typography>
+            <Loading />
           </Box>
         )}
-        {isSuccess && applications.length > 0 && (
+        {isSuccess && roleFilteredApps?.length != 0 && (
           <List>
-            {/* {_DATA?.currentData().map((app: Project, index) => ( */}
-            {filterApplications?.map((app: Project, index) => (
+            {roleFilteredApps?.map((app: Project, index) => (
               <div key={index}>
                 <ListItem divider disablePadding>
-                  <ListItemButton
+                  <ListItem
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -364,53 +394,81 @@ const Projects = () => {
                       maxWidth={300}
                       sx={{ mr: 2, pr: 2 }}
                     >
-                      <ButtonGroup
-                        variant="outlined"
-                        color="inherit"
-                        aria-label="outlined button group"
-                      >
-                        {app.environmentGroup.map((env: Env, index: number) => {
-                          if (!env.rowKey) {
-                            return (
-                              <div key={index}>
-                                <Button
-                                  variant="outlined"
-                                  component={RouterLink}
-                                  to={`${getRowKey(app)}/add-environment/env=${
-                                    env.environmentType
-                                  }`}
-                                  sx={{
-                                    width: 70,
-                                    m: 1.5,
-                                    color: 'text.disabled',
-                                  }}
-                                >
-                                  {env.environmentType.toUpperCase()}
-                                </Button>
-                              </div>
-                            )
-                          } else {
-                            return (
-                              <div key={env.rowKey}>
-                                <Button
-                                  variant="outlined"
-                                  component={RouterLink}
-                                  to={env.rowKey}
-                                  sx={{
-                                    width: 70,
-                                    m: 1.5,
-                                  }}
-                                >
-                                  {env.environmentType.toUpperCase()}
-                                  {getIconFromStatus(env.status)}
-                                </Button>
-                              </div>
-                            )
-                          }
-                        })}
-                      </ButtonGroup>
+                      {app.environmentGroup[0].environmentType == 'sandbox' ? (
+                        <ButtonGroup
+                          variant="outlined"
+                          color="inherit"
+                          aria-label="outlined button group"
+                        >
+                          <Button
+                            variant="outlined"
+                            component={RouterLink}
+                            to={app.environmentGroup[0].rowKey}
+                            sx={{
+                              width: 120,
+                              m: 1.5,
+                              display: 'flex',
+                              gap: '4px',
+                            }}
+                          >
+                            {app.environmentGroup[0].environmentType}
+                            {getIconFromStatus(app.environmentGroup[0].status)}
+                          </Button>
+                        </ButtonGroup>
+                      ) : (
+                        <ButtonGroup
+                          variant="outlined"
+                          color="inherit"
+                          aria-label="outlined button group"
+                        >
+                          {app.environmentGroup.map(
+                            (env: Env, index: number) => {
+                              if (!env.rowKey) {
+                                return (
+                                  <div key={index}>
+                                    <Button
+                                      variant="outlined"
+                                      component={RouterLink}
+                                      to={`${getRowKey(
+                                        app
+                                      )}/add-environment/env=${
+                                        env.environmentType
+                                      }`}
+                                      sx={{
+                                        width: 70,
+                                        m: 1.5,
+                                        color: 'text.disabled',
+                                      }}
+                                    >
+                                      {env.environmentType.toUpperCase()}
+                                    </Button>
+                                  </div>
+                                )
+                              } else {
+                                return (
+                                  <div key={env.rowKey}>
+                                    <Button
+                                      variant="outlined"
+                                      component={RouterLink}
+                                      to={env.rowKey}
+                                      sx={{
+                                        width: 70,
+                                        m: 1.5,
+                                        gap: '2px',
+                                      }}
+                                    >
+                                      {env.environmentType.toUpperCase()}
+                                      {getIconFromStatus(env.status)}
+                                    </Button>
+                                  </div>
+                                )
+                              }
+                            }
+                          )}
+                        </ButtonGroup>
+                      )}
                     </Box>
-                  </ListItemButton>
+                  </ListItem>
                 </ListItem>
               </div>
             ))}

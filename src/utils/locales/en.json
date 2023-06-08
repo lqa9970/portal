@@ -16,7 +16,7 @@
     "name": "New Sandbox",
     "type": "sandbox",
     "helperText": "Single sandbox environment for small short living tests and proof of concepts.",
-    "description": "Environment will be automatically deleted after 30 days",
+    "description": "Sandbox will be automatically deleted after 30 days",
     "ctaString": "Create Sandbox"
   },
   "card.project.template": {
@@ -103,5 +103,5 @@
   "project.total.cost": "Project total cost",
 
   "maxed.out.env": "You reached max environments (4)",
-  "you.cant.create.env": "You are not authorized to create any applications. But feel free to check out existing ones below :)"
+  "you.cant.create.env": "You are not authorized to view or create any application."
 }

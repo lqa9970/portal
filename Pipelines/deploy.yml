@@ -41,9 +41,15 @@ stages:
                 Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Allow
               pwsh: true
             
-          - task: Delay@1
+          - task: AzurePowerShell@5
+            displayName: Sleep a minute
             inputs:
-              delayForMinutes: '1' # string. Required. Delay Time (minutes). Default: 0.
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: LatestVersion
+              ScriptType: 'InlineScript'
+              Inline: |
+                Start-Sleep -Seconds 60
+              pwsh: true
           
           - task: AzureFileCopy@3
             inputs:

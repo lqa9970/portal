@@ -40,6 +40,10 @@ stages:
                 $storageAccountName = "${{ parameters.storageAccountName }}"
                 Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Allow
               pwsh: true
+            
+          - task: Delay@1
+            inputs:
+              delayForMinutes: '1' # string. Required. Delay Time (minutes). Default: 0.
           
           - task: AzureFileCopy@3
             inputs:

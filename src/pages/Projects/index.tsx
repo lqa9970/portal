@@ -380,11 +380,23 @@ const Projects = () => {
                       alignItems="center"
                       justifyContent="space-around"
                       width="100%"
-                      maxWidth={300}
+                      maxWidth={100}
                     >
                       <ListItemText
                         sx={{ textTransform: 'uppercase', m: 1 }}
                         primary={app.applicationShortName}
+                      />
+                    </Box>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-around"
+                      width="100%"
+                      maxWidth={200}
+                    >
+                      <ListItemText
+                        sx={{ textTransform: 'lowercase', m: 1 }}
+                        primary={app.CmdbSystemName}
                       />
                     </Box>
                     <Box

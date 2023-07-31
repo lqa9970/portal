@@ -396,7 +396,7 @@ const Projects = () => {
                     >
                       <ListItemText
                         sx={{ textTransform: 'lowercase', m: 1 }}
-                        primary={app.CmdbSystemName}
+                        primary={app.cmdbSystemName}
                       />
                     </Box>
                     <Box

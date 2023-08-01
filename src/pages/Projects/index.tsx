@@ -379,24 +379,23 @@ const Projects = () => {
                       display="flex"
                       alignItems="center"
                       justifyContent="space-around"
-                      minWidth={60}
-                      maxWidth={60}
+                      minWidth={70}
+                      maxWidth={70}
                     >
                       <ListItemText
                         sx={{ textTransform: 'uppercase', m: 1 }}
                         primary={app.applicationShortName}
                       />
+
                     </Box>
                     <Box
                       display="flex"
                       alignItems="left"
                       justifyContent="space-around"
                       width="100%"
-                      minWidth={260}
-                      maxWidth={260}
                     >
                       <ListItemText
-                        sx={{ color: '#8C8C8C', em: 0.5 }}
+                        sx={{ color: '#8C8C8C', fontSize: '0.7rem' }}
                         primary={app.cmdbSystemName}
                       />
                     </Box>

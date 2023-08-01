@@ -379,7 +379,8 @@ const Projects = () => {
                       display="flex"
                       alignItems="center"
                       justifyContent="space-around"
-                      maxWidth={40}
+                      minWidth={60}
+                      maxWidth={60}
                     >
                       <ListItemText
                         sx={{ textTransform: 'uppercase', m: 1 }}
@@ -391,10 +392,11 @@ const Projects = () => {
                       alignItems="left"
                       justifyContent="space-around"
                       width="100%"
+                      minWidth={260}
                       maxWidth={260}
                     >
                       <ListItemText
-                        sx={{ color: '#8C8C8C', m: 0.5 }}
+                        sx={{ color: '#8C8C8C', em: 0.5 }}
                         primary={app.cmdbSystemName}
                       />
                     </Box>

@@ -395,7 +395,7 @@ const Projects = () => {
                       maxWidth={260}
                     >
                       <ListItemText
-                        sx={{ color: '#737373', m: 0.8 }}
+                        sx={{ color: '#B1B1B1', m: 0.8 }}
                         primary={app.cmdbSystemName}
                       />
                     </Box>

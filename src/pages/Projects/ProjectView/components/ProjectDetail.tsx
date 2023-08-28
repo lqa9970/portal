@@ -60,6 +60,8 @@ const ProjectDetail = ({ project }: Props) => {
     reachedLimit = true
   }
 
+  console.log('project', project)
+
   return (
     <Box mb={16} overflow="hidden">
       <Grid container rowSpacing={6} columnSpacing={12}>
@@ -126,12 +128,20 @@ const ProjectDetail = ({ project }: Props) => {
           </>
         )}
 
-        <Grid xs={12}>
+        <Grid xs={12} sm={6}>
           <Typography gutterBottom variant="h6">
             {t('application.short.name')}
           </Typography>
           <Typography variant="body1">
             {project.applicationShortName}
+          </Typography>
+        </Grid>
+        <Grid xs={12} sm={6}>
+          <Typography gutterBottom variant="h6">
+            {t('select.domain')}
+          </Typography>
+          <Typography variant="body1">
+            {getTerminology(project.shouldCreateDomain)}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6}>

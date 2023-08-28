@@ -297,7 +297,6 @@ const Projects = () => {
       }
     }
   }
-
   return (
     <Container sx={{ mt: '4.306rem' }}>
       <Typography variant="h5" sx={{ mb: 5 }}>
@@ -386,7 +385,6 @@ const Projects = () => {
                         sx={{ textTransform: 'uppercase', m: 1 }}
                         primary={app.applicationShortName}
                       />
-
                     </Box>
                     <Box
                       display="flex"

@@ -81,6 +81,7 @@ const AddEnvironmentForm = ({ project }: Props) => {
           operatingSystem: project.operatingSystem as string,
           environmentType: data.environmentType,
           shouldCreateSubscription: project.shouldCreateSubscription,
+          shouldCreateDomain: project.shouldCreateDomain,
           applicationShortName: project.applicationShortName,
           applicationDetail: project.applicationDetail,
           organizationUnit: project.organizationUnit,

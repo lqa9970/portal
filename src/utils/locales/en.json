@@ -43,6 +43,10 @@
   "environment.type.description": "Projects always start with a development environment. Additional environments can later be added to existing projects.",
   "create.dedicated.environment": "Create dedicated environment",
   "create.dedicated.environment.description": "A dedicated environment means for Azure that it creates it's own subscription for the workloads",
+
+  "select.domain": "Domain for On-Premises AD groups",
+  "select.domain.tooltip": "Select domain for the On-Premises AD groups.",
+
   "application.short.name": "Application short name",
   "application.short.name.description": "Short name for the application system this project is to deploy. Most important data entry on the form with the most impact. This is used in the naming convention creating resources. You can use the name that is/ will be used when referring to the project in spoken language. Preferably one word written in English alphabets, without spacing or special characters.",
   "application.short.name.helper": "No blanks, only letters and numbers. Max 4 characters",

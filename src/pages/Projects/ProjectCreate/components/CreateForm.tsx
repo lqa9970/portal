@@ -25,6 +25,7 @@ import {
   getUsers,
 } from '@api'
 import {
+  domainOptions,
   environmentTypeOptions,
   operatingSystemOptions,
   projectApplicationTypeOptions,
@@ -335,8 +336,17 @@ const CreateForm = () => {
               }}
             />
           </Grid>
-          <Grid xs={12} sm={6}></Grid>
-
+          {!isSandbox ? (
+            <Grid xs={12} sm={6}>
+              <CustomRadioInput
+                name="actionType"
+                control={control}
+                label={t('select.domain')}
+                description={t('select.domain.tooltip')}
+                options={domainOptions}
+              />
+            </Grid>
+          ) : null}
           <Grid xs={12} sm={6}>
             <CustomTextField
               control={control}

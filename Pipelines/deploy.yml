@@ -40,6 +40,16 @@ stages:
                 $storageAccountName = "${{ parameters.storageAccountName }}"
                 Update-AzStorageAccountNetworkRuleSet -ResourceGroupName $resourceGroupName -Name $storageAccountName -DefaultAction Allow
               pwsh: true
+            
+          - task: AzurePowerShell@5
+            displayName: Sleep a minute
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: LatestVersion
+              ScriptType: 'InlineScript'
+              Inline: |
+                Start-Sleep -Seconds 60
+              pwsh: true
           
           - task: AzureFileCopy@3
             inputs:
